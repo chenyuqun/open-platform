@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
                 http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
                 http://www.springframework.org/schema/rabbit
-                http://www.springframework.org/schema/rabbit/spring-rabbit-1.4.xsd">
+                http://www.springframework.org/schema/rabbit/spring-rabbit-1.4.xsd
+                http://www.springframework.org/schema/task  
+    http://www.springframework.org/schema/task/spring-task-4.1.xsd">
 
-    <rabbit:connection-factory id="openConnectionFactory" 
-		host="${open.rabbitmq.host}"
-		port="${open.rabbitmq.port}"
-		virtual-host="${open.rabbitmq.vhost}"
-		username="${open.rabbitmq.username}"
-		password="${open.rabbitmq.password}"
-		channel-cache-size="${open.rabbitmq.channelCacheSize}"/>
-	 <rabbit:admin connection-factory="openConnectionFactory" />
-	 
-	 <rabbit:queue id="${open.rabbitmq.queuename}" durable="true"
-                  auto-delete="false" exclusive="false" name="${open.rabbitmq.queuename}"/>
-                  
-       <!-- exchange queue binging key 绑定 -->
-    <rabbit:direct-exchange name="${open.rabbitmq.exchange}"
-                            durable="true" auto-delete="false" id="${open.rabbitmq.exchange}">
-        <rabbit:bindings>
-            <rabbit:binding queue="${open.rabbitmq.queuename}" key="${open.rabbitmq.queuename}"/>
-        </rabbit:bindings>
-    </rabbit:direct-exchange>
-      
-	<rabbit:template id="updateRoomSuccessTemplate" 
-                     connection-factory="openConnectionFactory"
-                     message-converter="fastJsonMapper"
-                     exchange="openExchange"
-                     routing-key="open.modify.room.success"/>
-     <bean id="fastJsonMapper" class="com.zizaike.core.common.util.FastJsonMessageConverter" />               
+
+	<!-- 连接服务配置 -->
+	<rabbit:connection-factory id="openConnectionFactory"
+		host="${open.rabbitmq.host}" username="${open.rabbitmq.username}"
+		password="${open.rabbitmq.password}" port="${open.rabbitmq.port}"
+		virtual-host="${open.rabbitmq.vhost}" channel-cache-size="${open.rabbitmq.channelCacheSize}" />
+
+	<rabbit:admin connection-factory="openConnectionFactory" />
+
+	<!-- queue 队列声明 -->
+	<rabbit:queue durable="true" auto-delete="false"
+		exclusive="false" name="${open.rabbitmq.queue}" />
+
+
+	<!-- exchange queue binging key 绑定 -->
+	<rabbit:topic-exchange name="${open.rabbitmq.exchange}"
+		durable="true" auto-delete="false">
+		<rabbit:bindings>
+			<rabbit:binding queue="${open.rabbitmq.queue}"
+				pattern="open.*.*.*" />
+		</rabbit:bindings>
+	</rabbit:topic-exchange>
+
+	<bean id="fastjsonMessageConverter" class="com.zizaike.core.common.util.FastJsonMessageConverter" />
+
+	<rabbit:template exchange="${open.rabbitmq.exchange}" id="modifyRoomTemplate"
+		connection-factory="openConnectionFactory" routing-key="open.modify.room.success"
+		message-converter="fastjsonMessageConverter" /> 
 </beans>

@@ -23,14 +23,15 @@ public class RabbitMqTest extends BaseTest {
     @Autowired
     AmqpTemplate modifyRoomTemplate;
 
-    @Test(description = "rabbitmq测试")
+    @Test(description = "rabbitmq convertAndSend 测试")
     public void convertAndSend() throws ZZKServiceException, InterruptedException {
-        for (int i = 0; i < 1000; i++) {
             Loctype loc = new Loctype();
             loc.setAreaLevel(AreaLevel.CITY);
-            loc.setDestId(i);
+            loc.setTypeCode("typeCode");
             modifyRoomTemplate.convertAndSend(loc);
-        }
-     
     }
+//    @Test(description = "rabbitmq receiveAndConvert 测试")
+//    public void receiveAndConvert() throws ZZKServiceException, InterruptedException {
+//        System.err.println(modifyRoomTemplate.receiveAndConvert());
+//    }
 }
