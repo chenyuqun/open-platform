@@ -11,7 +11,6 @@ package com.zizaike.open;
 
 import org.springframework.stereotype.Service;
 
-import com.zizaike.entity.recommend.Loctype;
 import com.zizaike.entity.solr.Room;
 
 
@@ -24,10 +23,10 @@ import com.zizaike.entity.solr.Room;
  * @since    JDK 1.7  
  * @see        
  */
-@Service("roomModifyRmqConsumer")
-public class RoomModifyRmqConsumer {
-    public void reveiveRoomModifyMessage(Room object){
-        System.err.println("reveiveRoomModifyMessage"+object);
+@Service("orderModifyRmqConsumer")
+public class OrderModifyRmqConsumer {
+    public void reveiveOrderModifyMessage(Room object){
+        System.err.println("reveiveOrderModifyMessage"+object);
     }
 }
   

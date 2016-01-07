@@ -22,15 +22,15 @@ import com.zizaike.entity.solr.Room;
 
 /**  
  * ClassName:RoomModifyEventMessageConverter <br/>  
- * Function: 房间信息转换. <br/>  
+ * Function: order信息转换. <br/>  
  * Date:     2016年1月6日 下午2:51:56 <br/>  
  * @author   snow.zhang  
  * @version    
  * @since    JDK 1.7  
  * @see        
  */
-public class RoomModifyEventMessageConverter implements MessageConverter{
-    private static final Logger LOG = LoggerFactory.getLogger(RoomModifyEventMessageConverter.class);
+public class OrderModifyEventMessageConverter implements MessageConverter{
+    private static final Logger LOG = LoggerFactory.getLogger(OrderModifyEventMessageConverter.class);
     private String encoding = "utf-8";
     @Override
     public Object fromMessage(Message message) throws MessageConversionException {

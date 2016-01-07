@@ -20,21 +20,28 @@
 
 	<!-- queue 队列声明 -->
 	<rabbit:queue durable="true" auto-delete="false"
-		exclusive="false" name="${open.rabbitmq.queue}" />
+		exclusive="false" name="${open.rabbitmq.room.queue}" />
+	<rabbit:queue durable="true" auto-delete="false"
+		exclusive="false" name="${open.rabbitmq.order.queue}" />
 
 
 	<!-- exchange queue binging key 绑定 -->
 	<rabbit:topic-exchange name="${open.rabbitmq.exchange}"
 		durable="true" auto-delete="false">
 		<rabbit:bindings>
-			<rabbit:binding queue="${open.rabbitmq.queue}"
-				pattern="open.*.*.*" />
+			<rabbit:binding queue="${open.rabbitmq.room.queue}"
+				pattern="open.room.*.*" />
+			<rabbit:binding queue="${open.rabbitmq.order.queue}"
+				pattern="open.order.*.*" />
 		</rabbit:bindings>
 	</rabbit:topic-exchange>
 
-	<bean id="fastjsonMessageConverter" class="com.zizaike.core.common.util.FastJsonMessageConverter" />
-
 	<rabbit:template exchange="${open.rabbitmq.exchange}" id="modifyRoomTemplate"
-		connection-factory="openConnectionFactory" routing-key="open.modify.room.success"
+		connection-factory="openConnectionFactory" routing-key="open.room.modify.success"
 		message-converter="fastjsonMessageConverter" /> 
+	<rabbit:template exchange="${open.rabbitmq.exchange}" id="modifyOrderTemplate"
+		connection-factory="openConnectionFactory" routing-key="open.order.modify.success"
+		message-converter="fastjsonMessageConverter" /> 
+		
+		<bean id="fastjsonMessageConverter" class="com.zizaike.core.common.util.FastJsonMessageConverter" />
 </beans>

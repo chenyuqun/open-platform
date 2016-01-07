@@ -8,6 +8,6 @@
                 
 	<context:property-placeholder location="classpath:test.properties" />
 	<import resource="applicationContext-base.xml" />
-	<import resource="applicationContext-rabbit-consumer.xml" />
 	<import resource="applicationContext-rabbit-provider.xml" />
+	<import resource="applicationContext-rabbit-consumer.xml" />
 </beans>

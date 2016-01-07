@@ -9,41 +9,39 @@
                 http://www.springframework.org/schema/task  
     http://www.springframework.org/schema/task/spring-task-4.1.xsd">
 
-
-	<!-- 连接服务配置 -->
-	<rabbit:connection-factory id="openConnectionFactory"
-		host="${open.rabbitmq.host}" username="${open.rabbitmq.username}"
-		password="${open.rabbitmq.password}" port="${open.rabbitmq.port}"
-		virtual-host="${open.rabbitmq.vhost}" channel-cache-size="${open.rabbitmq.channelCacheSize}" />
-
-	<rabbit:admin connection-factory="openConnectionFactory" />
-
-	<!-- queue 队列声明 -->
-	<rabbit:queue durable="true" auto-delete="false"
-		exclusive="false" name="${open.rabbitmq.queue}" />
-
-
-	<!-- exchange queue binging key 绑定 -->
-	<rabbit:topic-exchange name="${open.rabbitmq.exchange}"
-		durable="true" auto-delete="false">
-		<rabbit:bindings>
-			<rabbit:binding queue="${open.rabbitmq.queue}"
-				pattern="open.*.*.*" />
-		</rabbit:bindings>
-	</rabbit:topic-exchange>
-
-
-    
-    
     <!-- 异步的线程池，线程池的最在数不能设定太小，不然<rabbit:listener/>/@RabbitListener太多的话，会出现发无法正常消费问题 -->  
     <task:executor id="taskExecutor" pool-size="4-256" keep-alive="30000" queue-capacity="128" />  
+    
 	<rabbit:listener-container
-		connection-factory="openConnectionFactory" message-converter="fastjsonMessageConverter"
-		auto-startup="true" error-handler="" acknowledge="auto" task-executor="taskExecutor" >
-		<rabbit:listener ref="queueListenter"
-			queue-names="${open.rabbitmq.queue}" />
+		connection-factory="openConnectionFactory" 
+		message-converter="roomModifyEventMessageConverter"
+		auto-startup="true" 
+		error-handler="" 
+		acknowledge="auto" 
+		task-executor="taskExecutor" >
+		<rabbit:listener ref="roomModifyRmqConsumer" method="reveiveRoomModifyMessage"
+			queue-names="${open.rabbitmq.room.queue}" 
+			/>
 	</rabbit:listener-container>
+	
+	<rabbit:listener-container
+		connection-factory="openConnectionFactory" 
+		message-converter="orderModifyEventMessageConverter"
+		auto-startup="true" 
+		error-handler="" 
+		acknowledge="auto" 
+		task-executor="taskExecutor" >
+		<rabbit:listener ref="orderModifyRmqConsumer" method="reveiveOrderModifyMessage"
+			queue-names="${open.rabbitmq.order.queue}" 
+			/>
+	</rabbit:listener-container>
+	
+
+	<bean id="roomModifyRmqConsumer" class="com.zizaike.open.RoomModifyRmqConsumer" />
+	<bean id="roomModifyEventMessageConverter" class="com.zizaike.open.repository.RoomModifyEventMessageConverter" />
+		<bean id="orderModifyRmqConsumer" class="com.zizaike.open.OrderModifyRmqConsumer" />
+	<bean id="orderModifyEventMessageConverter" class="com.zizaike.open.repository.OrderModifyEventMessageConverter" />
 	<bean id="queueListenter" class="com.zizaike.open.QueueListenter" />
-	<bean id="fastjsonMessageConverter" class="com.zizaike.core.common.util.FastJsonMessageConverter" />
+	
     
 </beans>

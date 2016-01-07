@@ -9,7 +9,7 @@ public class QueueListenter implements MessageListener {
     @Override
     public void onMessage(Message msg) {
         try{
-            System.out.print(msg.toString());
+            System.err.print("message"+msg.toString());
         }catch(Exception e){
             e.printStackTrace();
         }
