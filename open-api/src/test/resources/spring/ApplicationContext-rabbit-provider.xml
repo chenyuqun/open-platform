@@ -20,31 +20,21 @@
 
 	<!-- queue 队列声明 -->
 	<rabbit:queue durable="true" auto-delete="false"
-		exclusive="false" name="open_queue" />
+		exclusive="false" name="${open.rabbitmq.queue}" />
 
 
 	<!-- exchange queue binging key 绑定 -->
-	<rabbit:topic-exchange name="open_exchange"
+	<rabbit:topic-exchange name="${open.rabbitmq.exchange}"
 		durable="true" auto-delete="false">
 		<rabbit:bindings>
-			<rabbit:binding queue="open_queue"
+			<rabbit:binding queue="${open.rabbitmq.queue}"
 				pattern="open.*.*.*" />
 		</rabbit:bindings>
 	</rabbit:topic-exchange>
 
 	<bean id="fastjsonMessageConverter" class="com.zizaike.core.common.util.FastJsonMessageConverter" />
 
-	<rabbit:template exchange="open_exchange" id="modifyRoomTemplate"
+	<rabbit:template exchange="${open.rabbitmq.exchange}" id="modifyRoomTemplate"
 		connection-factory="openConnectionFactory" routing-key="open.modify.room.success"
-		message-converter="fastjsonMessageConverter" />
-	<!-- 异步的线程池，线程池的最在数不能设定太小，不然<rabbit:listener/>/@RabbitListener太多的话，会出现发无法正常消费问题 -->  
-    <task:executor id="taskExecutor" pool-size="4-256" queue-capacity="128" />  
-	<rabbit:listener-container
-		connection-factory="openConnectionFactory" message-converter="fastjsonMessageConverter"
-		auto-startup="true" error-handler="" acknowledge="auto" task-executor="taskExecutor" >
-		<rabbit:listener ref="roomModifyRmqConsumer" method="reveiveRoomModifyMessage"
-			queue-names="${open.rabbitmq.queue}" />
-	</rabbit:listener-container>
-	<bean id="roomModifyRmqConsumer" class="com.zizaike.open.RoomModifyRmqConsumer" />  
-	
+		message-converter="fastjsonMessageConverter" /> 
 </beans>
