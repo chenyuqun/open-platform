@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">  
+  <soap:Header> 
+    <CtripSoapHeader xmlns="http://www.ctrip.com/">  
+      <Login>zhilianjishuzhuanshu</Login>  
+      <Password>zhilianzhuanshu11!!</Password>  
+      <Company>204</Company> 
+    </CtripSoapHeader> 
+  </soap:Header>  
+  <soap:Body> 
+    <Request xmlns="http://www.ctrip.com/">  
+      <requestXml> 
+        <Request> 
+          <HeaderInfo UserID="204" RequestorId="Ctrip.com" AsyncRequest="false" TimeStamp="2016-01-08 10:50:28"> 
+            <Authentication UserName="zhilianjishuzhuanshu" Password="zhilianzhuanshu11!!"/>  
+            <RequestType Name="SetRoomInfo" Version="1.0"/> 
+          </HeaderInfo>  
+          <SetRoomInfoRequest> 
+            <RoomInfoItems> 
+              <RoomInfoItem> 
+                <Stays>1</Stays>  
+                <Recommend>1</Recommend>  
+                <Recommend_Intl>1</Recommend_Intl>  
+                <HoldDeadline>1800</HoldDeadline>  
+                <Roomstatus>N</Roomstatus>  
+                <UserLimited>2</UserLimited>  
+                <Note>Orange</Note>  
+                <ReserveTime>6</ReserveTime>  
+                <Guarantee>F</Guarantee>  
+                <GuaranteeLCT>6</GuaranteeLCT>  
+                <PrepayLCT>36</PrepayLCT>  
+                <RoomGiftID>0</RoomGiftID>  
+                <LateReserveTime>0</LateReserveTime>  
+                <DeductType>C</DeductType>  
+                <RoomsInv>0</RoomsInv> 
+              </RoomInfoItem> 
+            </RoomInfoItems>  
+            <RoomID>127011</RoomID>  
+            <StartDate>2016-01-08T00:00:00</StartDate>  
+            <EndDate>2016-01-08T00:00:00</EndDate>  
+            <Editer>OTA</Editer> 
+          </SetRoomInfoRequest> 
+        </Request> 
+      </requestXml> 
+    </Request> 
+  </soap:Body> 
+</soap:Envelope>

@@ -15,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
-import com.zizaike.entity.recommend.AreaLevel;
-import com.zizaike.entity.recommend.Loctype;
 import com.zizaike.entity.solr.Room;
-import com.zizaike.open.basetest.BaseTest;
+import com.zizaike.open.bastest.BaseTest;
 
 public class RabbitMqTest extends BaseTest {
     @Autowired

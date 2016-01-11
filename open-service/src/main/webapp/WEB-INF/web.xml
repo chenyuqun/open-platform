@@ -4,17 +4,19 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
 
-	<display-name>open-api</display-name>
+	<display-name>open-service</display-name>
 
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-		<param-value>open.api</param-value>
+		<param-value>open.service</param-value>
 	</context-param>
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 		 classpath:/spring/applicationContext-base.xml,
+  			classpath:spring/applicationContext-rabbit-provider.xml,
+  			classpath:spring/applicationContext-rabbit-consumer.xml,
   			classpath:spring/applicationContext-*.xml
  		</param-value>
 	</context-param>

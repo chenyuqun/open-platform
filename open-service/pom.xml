@@ -5,16 +5,12 @@
     <artifactId>zizaike-open</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>open-api</artifactId>
+  <artifactId>open-service</artifactId>
   <packaging>war</packaging>
-  <name>open-api</name>
-  <description>开放平台api</description>
+  <name>open-service</name>
+  <description>open-service</description>
 <properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<build.timestamp>${maven.build.timestamp}</build.timestamp>
-		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
-		<excludePropertyFiles></excludePropertyFiles>
-		<project.build.finalname>open-api</project.build.finalname>
+		<project.build.finalname>open-service</project.build.finalname>
 	</properties>
 	<build>
 		<finalName>${project.build.finalname}</finalName>
@@ -99,9 +95,8 @@
 			</properties>
 		</profile>
 	</profiles>
-
 	<dependencies>
-		<dependency>
+	<dependency>
 			<groupId>com.zizaike</groupId>
 			<artifactId>zizaike-entity</artifactId>
 		</dependency>
@@ -282,5 +277,10 @@
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity-tools</artifactId>
 		</dependency>
+		<!-- taobao sdk -->
+		<dependency>
+		  <groupId>com.alibaba</groupId>
+		  <artifactId>taobao-sdk</artifactId>
+		</dependency>
 	</dependencies>
-</project>
+	</project>

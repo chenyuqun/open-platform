@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <GetMemberRedeem xmlns="http://tempuri.org/">
+      <lstru_rq>
+        <requestheader>
+          <callusercode>${callUserCode}</callusercode>
+          <callpassword>${callPassword}</callpassword>
+        </requestheader>
+        <requestitem>
+           <telephone>${telephone}</telephone>
+          <startrow>${startrow}</startrow>
+          <endrow>${endrow}</endrow>
+        </requestitem>
+      </lstru_rq>
+    </GetMemberRedeem>
+  </soap:Body>
+</soap:Envelope>

@@ -9,6 +9,7 @@
 	<description>开放平台</description>
 	<modules>
 		<module>open-api</module>
+		<module>open-service</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -26,8 +27,8 @@
 		<maven.findbugs.version>2.5.2</maven.findbugs.version>
 
 		<zizaike.core.version>1.0.4-SNAPSHOT</zizaike.core.version>
-		<zizaike.entity.version>1.0.3-RELEASE</zizaike.entity.version>
-		<zizaike.is.version>1.0.3-RELEASE</zizaike.is.version>
+		<zizaike.entity.version>1.0.7-SNAPSHOT</zizaike.entity.version>
+		<zizaike.is.version>1.0.6-SNAPSHOT</zizaike.is.version>
 		<!-- Spring -->
 		<org.springframework.version>4.0.2.RELEASE</org.springframework.version>
 		<org.springframework.security.version>3.2.3.RELEASE</org.springframework.security.version>
@@ -49,6 +50,22 @@
 			<email>snowzhang@zizaike.com</email>
 		</developer>
 	</developers>
+	<!--  仓库地址 -->
+	<repositories>  
+           <repository>  
+               <id>nexus</id>  
+               <name>nexus</name>  
+               <url>http://nexus.office.zizaike.com/content/groups/public/</url>  
+           </repository>  
+     </repositories> 
+     <!-- 插件地址 -->
+	<pluginRepositories>  
+           <pluginRepository>  
+               <id>nexus</id>  
+               <name>nexus</name>  
+               <url>http://nexus.office.zizaike.com/content/groups/public/</url>  
+           </pluginRepository>  
+     </pluginRepositories> 
 	<distributionManagement>
 		<repository>
 			<id>zizaike-releases</id>
@@ -477,6 +494,24 @@
             <artifactId>amqp-client</artifactId>
             <version>${rabbitmq.version}</version>
         </dependency>
+        <!-- 模版引擎 -->
+		<dependency>
+			<groupId>velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity-tools</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<!-- taobao-SDK-romm对接 -->
+		<dependency>
+		  <groupId>com.alibaba</groupId>
+		  <artifactId>taobao-sdk</artifactId>
+		  <version>1.0</version>
+		</dependency>
+		
 		</dependencies>
 	</dependencyManagement>
 </project>
