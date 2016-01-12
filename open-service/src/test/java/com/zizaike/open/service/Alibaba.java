@@ -14,8 +14,12 @@ import org.testng.annotations.Test;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
+import com.taobao.api.request.XhotelAddRequest;
 import com.taobao.api.request.XhotelGetRequest;
+import com.taobao.api.request.XhotelUpdateRequest;
+import com.taobao.api.response.XhotelAddResponse;
 import com.taobao.api.response.XhotelGetResponse;
+import com.taobao.api.response.XhotelUpdateResponse;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.open.bastest.BaseTest;
 
@@ -40,9 +44,38 @@ public class Alibaba extends BaseTest{
         XhotelGetRequest req = new XhotelGetRequest();
         req.setOuterId("1");
         XhotelGetResponse response = client.execute(req , sessionKey);
-        System.out.println(response.getBody());
-
-        
+        System.out.println(response.getBody());      
+    }
+    
+    @Test(description = "XhotelAdd")
+    public void xhotelAdd() throws ZZKServiceException, ApiException {
+        String url="http://gw.api.tbsandbox.com/router/rest";
+        String secret="sandboxe7755267c0ea85fa5526bfb35";
+        String appkey="1023297477";
+        String sessionKey="6100030eeabdd52c1036901aa8eb229d6eaf361c1b270c33651882626";
+        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
+        XhotelAddRequest req = new XhotelAddRequest();
+        req.setOuterId("12345678");
+        req.setName("自在客");
+        req.setCity((long) 310000);
+        XhotelAddResponse response = client.execute(req , sessionKey);
+        System.out.println(response.getBody());       
+    }
+    
+    @Test(description = "XhotelUpdate")
+    public void xhotelUpdate() throws ZZKServiceException, ApiException {
+        String url="http://gw.api.tbsandbox.com/router/rest";
+        String secret="sandboxe7755267c0ea85fa5526bfb35";
+        String appkey="1023297477";
+        String sessionKey="6100030eeabdd52c1036901aa8eb229d6eaf361c1b270c33651882626";
+        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
+        XhotelUpdateRequest req = new XhotelUpdateRequest();
+        req.setOuterId("12345678");
+        req.setName("自在客台湾");
+        req.setCity((long) 230100);
+        req.setAddress("浦东金科路");
+        XhotelUpdateResponse response = client.execute(req , sessionKey);
+        System.out.println(response.getBody());       
     }
 }
   
