@@ -2,13 +2,9 @@ package com.zizaike.open.common.util;
 
 import org.testng.annotations.Test;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.open.basetest.BaseTest;
-import com.zizaike.open.entity.taobao.request.RequestData;
 import com.zizaike.open.entity.taobao.request.ValidateRQRequest;
-import com.zizaike.open.entity.taobao.response.ResponseData;
 import com.zizaike.open.entity.taobao.response.ValidateRQResponse;
 
 public class XstreamUtilTest extends BaseTest {

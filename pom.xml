@@ -575,7 +575,6 @@
 			    <artifactId>xstream</artifactId>  
 			    <version>1.4.2</version>  
 			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
 </project>

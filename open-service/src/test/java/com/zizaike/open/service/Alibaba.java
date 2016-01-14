@@ -18,16 +18,26 @@ import com.taobao.api.TaobaoClient;
 import com.taobao.api.internal.util.StringUtils;
 import com.taobao.api.request.XhotelAddRequest;
 import com.taobao.api.request.XhotelGetRequest;
+import com.taobao.api.request.XhotelRateGetRequest;
+import com.taobao.api.request.XhotelRateRelationshipwithroomGetRequest;
+import com.taobao.api.request.XhotelRateRelationshipwithrpGetRequest;
+import com.taobao.api.request.XhotelRateUpdateRequest;
 import com.taobao.api.request.XhotelRateplanUpdateRequest;
 import com.taobao.api.request.XhotelRateplanAddRequest;
+import com.taobao.api.request.XhotelRateplanGetRequest;
 import com.taobao.api.request.XhotelRoomsIncrementRequest;
 import com.taobao.api.request.XhotelRoomtypeAddRequest;
 import com.taobao.api.request.XhotelRoomtypeGetRequest;
 import com.taobao.api.request.XhotelUpdateRequest;
 import com.taobao.api.response.XhotelAddResponse;
 import com.taobao.api.response.XhotelGetResponse;
+import com.taobao.api.response.XhotelRateGetResponse;
+import com.taobao.api.response.XhotelRateRelationshipwithroomGetResponse;
+import com.taobao.api.response.XhotelRateRelationshipwithrpGetResponse;
+import com.taobao.api.response.XhotelRateUpdateResponse;
 import com.taobao.api.response.XhotelRateplanUpdateResponse;
 import com.taobao.api.response.XhotelRateplanAddResponse;
+import com.taobao.api.response.XhotelRateplanGetResponse;
 import com.taobao.api.response.XhotelRoomsIncrementResponse;
 import com.taobao.api.response.XhotelRoomtypeAddResponse;
 import com.taobao.api.response.XhotelRoomtypeGetResponse;
@@ -203,49 +213,103 @@ public class Alibaba extends BaseTest{
     @Test(description = "酒店产品库rateplan添加")
     public void xhotelRateplanAdd() throws ZZKServiceException, ApiException {
         XhotelRateplanAddRequest req = new XhotelRateplanAddRequest();
-        req.setRateplanCode("123456ZZK");
+        req.setRateplanCode("12345AAAA");
         req.setName("含早提前3天");
         req.setPaymentType(1L);
         req.setBreakfastCount(1L);
-        req.setFeeBreakfastCount(1L);
-        req.setFeeBreakfastAmount(1L);
-        req.setFeeGovTaxAmount(1L);
-        req.setFeeGovTaxPercent(1L);
-        req.setFeeServiceAmount(150L);
-        req.setFeeServicePercent(15L);
-        req.setExtendFee("aaa");
-        req.setMinDays(1L);
-        req.setMaxDays(90L);
-        req.setMinAmount(1L);
-        req.setMinAdvHours(1L);
-        req.setMaxAdvHours(3L);
-        req.setStartTime("00:00");
-        req.setEndTime("00:00");
-        req.setCancelPolicy("{\"cancelPolicyType\":1}|{\"cancelPolicyType\":2}|{\"cancelPolicyType\":4,\"policyInfo\":{\"48\":10,\"24\":20}}|{\"cancelPolicyType\":5,\"policyInfo\":{\"timeBefore\":6}}|{\"cancelPolicyType\":6,\"policyInfo\":{\"14\":1}}");
-        req.setExtend("1");
-        req.setStatus(1L);
-        req.setEnglishName("zzk");
-        req.setGuaranteeType(1L);
-        req.setGuaranteeStartTime("18:00");
-        req.setMemberLevel("1,2,3,4,5");
-        req.setChannel("A");
-        req.setOccupancy(3L);
+//        req.setFeeBreakfastCount(1L);
+//        req.setFeeBreakfastAmount(1L);
+//        req.setFeeGovTaxAmount(1L);
+//        req.setFeeGovTaxPercent(1L);
+//        req.setFeeServiceAmount(150L);
+//        req.setFeeServicePercent(15L);
+//        req.setExtendFee("aaa");
+//        req.setMinDays(1L);
+//        req.setMaxDays(90L);
+//        req.setMinAmount(1L);
+//        req.setMinAdvHours(1L);
+//        req.setMaxAdvHours(3L);
+//        req.setStartTime("00:00");
+//        req.setEndTime("00:00");
+          req.setCancelPolicy("{\"cancelPolicyType\":1}");
+//        req.setExtend("1");
+          req.setStatus(1L);
+//        req.setEnglishName("zzk");
+//        req.setGuaranteeType(1L);
+//        req.setGuaranteeStartTime("18:00");
+//        req.setMemberLevel("1,2,3,4,5");
+//        req.setChannel("A");
+//        req.setOccupancy(3L);
         //req.setVendor("taobao");
-        req.setFirstStay(1L);
-        req.setAgreement(1L);
-        req.setBreakfastCal("[{\"date\":\"yyyy-MM-dd\",\"startDate\":\"yyyy-MM-dd\",\"endDate\":\"yyyy-MM-dd\",\"breakfast_count\":0},{\"date\":\"yyyy-MM-dd\",\"startDate\":\"yyyy-MM-dd\",\"endDate\":\"yyyy-MM-dd\",\"breakfast_count\":1}]");
-        req.setCancelPolicyCal("[{\"date\":\"yyyy-MM-dd\",\"startDate\":\"yyyy-MM-dd\",\"endDate\":\"yyyy-MM-dd\",\"cancel_policy\":{\"cancelPolicyType\":1} },{\"date\":\"yyyy-MM-dd\",\"startDate\":\"yyyy-MM-dd\",\"endDate\":\"yyyy-MM-dd\",\"cancel_policy\":{\"cancelPolicyType\":4,\"policyInfo\":{\"48\":10,\"24\":20}}}]");
-        req.setGuaranteeCal("[{\"date\":\"yyyy-MM-dd\",\"startDate\":\"yyyy-MM-dd\",\"endDate\":\"yyyy-MM-dd\",\"guarantee\":{\"guaranteeType\":2,\"guaranteeStartTime\":\"HH:mm\"}},{\"date\":\"yyyy-MM-dd\",\"startDate\":\"yyyy-MM-dd\",\"endDate\":\"yyyy-MM-dd\",\"guarantee\":{\"guaranteeType\":3,\"guaranteeStartTime\":\"HH:mm\"}}]");
-        req.setCancelBeforeHour("6");
-        req.setCancelBeforeDay(2L);
-        req.setEffectiveTime(StringUtils.parseDateTime("2000-01-01 00:00:00"));
-        req.setDeadlineTime(StringUtils.parseDateTime("2000-01-01 00:00:00"));
-        req.setRpType("1");
-        req.setHourage("4");
-        req.setCanCheckinEnd("08:00");
-        req.setCanCheckinStart("16:00");
+//        req.setFirstStay(1L);
+//        req.setAgreement(1L);
+//        req.setBreakfastCal("[{\"date\":\"yyyy-MM-dd\",\"startDate\":\"yyyy-MM-dd\",\"endDate\":\"yyyy-MM-dd\",\"breakfast_count\":0},{\"date\":\"yyyy-MM-dd\",\"startDate\":\"yyyy-MM-dd\",\"endDate\":\"yyyy-MM-dd\",\"breakfast_count\":1}]");
+//        req.setCancelPolicyCal("[{\"date\":\"yyyy-MM-dd\",\"startDate\":\"yyyy-MM-dd\",\"endDate\":\"yyyy-MM-dd\",\"cancel_policy\":{\"cancelPolicyType\":1} },{\"date\":\"yyyy-MM-dd\",\"startDate\":\"yyyy-MM-dd\",\"endDate\":\"yyyy-MM-dd\",\"cancel_policy\":{\"cancelPolicyType\":4,\"policyInfo\":{\"48\":10,\"24\":20}}}]");
+//        req.setGuaranteeCal("[{\"date\":\"yyyy-MM-dd\",\"startDate\":\"yyyy-MM-dd\",\"endDate\":\"yyyy-MM-dd\",\"guarantee\":{\"guaranteeType\":2,\"guaranteeStartTime\":\"HH:mm\"}},{\"date\":\"yyyy-MM-dd\",\"startDate\":\"yyyy-MM-dd\",\"endDate\":\"yyyy-MM-dd\",\"guarantee\":{\"guaranteeType\":3,\"guaranteeStartTime\":\"HH:mm\"}}]");
+//        req.setCancelBeforeHour("6");
+//        req.setCancelBeforeDay(2L);
+//        req.setEffectiveTime(StringUtils.parseDateTime("2016-01-01 00:00:00"));
+//        req.setDeadlineTime(StringUtils.parseDateTime("2016-03-10 00:00:00"));
+//        req.setRpType("1");
+//        req.setHourage("4");
+//        req.setCanCheckinEnd("08:00");
+//        req.setCanCheckinStart("16:00");
         XhotelRateplanAddResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
+    
+    @Test(description = "价格计划rateplan查询")
+    public void xhotelRateplanGet() throws ZZKServiceException, ApiException {
+        XhotelRateplanGetRequest req = new XhotelRateplanGetRequest();
+        req.setRpid(5069252626L);
+        req.setRateplanCode("12345AAAA");
+        //req.setVendor("taobao");
+        XhotelRateplanGetResponse response = client.execute(req , sessionKey);
+        System.out.println(response.getBody());       
+    }
+    
+    @Test(description = "酒店产品库rate查询")
+    public void xhotelRateGet() throws ZZKServiceException, ApiException {
+        XhotelRateGetRequest req = new XhotelRateGetRequest();
+        req.setRpid(5069252626L);
+        req.setRateplanCode("12345AAAA");
+        //req.setVendor("taobao");
+        XhotelRateGetResponse response = client.execute(req , sessionKey);
+        System.out.println(response.getBody());       
+    }
+    
+    @Test(description = "价格推送接口（全量更新）")
+    public void xhotelRateUpdate() throws ZZKServiceException, ApiException {
+        XhotelRateUpdateRequest req = new XhotelRateUpdateRequest();
+        req.setRpid(5069252626L);
+        req.setRateplanCode("12345AAAA");
+        req.setGid(12568017626L);
+        req.setOutRid("12345678_123");
+        req.setInventoryPrice("{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-01-28,\"quota\":10,\"price\":100},{\"date\":2016-01-29,\"quota\":10,\"price\":200}]}");
+        XhotelRateUpdateResponse response = client.execute(req , sessionKey);
+        System.out.println(response.getBody());       
+    }
+    
+    
+    @Test(description = "根据gid查询卖家下所有的rpId")
+    public void xhotelRateRelationshipwithrpGet() throws ZZKServiceException, ApiException {
+        XhotelRateRelationshipwithrpGetRequest req = new XhotelRateRelationshipwithrpGetRequest();
+        req.setGid(12568017626L);
+        req.setPageNo(1L);
+        XhotelRateRelationshipwithrpGetResponse response = client.execute(req , sessionKey);
+        System.out.println(response.getBody());       
+    }
+    
+    //阿里的描述似乎有问题 暂时先以阿里的描述来 方便查询文档
+    @Test(description = "查询rpId")
+    public void xhotelRateRelationshipwithroomGet() throws ZZKServiceException, ApiException {
+        XhotelRateRelationshipwithroomGetRequest req = new XhotelRateRelationshipwithroomGetRequest();
+        req.setRpId(5069252626L);
+        req.setPageNo(1L);
+        XhotelRateRelationshipwithroomGetResponse response = client.execute(req , sessionKey);
+        System.out.println(response.getBody());       
+    }
+    
+
 }
   
