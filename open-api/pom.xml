@@ -1,15 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.zizaike</groupId>
-    <artifactId>zizaike-open</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>open-api</artifactId>
-  <packaging>war</packaging>
-  <name>open-api</name>
-  <description>开放平台api</description>
-<properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.zizaike</groupId>
+		<artifactId>zizaike-open</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>open-api</artifactId>
+	<packaging>war</packaging>
+	<name>open-api</name>
+	<description>开放平台api</description>
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<build.timestamp>${maven.build.timestamp}</build.timestamp>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
@@ -44,26 +45,26 @@
 				<artifactId>maven-war-plugin</artifactId>
 			</plugin>
 		</plugins>
-		 <filters>
+		<filters>
 			<filter>src/main/resources/${env}</filter>
 		</filters>
-		  <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <excludes>
-                    <exclude>${excludePropertyFiles}</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-                <includes>
-                     <include>spring/*</include>
-                    <include>${includePropertyFiles}</include>
-                </includes>
-            </resource>
-        </resources>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>${excludePropertyFiles}</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>spring/*</include>
+					<include>${includePropertyFiles}</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 
 	<profiles>
@@ -261,19 +262,19 @@
 			<artifactId>fastjson</artifactId>
 		</dependency>
 		<!--spring rabbitmq -->
-			<dependency>
-            <groupId>org.springframework.amqp</groupId>
-            <artifactId>spring-amqp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.amqp</groupId>
-            <artifactId>spring-rabbit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.rabbitmq</groupId>
-            <artifactId>amqp-client</artifactId>
-        </dependency>
-        <!-- 模版引擎 -->
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-amqp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.rabbitmq</groupId>
+			<artifactId>amqp-client</artifactId>
+		</dependency>
+		<!-- 模版引擎 -->
 		<dependency>
 			<groupId>velocity</groupId>
 			<artifactId>velocity</artifactId>
@@ -281,6 +282,11 @@
 		<dependency>
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity-tools</artifactId>
+		</dependency>
+		<!-- xstream -->
+		<dependency>  
+		    <groupId>com.thoughtworks.xstream</groupId>  
+		    <artifactId>xstream</artifactId>  
 		</dependency>
 	</dependencies>
 </project>
