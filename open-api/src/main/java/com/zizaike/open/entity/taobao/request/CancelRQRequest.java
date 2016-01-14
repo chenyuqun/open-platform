@@ -23,5 +23,79 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("QueryStatusRQ")
 public class CancelRQRequest extends RequestData {
     //TODO http://open.taobao.com/doc2/detail.htm?spm=0.0.0.0.hO61LC&treeId=22&articleId=103814&docType=1 把实体类补充完整
+
+	private AuthenticationToken authenticationToken;
+	
+	/*
+	 * 淘宝订单号
+	 */
+	@XStreamAlias("TaoBaoOrderId")
+	private long taoBaoOrderId;
+	/*
+	 * 外部订单号（如果已获取）
+	 */
+	@XStreamAlias("OrderId")
+	private String orderId;
+	/*
+	 * OTA酒店code，即第三方系统中的酒店code
+	 */
+	@XStreamAlias("HotelId")
+	private String hotelId;
+	/*
+	 * 取消订单原因
+	 */
+	@XStreamAlias("Reason")
+	private String reason;
+	/*
+	 * 是否强制取消订单默认false
+	 */
+	@XStreamAlias("HardCancel")
+	private String hardCancel;
+	
+	public AuthenticationToken getAuthenticationToken() {
+		return authenticationToken;
+	}
+	public void setAuthenticationToken(AuthenticationToken authenticationToken) {
+		this.authenticationToken = authenticationToken;
+	}
+	public long getTaoBaoOrderId() {
+		return taoBaoOrderId;
+	}
+	public void setTaoBaoOrderId(long taoBaoOrderId) {
+		this.taoBaoOrderId = taoBaoOrderId;
+	}
+	public String getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+	public String getHotelId() {
+		return hotelId;
+	}
+	public void setHotelId(String hotelId) {
+		this.hotelId = hotelId;
+	}
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+	public String getHardCancel() {
+		return hardCancel;
+	}
+	public void setHardCancel(String hardCancel) {
+		this.hardCancel = hardCancel;
+	}
+	
+	@Override
+	public String toString() {
+		return "CancelRQRequest [authenticationToken=" + authenticationToken + ", taoBaoOrderId=" + taoBaoOrderId
+				+ ", orderId=" + orderId + ", hotelId=" + hotelId + ", reason=" + reason + ", hardCancel=" + hardCancel
+				+ "]";
+	}
+	
+	
 }
   
