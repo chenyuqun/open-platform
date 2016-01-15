@@ -1,4 +1,7 @@
 package com.zizaike.open.entity.taobao.response;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * 
  * ClassName: RequestData <br/>  
@@ -10,5 +13,32 @@ package com.zizaike.open.entity.taobao.response;
  * @since JDK 1.7
  */
 public class ResponseData {
+   
+    @XStreamAlias("Message")
+    private String message;
+    @XStreamAlias("ResultCode")
+    private String resultCode;
+    public String getMessage() {
+        return message;
+    }
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    public String getResultCode() {
+        return resultCode;
+    }
+    public void setResultCode(String resultCode) {
+        this.resultCode = resultCode;
+    }
+    public ResponseData(String message, String resultCode) {
+        super();
+        this.message = message;
+        this.resultCode = resultCode;
+    }
+    @Override
+    public String toString() {
+        return "ResponseData [message=" + message + ", resultCode=" + resultCode + "]";
+    }
+    
     
 }
