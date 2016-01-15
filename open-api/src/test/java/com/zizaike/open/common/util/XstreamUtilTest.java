@@ -6,7 +6,7 @@ import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.open.basetest.BaseTest;
 import com.zizaike.open.entity.taobao.request.BookRQRequest;
 import com.zizaike.open.entity.taobao.request.ValidateRQRequest;
-import com.zizaike.open.entity.taobao.response.ValidateRQResponse;
+import com.zizaike.open.entity.taobao.response.ValidateRQExceptionResponse;
 
 public class XstreamUtilTest extends BaseTest {
     @Test
@@ -50,7 +50,7 @@ public class XstreamUtilTest extends BaseTest {
 
     @Test
     public void getParamXml() throws ZZKServiceException {
-        ValidateRQResponse validateRQResponse = new ValidateRQResponse("满房", "-1");
+        ValidateRQExceptionResponse validateRQResponse = new ValidateRQExceptionResponse("满房", "-1");
         System.err.println(XstreamUtil.getParamXml(validateRQResponse));
     }
 
