@@ -6,7 +6,7 @@ import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.open.basetest.BaseTest;
 import com.zizaike.open.entity.taobao.request.BookRQRequest;
 import com.zizaike.open.entity.taobao.request.ValidateRQRequest;
-import com.zizaike.open.entity.taobao.response.ValidateRQExceptionResponse;
+import com.zizaike.open.entity.taobao.response.ValidateRQResponse;
 
 public class XstreamUtilTest extends BaseTest {
     @Test
@@ -90,19 +90,10 @@ public class XstreamUtilTest extends BaseTest {
        System.out.println(bookRQ.toString());
     }
 
-    @Test
+@Test
     public void getParamXml() throws ZZKServiceException {
-        ValidateRQExceptionResponse validateRQResponse = new ValidateRQExceptionResponse("满房", "-1");
+        ValidateRQResponse validateRQResponse = new ValidateRQResponse("满房", "-1","","[{\"date\":\"2015-01-01\",\"price\":21000,\"quota\":4},{\"date\":\"2015-01-02\",\"price\":22000,\"quota\":4},{\"date\":\"2015-01-03\",\"price\":25000,\"quota\":5}]","2","16","5","10");
         System.err.println(XstreamUtil.getParamXml(validateRQResponse));
-//        BookRQRequest bookRQ = new BookRQRequest();
-//        bookRQ.setAlitripDiscount(1232L);
-//        DailyInfo dailyInfo = new DailyInfo();
-//        dailyInfo.setDay(new Date());
-//        dailyInfo.setPrice(12L);
-//        List dailyInfos = new ArrayList<DailyInfo>();
-//        dailyInfos.add(dailyInfo);
-//        bookRQ.setDailyInfos(dailyInfos);
-//        System.err.println(XstreamUtil.getParamXml(bookRQ));
     }
 
 }
