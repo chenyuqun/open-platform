@@ -72,10 +72,7 @@ public class Alibaba extends BaseTest{
     @Test(description = "XhotelGet")
     public void XhotelGet() throws ZZKServiceException, ApiException {
         XhotelGetRequest req = new XhotelGetRequest();
-        req.setOuterId("12345678");       
-        System.out.println(secret);
-        System.out.println(sessionKey);
-        System.out.println(appkey);
+        req.setOuterId("12345678");
         TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
         XhotelGetResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());      
@@ -86,7 +83,7 @@ public class Alibaba extends BaseTest{
         XhotelAddRequest req = new XhotelAddRequest();
         req.setOuterId("12345678");
         req.setName("自在客");
-        req.setCity((long) 310000);
+        req.setCity((long) 310100);
         TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
         XhotelAddResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
@@ -120,7 +117,7 @@ public class Alibaba extends BaseTest{
         req.setArea("10平方米");
         req.setFloor("3-5层");
         req.setBedType("大床");
-        req.setBedSize("1.8米");
+        req.setBedSize("2.1米");
         req.setInternet("A");
         req.setService("{\"bar\":true,\"catv\":false,\"ddd\":false,\"idd\":false,\"pubtoilet\":false,\"toilet\":false}");
         req.setExtend("空");
@@ -146,14 +143,14 @@ public class Alibaba extends BaseTest{
         XhotelRoomtypeAddRequest req = new XhotelRoomtypeAddRequest();
         req.setOuterId("12345678_124");
         //req.setHid((long)123456);
-        req.setName("CYQ专用测试房间");
+        req.setName("CYQ的别墅");
         req.setMaxOccupancy(4L);
-        req.setArea("15平方米");
+        req.setArea("25平方米");
         req.setFloor("3-5层");
-        req.setBedType("大床");
-        req.setBedSize("1.8米");
+        req.setBedType("超大床");
+        req.setBedSize("2.1米");
         req.setInternet("B");
-        req.setService("{\"bar\":true,\"catv\":false,\"ddd\":false,\"idd\":false,\"pubtoilet\":false,\"toilet\":true}");
+        req.setService("{\"bar\":true,\"catv\":true,\"ddd\":false,\"idd\":false,\"pubtoilet\":false,\"toilet\":true}");
         req.setExtend("空");
         req.setWindowType(1L);
 //        req.setSrid(123123L);
@@ -342,6 +339,7 @@ public class Alibaba extends BaseTest{
         XhotelRateRelationshipwithroomGetRequest req = new XhotelRateRelationshipwithroomGetRequest();
         req.setRpId(5069252626L);
         req.setPageNo(1L);
+        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);  
         XhotelRateRelationshipwithroomGetResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
