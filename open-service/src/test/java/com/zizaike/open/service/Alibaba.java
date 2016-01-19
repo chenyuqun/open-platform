@@ -9,14 +9,12 @@
   
 package com.zizaike.open.service;  
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.testng.annotations.Test;
 
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
-import com.taobao.api.internal.util.StringUtils;
 import com.taobao.api.request.XhotelAddRequest;
 import com.taobao.api.request.XhotelGetRequest;
 import com.taobao.api.request.XhotelOrderAlipayfaceUpdateRequest;
@@ -24,9 +22,9 @@ import com.taobao.api.request.XhotelRateGetRequest;
 import com.taobao.api.request.XhotelRateRelationshipwithroomGetRequest;
 import com.taobao.api.request.XhotelRateRelationshipwithrpGetRequest;
 import com.taobao.api.request.XhotelRateUpdateRequest;
-import com.taobao.api.request.XhotelRateplanUpdateRequest;
 import com.taobao.api.request.XhotelRateplanAddRequest;
 import com.taobao.api.request.XhotelRateplanGetRequest;
+import com.taobao.api.request.XhotelRateplanUpdateRequest;
 import com.taobao.api.request.XhotelRatesUpdateRequest;
 import com.taobao.api.request.XhotelRoomsIncrementRequest;
 import com.taobao.api.request.XhotelRoomtypeAddRequest;
@@ -39,9 +37,9 @@ import com.taobao.api.response.XhotelRateGetResponse;
 import com.taobao.api.response.XhotelRateRelationshipwithroomGetResponse;
 import com.taobao.api.response.XhotelRateRelationshipwithrpGetResponse;
 import com.taobao.api.response.XhotelRateUpdateResponse;
-import com.taobao.api.response.XhotelRateplanUpdateResponse;
 import com.taobao.api.response.XhotelRateplanAddResponse;
 import com.taobao.api.response.XhotelRateplanGetResponse;
+import com.taobao.api.response.XhotelRateplanUpdateResponse;
 import com.taobao.api.response.XhotelRatesUpdateResponse;
 import com.taobao.api.response.XhotelRoomsIncrementResponse;
 import com.taobao.api.response.XhotelRoomtypeAddResponse;
