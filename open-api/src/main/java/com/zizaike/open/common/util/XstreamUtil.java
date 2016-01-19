@@ -31,7 +31,7 @@ public  class XstreamUtil {
  * @return  
  * @since JDK 1.7
  */
- public static String getParamXml(ResponseData data ){ 
+ public static String getResponseXml(ResponseData data){ 
 	 xstream.aliasType(data.getClass().getSimpleName(), data.getClass());
 	 //用注解返回xml
 	 xstream.autodetectAnnotations(true);

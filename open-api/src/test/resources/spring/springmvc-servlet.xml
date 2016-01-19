@@ -53,7 +53,7 @@
     <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
         <property name="classesToBeBound">
             <list>
-                <value>com.zizaike.open.entity.taobao.response.ValidateRQExceptionResponse</value>
+                <value>com.zizaike.open.entity.taobao.response.ValidateRQResponse</value>
             </list>
         </property>
     </bean>

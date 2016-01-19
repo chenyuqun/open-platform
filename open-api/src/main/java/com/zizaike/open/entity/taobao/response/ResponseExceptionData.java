@@ -12,8 +12,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @version   
  * @since JDK 1.7
  */
-public class ResponseData {
-   
+@XStreamAlias("Result")
+public class ResponseExceptionData extends ResponseData{
     @XStreamAlias("Message")
     private String message;
     @XStreamAlias("ResultCode")
@@ -30,17 +30,11 @@ public class ResponseData {
     public void setResultCode(String resultCode) {
         this.resultCode = resultCode;
     }
-    public ResponseData() {
-    }
-    public ResponseData(String message, String resultCode) {
-        super();
-        this.message = message;
-        this.resultCode = resultCode;
+    public ResponseExceptionData() {
     }
     @Override
     public String toString() {
         return "ResponseData [message=" + message + ", resultCode=" + resultCode + "]";
     }
-    
     
 }

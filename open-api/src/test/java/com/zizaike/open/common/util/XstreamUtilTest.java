@@ -93,7 +93,7 @@ public class XstreamUtilTest extends BaseTest {
 @Test
     public void getParamXml() throws ZZKServiceException {
         ValidateRQResponse validateRQResponse = new ValidateRQResponse("满房", "-1","","[{\"date\":\"2015-01-01\",\"price\":21000,\"quota\":4},{\"date\":\"2015-01-02\",\"price\":22000,\"quota\":4},{\"date\":\"2015-01-03\",\"price\":25000,\"quota\":5}]","2","16","5","10");
-        System.err.println(XstreamUtil.getParamXml(validateRQResponse));
+        System.err.println(XstreamUtil.getResponseXml(validateRQResponse));
     }
 
 }
