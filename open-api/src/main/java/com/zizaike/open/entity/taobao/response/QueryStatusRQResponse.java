@@ -22,7 +22,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @see        
  */
 @XStreamAlias("Result")
-public class QueryStatusRQResponse {
+public class QueryStatusRQResponse extends ResponseData{
     @XStreamAlias("TaoBaoOrderId")
     private Long taoBaoOrderId;
     @XStreamAlias("OrderId")
@@ -63,6 +63,22 @@ public class QueryStatusRQResponse {
     public void setBillInfo(BillInfo billInfo) {
         this.billInfo = billInfo;
     }
+    public QueryStatusRQResponse(String message, String resultCode, Long taoBaoOrderId, String orderId, String status,
+            OrderInfo orderInfo, BillInfo billInfo) {
+        super(message, resultCode);
+        this.taoBaoOrderId = taoBaoOrderId;
+        this.orderId = orderId;
+        this.status = status;
+        this.orderInfo = orderInfo;
+        this.billInfo = billInfo;
+    }
+    @Override
+    public String toString() {
+        return "QueryStatusRQResponse [taoBaoOrderId=" + taoBaoOrderId + ", orderId=" + orderId + ", status=" + status
+                + ", orderInfo=" + orderInfo + ", billInfo=" + billInfo + "]";
+    }
+   
+    
     
     
 }
