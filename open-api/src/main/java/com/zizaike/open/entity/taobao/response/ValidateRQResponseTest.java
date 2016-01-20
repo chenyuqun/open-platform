@@ -9,6 +9,9 @@
   
 package com.zizaike.open.entity.taobao.response;  
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**  
@@ -21,20 +24,15 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since    JDK 1.7  
  * @see        
  */
-@XStreamAlias("Result")
-public class ValidateRQResponse extends ResponseData{
+@XmlRootElement(name="Result")
+public class ValidateRQResponseTest extends ResponseData{
   
-    @XStreamAlias("CreateOrderValidateKey")
     private String createOrderValidateKey;
-    @XStreamAlias("InventoryPrice")
     private String inventoryPrice;
-    @XStreamAlias("GuaranteeType")
     private String guaranteeType;
-    @XStreamAlias("GuaranteeStartTime")
     private String guaranteeStartTime;
-    @XStreamAlias("CancelPolicyType")
     private String cancelPolicyType;
-    @XStreamAlias("CancelPolicyInfo")
+    
     private String cancelPolicyInfo;
     public String getCreateOrderValidateKey() {
         return createOrderValidateKey;
@@ -66,6 +64,7 @@ public class ValidateRQResponse extends ResponseData{
     public void setCancelPolicyType(String cancelPolicyType) {
         this.cancelPolicyType = cancelPolicyType;
     }
+    @XmlElement(name="CancelPolicyInfo")
     public String getCancelPolicyInfo() {
         return cancelPolicyInfo;
     }
@@ -73,9 +72,12 @@ public class ValidateRQResponse extends ResponseData{
         this.cancelPolicyInfo = cancelPolicyInfo;
     }
    
-    public ValidateRQResponse() {
+    public ValidateRQResponseTest() {
+
+
     }
-    public ValidateRQResponse(String message, String resultCode, String createOrderValidateKey, String inventoryPrice,
+    
+    public ValidateRQResponseTest(String message, String resultCode, String createOrderValidateKey, String inventoryPrice,
             String guaranteeType, String guaranteeStartTime, String cancelPolicyType, String cancelPolicyInfo) {
         super(message, resultCode);
         this.createOrderValidateKey = createOrderValidateKey;

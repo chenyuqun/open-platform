@@ -19,9 +19,9 @@
 			
 	<context:component-scan base-package="com.zizaike.open.*" />
 	 
-	 <!-- <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
+	  <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
 		<mvc:message-converters register-defaults="false">
-			将StringHttpMessageCOnverter的默认编码设为UTF-8
+			<!-- 将StringHttpMessageCOnverter的默认编码设为UTF-8 -->
 			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
 				<constructor-arg value="UTF-8" />
 			</bean>
@@ -32,9 +32,9 @@
 		<property name="favorPathExtension" value="false" />
 		<property name="favorParameter" value="false" />
 	</bean>
-	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" p:basename="i18n/messages" /> -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" p:basename="i18n/messages" />
 	
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	<!-- <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
         <property name="messageConverters">
             <list>
                 <ref bean="stringHttpMessageConverter" />
@@ -57,5 +57,5 @@
             </list>
         </property>
     </bean>
-    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" p:basename="i18n/messages" />
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" p:basename="i18n/messages" /> -->
 </beans>

@@ -39,6 +39,8 @@ public class BookRQResponse extends ResponseData{
     public void setPmsResID(String pmsResID) {
         this.pmsResID = pmsResID;
     }
+    public BookRQResponse() {
+    }
     public BookRQResponse(String message, String resultCode, String orderId, String pmsResID) {
         super(message, resultCode);
         this.orderId = orderId;

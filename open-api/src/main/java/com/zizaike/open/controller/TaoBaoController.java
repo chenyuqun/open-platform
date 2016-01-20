@@ -11,6 +11,7 @@ package com.zizaike.open.controller;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.open.BaseAjaxController;
+import com.zizaike.open.service.TaobaoService;
 
 /**
  * 
@@ -33,10 +35,13 @@ import com.zizaike.open.BaseAjaxController;
 @Controller
 @RequestMapping("/taobaoService")
 public class TaoBaoController extends BaseAjaxController {
+    @Autowired
+    private TaobaoService taobaoService;
     @RequestMapping(value = "", method = RequestMethod.POST,produces={"application/xml"},consumes={"application/xml"})
     @ResponseBody
-    public Object getSearchResult(@RequestBody String obj ) throws ZZKServiceException, Exception, IOException {
-       return obj;
+    public String getSearchResult(@RequestBody String xml ) throws ZZKServiceException, Exception, IOException {
+        
+       return taobaoService.service(xml);
     }
 }
   

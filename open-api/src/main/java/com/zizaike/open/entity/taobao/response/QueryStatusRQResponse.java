@@ -8,6 +8,9 @@
 */  
   
 package com.zizaike.open.entity.taobao.response;  
+
+import javax.print.attribute.ResolutionSyntax;
+
 /**  
  * ClassName:QueryStatusRQResponse <br/>  
  * Function: TODO ADD FUNCTION. <br/>  
@@ -18,7 +21,7 @@ package com.zizaike.open.entity.taobao.response;
  * @since    JDK 1.7  
  * @see        
  */
-public class QueryStatusRQResponse {
+public class QueryStatusRQResponse extends ResponseData{
     private Long taoBaoOrderId;
     private String orderId;
     private String status;

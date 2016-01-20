@@ -1,7 +1,14 @@
 package com.zizaike.open.common.util;
 
+import org.apache.zookeeper.server.quorum.Election;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.testng.annotations.Test;
+import org.testng.xml.XmlUtils;
 
+import com.sun.tools.internal.ws.util.xml.XmlUtil;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.open.basetest.BaseTest;
 import com.zizaike.open.entity.taobao.request.BookRQRequest;
@@ -90,10 +97,30 @@ public class XstreamUtilTest extends BaseTest {
        System.out.println(bookRQ.toString());
     }
 
-@Test
+    @Test
     public void getParamXml() throws ZZKServiceException {
         ValidateRQResponse validateRQResponse = new ValidateRQResponse("满房", "-1","","[{\"date\":\"2015-01-01\",\"price\":21000,\"quota\":4},{\"date\":\"2015-01-02\",\"price\":22000,\"quota\":4},{\"date\":\"2015-01-03\",\"price\":25000,\"quota\":5}]","2","16","5","10");
         System.err.println(XstreamUtil.getResponseXml(validateRQResponse));
     }
+    @Test
+    public void xmlGetElement() throws ZZKServiceException, DocumentException {
+        String xml = "<ValidateRQ>" + "<AuthenticationToken>" + "<Username>taobao</Username>"
+                + "<Password>B75!jaJb[eO8</Password>"
+                + "<CreateToken>22251178182015010620150107497867981843210904377</CreateToken>"
+                + "</AuthenticationToken>" + "<TaoBaoHotelId>1357757818</TaoBaoHotelId>"
+                + "<HotelId>3FENY3V11P</HotelId>" + "<TaoBaoRoomTypeId>5501264818</TaoBaoRoomTypeId>"
+                + " <RoomTypeId>3FENY3V11P-RT1241</RoomTypeId>" + "<TaoBaoRatePlanId>4978679818</TaoBaoRatePlanId>"
+                + "<RatePlanCode>3FENY3V11P-RT1241-RP846</RatePlanCode>" + " <TaoBaoGid>3824371818</TaoBaoGid>"
+                + "<CheckIn>2015-01-06</CheckIn>" + "<CheckOut>2015-01-07</CheckOut>" + "<RoomNum>1</RoomNum>"
+                + "<PaymentType>1</PaymentType>"
+                + "<Extensions>{'searchid':'22251178182015010620150107497867981843210904377'}</Extensions>"
+                + " </ValidateRQ>";
+        Document doc = null;
+        doc = DocumentHelper.parseText(xml);
+        Element root = doc.getRootElement();
+        System.err.println(root.getQualifiedName());
+    }
+
+
 
 }
