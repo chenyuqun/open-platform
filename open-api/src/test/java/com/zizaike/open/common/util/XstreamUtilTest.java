@@ -1,17 +1,16 @@
 package com.zizaike.open.common.util;
 
-import org.apache.zookeeper.server.quorum.Election;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.testng.annotations.Test;
-import org.testng.xml.XmlUtils;
 
-import com.sun.tools.internal.ws.util.xml.XmlUtil;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.open.basetest.BaseTest;
 import com.zizaike.open.entity.taobao.request.BookRQRequest;
+import com.zizaike.open.entity.taobao.request.CancelRQRequest;
+import com.zizaike.open.entity.taobao.request.QueryStatusRQRequest;
 import com.zizaike.open.entity.taobao.request.ValidateRQRequest;
 import com.zizaike.open.entity.taobao.response.ValidateRQResponse;
 
@@ -96,13 +95,48 @@ public class XstreamUtilTest extends BaseTest {
        BookRQRequest bookRQ = (BookRQRequest) XstreamUtil.getXml2Bean(xml, BookRQRequest.class);
        System.out.println(bookRQ.toString());
     }
-
+    
+    @Test
+    public void getXml2BeanCancelRQ() throws ZZKServiceException {
+        String xml = "<CancelRQ>"
+                +"<AuthenticationToken>"
+                + "<Username>taobao</Username>"
+                + "<Password>taobao</Password>"
+                + "<CreateToken>taobao125484778-1387789907859</CreateToken>"
+                + "</AuthenticationToken>"
+                + "<TaoBaoOrderId>21544874</TaoBaoOrderId>"
+                + "<OrderId>21544874</OrderId>"
+                + "<HotelId>HZJT01</HotelId>"
+                + "<Reason>reason</Reason>"
+                + "<CancelId>1387789907859</CancelId>"
+                + "<HardCancel>true</HardCancel>"
+                + "</CancelRQ>";
+        CancelRQRequest cancelRQ = (CancelRQRequest) XstreamUtil.getXml2Bean(xml, CancelRQRequest.class);
+        System.out.println(cancelRQ.toString());
+    }
+    
+    @Test
+    public void getXml2BeanQueryStatusRQ() throws ZZKServiceException {     
+        String xml = "<QueryStatusRQ>"
+                + "<AuthenticationToken>"
+                + "<Username>taobao</Username>"
+                + "<Password>taobao</Password>"
+                + "<CreateToken>taobao1230123213-1387792484913</CreateToken>"
+                + "</AuthenticationToken>"
+                + " <OrderId>12321323</OrderId>"
+                + "<TaoBaoOrderId>1230123213</TaoBaoOrderId>"
+                + " <HotelId>123456</HotelId>"
+                + "</QueryStatusRQ>";
+        QueryStatusRQRequest queryStatusRQ = (QueryStatusRQRequest) XstreamUtil.getXml2Bean(xml, QueryStatusRQRequest.class);
+        System.out.println(queryStatusRQ.toString());
+    }
+    
     @Test
     public void getParamXml() throws ZZKServiceException {
         ValidateRQResponse validateRQResponse = new ValidateRQResponse("满房", "-1","","[{\"date\":\"2015-01-01\",\"price\":21000,\"quota\":4},{\"date\":\"2015-01-02\",\"price\":22000,\"quota\":4},{\"date\":\"2015-01-03\",\"price\":25000,\"quota\":5}]","2","16","5","10");
         System.err.println(XstreamUtil.getResponseXml(validateRQResponse));
     }
-    @Test
+     @Test
     public void xmlGetElement() throws ZZKServiceException, DocumentException {
         String xml = "<ValidateRQ>" + "<AuthenticationToken>" + "<Username>taobao</Username>"
                 + "<Password>B75!jaJb[eO8</Password>"
@@ -120,7 +154,5 @@ public class XstreamUtilTest extends BaseTest {
         Element root = doc.getRootElement();
         System.err.println(root.getQualifiedName());
     }
-
-
 
 }

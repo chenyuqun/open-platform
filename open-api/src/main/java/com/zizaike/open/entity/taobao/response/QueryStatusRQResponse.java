@@ -10,6 +10,7 @@
 package com.zizaike.open.entity.taobao.response;  
 
 import javax.print.attribute.ResolutionSyntax;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**  
  * ClassName:QueryStatusRQResponse <br/>  
@@ -21,11 +22,17 @@ import javax.print.attribute.ResolutionSyntax;
  * @since    JDK 1.7  
  * @see        
  */
+@XStreamAlias("Result")
 public class QueryStatusRQResponse extends ResponseData{
+    @XStreamAlias("TaoBaoOrderId")
     private Long taoBaoOrderId;
+    @XStreamAlias("OrderId")
     private String orderId;
+    @XStreamAlias("Status")
     private String status;
+    @XStreamAlias("OrderInfo")
     private OrderInfo orderInfo;
+    @XStreamAlias("BillInfo")
     private BillInfo billInfo;
     public Long getTaoBaoOrderId() {
         return taoBaoOrderId;
@@ -57,6 +64,24 @@ public class QueryStatusRQResponse extends ResponseData{
     public void setBillInfo(BillInfo billInfo) {
         this.billInfo = billInfo;
     }
+    public QueryStatusRQResponse() {
+    }
+    public QueryStatusRQResponse(String message, String resultCode, Long taoBaoOrderId, String orderId, String status,
+            OrderInfo orderInfo, BillInfo billInfo) {
+        super(message, resultCode);
+        this.taoBaoOrderId = taoBaoOrderId;
+        this.orderId = orderId;
+        this.status = status;
+        this.orderInfo = orderInfo;
+        this.billInfo = billInfo;
+    }
+    @Override
+    public String toString() {
+        return "QueryStatusRQResponse [taoBaoOrderId=" + taoBaoOrderId + ", orderId=" + orderId + ", status=" + status
+                + ", orderInfo=" + orderInfo + ", billInfo=" + billInfo + "]";
+    }
+   
+    
     
     
 }

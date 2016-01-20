@@ -20,10 +20,10 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since    JDK 1.7  
  * @see        
  */
-@XStreamAlias("QueryStatusRQ")
+@XStreamAlias("CancelRQ")
 public class CancelRQRequest extends RequestData {
     //TODO http://open.taobao.com/doc2/detail.htm?spm=0.0.0.0.hO61LC&treeId=22&articleId=103814&docType=1 把实体类补充完整
-
+    @XStreamAlias("AuthenticationToken")
 	private AuthenticationToken authenticationToken;
 	
 	/*
@@ -52,6 +52,8 @@ public class CancelRQRequest extends RequestData {
 	@XStreamAlias("HardCancel")
 	private String hardCancel;
 	
+	@XStreamAlias("CancelId")
+	private String cancelId;
 	public AuthenticationToken getAuthenticationToken() {
 		return authenticationToken;
 	}
@@ -89,12 +91,18 @@ public class CancelRQRequest extends RequestData {
 		this.hardCancel = hardCancel;
 	}
 	
-	@Override
-	public String toString() {
-		return "CancelRQRequest [authenticationToken=" + authenticationToken + ", taoBaoOrderId=" + taoBaoOrderId
-				+ ", orderId=" + orderId + ", hotelId=" + hotelId + ", reason=" + reason + ", hardCancel=" + hardCancel
-				+ "]";
-	}
+	public String getCancelId() {
+        return cancelId;
+    }
+    public void setCancelId(String cancelId) {
+        this.cancelId = cancelId;
+    }
+    @Override
+    public String toString() {
+        return "CancelRQRequest [authenticationToken=" + authenticationToken + ", taoBaoOrderId=" + taoBaoOrderId
+                + ", orderId=" + orderId + ", hotelId=" + hotelId + ", reason=" + reason + ", hardCancel=" + hardCancel
+                + ", cancelId=" + cancelId + "]";
+    }
 	
 	
 }

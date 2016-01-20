@@ -23,7 +23,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("QueryStatusRQ")
 public class QueryStatusRQRequest extends RequestData {
     //TODO 根据 http://open.taobao.com/doc2/detail.htm?spm=0.0.0.0.kCyHLe&treeId=22&articleId=103813&docType=1 把实体类补充完整
-
+    @XStreamAlias("AuthenticationToken")
 	private AuthenticationToken authenticationToken;
 	
 	/*
