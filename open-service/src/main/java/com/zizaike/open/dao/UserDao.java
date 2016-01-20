@@ -10,6 +10,7 @@
 package com.zizaike.open.dao;  
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.core.framework.springext.database.Slave;
 import com.zizaike.entity.open.User;
 
 /**  
@@ -31,6 +32,7 @@ public interface UserDao {
      * @return  
      * @since JDK 1.7
      */
+    @Slave
     User queryByUsername(String username) throws ZZKServiceException;
 }
   

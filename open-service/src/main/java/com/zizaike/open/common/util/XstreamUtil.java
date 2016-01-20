@@ -4,7 +4,6 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.zizaike.entity.open.alibaba.request.RequestData;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
-
 public  class XstreamUtil { 
     private static final String xmlHead = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
 	private static final XStream xstream =  new XStream(new DomDriver("utf8"));

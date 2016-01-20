@@ -1,22 +1,19 @@
-package com.zizaike.open.common.util;
+package com.zizaike.open.service;
 
-import org.dom4j.Document;
 import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
-import com.zizaike.open.basetest.BaseTest;
-import com.zizaike.open.entity.taobao.request.BookRQRequest;
-import com.zizaike.open.entity.taobao.request.CancelRQRequest;
-import com.zizaike.open.entity.taobao.request.QueryStatusRQRequest;
-import com.zizaike.open.entity.taobao.request.ValidateRQRequest;
-import com.zizaike.open.entity.taobao.response.ValidateRQResponse;
+import com.zizaike.is.open.TaobaoService;
+import com.zizaike.open.bastest.BaseTest;
 
-public class XstreamUtilTest extends BaseTest {
-    @Test
-    public void getXml2BeanValidateRQ() throws ZZKServiceException {
+public class TaobaoServiceTest extends BaseTest {
+    @Autowired
+    private TaobaoService taobaoService;
+    
+    @Test(description = "试单请求单元测试")
+    public void testValidateRQ() throws ZZKServiceException, DocumentException {
         String xml = "<ValidateRQ>" + "<AuthenticationToken>" + "<Username>taobao</Username>"
                 + "<Password>B75!jaJb[eO8</Password>"
                 + "<CreateToken>22251178182015010620150107497867981843210904377</CreateToken>"
@@ -28,12 +25,11 @@ public class XstreamUtilTest extends BaseTest {
                 + "<PaymentType>1</PaymentType>"
                 + "<Extensions>{'searchid':'22251178182015010620150107497867981843210904377'}</Extensions>"
                 + " </ValidateRQ>";
-        ValidateRQRequest validateRQ = (ValidateRQRequest) XstreamUtil.getXml2Bean(xml, ValidateRQRequest.class);
-        System.out.println(validateRQ.toString());
+        System.err.println(taobaoService.service(xml));
     }
-
-    @Test
-    public void getXml2BeanBookRQRequest() throws ZZKServiceException {
+    
+    @Test(description = "创建订单单元测试")
+    public void testBookRQ() throws ZZKServiceException, DocumentException {
         String xml = "<BookRQ>"
                 + "<AuthenticationToken>"
                 + "<Username>taobao</Username>"
@@ -92,12 +88,26 @@ public class XstreamUtilTest extends BaseTest {
                 + "</ReceiptInfo>" 
                 + "<Extensions></Extensions>"
                 + "</BookRQ>";
-       BookRQRequest bookRQ = (BookRQRequest) XstreamUtil.getXml2Bean(xml, BookRQRequest.class);
-       System.out.println(bookRQ.toString());
+        System.err.println(taobaoService.service(xml));
     }
     
-    @Test
-    public void getXml2BeanCancelRQ() throws ZZKServiceException {
+    @Test(description = "查询订单单元测试")
+    public void testQueryStatusRQ() throws ZZKServiceException, DocumentException {
+        String xml = "<QueryStatusRQ>"
+                + "<AuthenticationToken>"
+                + "<Username>taobao</Username>"
+                + "<Password>taobao</Password>"
+                + "<CreateToken>taobao1230123213-1387792484913</CreateToken>"
+                + "</AuthenticationToken>"
+                + " <OrderId>12321323</OrderId>"
+                + "<TaoBaoOrderId>1230123213</TaoBaoOrderId>"
+                + " <HotelId>123456</HotelId>"
+                + "</QueryStatusRQ>";
+        System.err.println(taobaoService.service(xml));
+    }
+    
+    @Test(description = "取消订单单元测试")
+    public void testCancelRQ() throws ZZKServiceException, DocumentException {
         String xml = "<CancelRQ>"
                 +"<AuthenticationToken>"
                 + "<Username>taobao</Username>"
@@ -111,48 +121,7 @@ public class XstreamUtilTest extends BaseTest {
                 + "<CancelId>1387789907859</CancelId>"
                 + "<HardCancel>true</HardCancel>"
                 + "</CancelRQ>";
-        CancelRQRequest cancelRQ = (CancelRQRequest) XstreamUtil.getXml2Bean(xml, CancelRQRequest.class);
-        System.out.println(cancelRQ.toString());
+        System.err.println(taobaoService.service(xml));
     }
     
-    @Test
-    public void getXml2BeanQueryStatusRQ() throws ZZKServiceException {     
-        String xml = "<QueryStatusRQ>"
-                + "<AuthenticationToken>"
-                + "<Username>taobao</Username>"
-                + "<Password>taobao</Password>"
-                + "<CreateToken>taobao1230123213-1387792484913</CreateToken>"
-                + "</AuthenticationToken>"
-                + " <OrderId>12321323</OrderId>"
-                + "<TaoBaoOrderId>1230123213</TaoBaoOrderId>"
-                + " <HotelId>123456</HotelId>"
-                + "</QueryStatusRQ>";
-        QueryStatusRQRequest queryStatusRQ = (QueryStatusRQRequest) XstreamUtil.getXml2Bean(xml, QueryStatusRQRequest.class);
-        System.out.println(queryStatusRQ.toString());
-    }
-    
-    @Test
-    public void getParamXml() throws ZZKServiceException {
-        ValidateRQResponse validateRQResponse = new ValidateRQResponse("满房", "-1","","[{\"date\":\"2015-01-01\",\"price\":21000,\"quota\":4},{\"date\":\"2015-01-02\",\"price\":22000,\"quota\":4},{\"date\":\"2015-01-03\",\"price\":25000,\"quota\":5}]","2","16","5","10");
-        System.err.println(XstreamUtil.getResponseXml(validateRQResponse));
-    }
-     @Test
-    public void xmlGetElement() throws ZZKServiceException, DocumentException {
-        String xml = "<ValidateRQ>" + "<AuthenticationToken>" + "<Username>taobao</Username>"
-                + "<Password>B75!jaJb[eO8</Password>"
-                + "<CreateToken>22251178182015010620150107497867981843210904377</CreateToken>"
-                + "</AuthenticationToken>" + "<TaoBaoHotelId>1357757818</TaoBaoHotelId>"
-                + "<HotelId>3FENY3V11P</HotelId>" + "<TaoBaoRoomTypeId>5501264818</TaoBaoRoomTypeId>"
-                + " <RoomTypeId>3FENY3V11P-RT1241</RoomTypeId>" + "<TaoBaoRatePlanId>4978679818</TaoBaoRatePlanId>"
-                + "<RatePlanCode>3FENY3V11P-RT1241-RP846</RatePlanCode>" + " <TaoBaoGid>3824371818</TaoBaoGid>"
-                + "<CheckIn>2015-01-06</CheckIn>" + "<CheckOut>2015-01-07</CheckOut>" + "<RoomNum>1</RoomNum>"
-                + "<PaymentType>1</PaymentType>"
-                + "<Extensions>{'searchid':'22251178182015010620150107497867981843210904377'}</Extensions>"
-                + " </ValidateRQ>";
-        Document doc = null;
-        doc = DocumentHelper.parseText(xml);
-        Element root = doc.getRootElement();
-        System.err.println(root.getQualifiedName());
-    }
-
 }

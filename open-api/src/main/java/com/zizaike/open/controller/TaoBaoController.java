@@ -9,8 +9,6 @@
   
 package com.zizaike.open.controller;  
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.is.open.TaobaoService;
 import com.zizaike.open.BaseAjaxController;
-import com.zizaike.open.service.TaobaoService;
 
 /**
  * 
@@ -39,8 +37,7 @@ public class TaoBaoController extends BaseAjaxController {
     private TaobaoService taobaoService;
     @RequestMapping(value = "", method = RequestMethod.POST,produces={"application/xml"},consumes={"application/xml"})
     @ResponseBody
-    public String getSearchResult(@RequestBody String xml ) throws ZZKServiceException, Exception, IOException {
-        
+    public String getSearchResult(@RequestBody String xml ) throws ZZKServiceException {
        return taobaoService.service(xml);
     }
 }
