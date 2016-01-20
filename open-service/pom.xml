@@ -282,5 +282,14 @@
 		  <groupId>com.alibaba</groupId>
 		  <artifactId>taobao-sdk</artifactId>
 		</dependency>
+		<!-- mysql -->
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
 	</dependencies>
 	</project>

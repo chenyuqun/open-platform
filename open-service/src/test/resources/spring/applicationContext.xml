@@ -10,4 +10,7 @@
 	<import resource="applicationContext-base.xml" />
 	<import resource="applicationContext-rabbit-provider.xml" />
 	<import resource="applicationContext-rabbit-consumer.xml" />
+	<import resource="applicationContext-mybatis-datasource.xml" />
+	<import resource="applicationContext-mybatis-dao.xml" />
+	<import resource="applicationContext-mybatis-tx.xml" />
 </beans>

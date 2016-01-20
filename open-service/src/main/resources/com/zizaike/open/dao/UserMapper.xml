@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zizaike.entity.UserMapper" >
+<mapper namespace="com.zizaike.open.dao.UserMapper" >
   <resultMap id="BaseResultMap" type="com.zizaike.entity.open.User" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="username" property="username" jdbcType="VARCHAR" />
@@ -103,4 +103,10 @@
       update_at = #{updateAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="queryByUsername" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_open_user
+    where username = #{username,jdbcType=INTEGER} and active=1
+  </select>
 </mapper>
