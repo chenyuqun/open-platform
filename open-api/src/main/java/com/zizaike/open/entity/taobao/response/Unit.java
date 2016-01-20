@@ -11,6 +11,8 @@ package com.zizaike.open.entity.taobao.response;
 
 import java.util.Date;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**  
  * ClassName:Unit <br/>  
  * Function: TODO ADD FUNCTION. <br/>  
@@ -21,14 +23,17 @@ import java.util.Date;
  * @since    JDK 1.7  
  * @see        
  */
+@XStreamAlias("Unit")
 public class Unit {
     /**
      * 日期
      */
+    @XStreamAlias("Date")
     private Date date;
     /**
      * 金额（分）
      */
+    @XStreamAlias("Price")
     private long price;
     public Date getDate() {
         return date;

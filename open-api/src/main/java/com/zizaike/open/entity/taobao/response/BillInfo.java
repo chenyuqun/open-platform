@@ -11,6 +11,8 @@ package com.zizaike.open.entity.taobao.response;
 
 import java.util.List;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**  
  * ClassName:BillInfo <br/>  
  * Function: TODO ADD FUNCTION. <br/>  
@@ -21,12 +23,19 @@ import java.util.List;
  * @since    JDK 1.7  
  * @see        
  */
+@XStreamAlias("BillInfo")
 public class BillInfo {
+    @XStreamAlias("RoomNo")
     private String roomNo;
+    @XStreamAlias("TotalRoomPrice")
     private long totalRoomPrice;
+    @XStreamAlias("OtherFee")
     private long otherFee;
+    @XStreamAlias("Remark")
     private String remark;
+    @XStreamAlias("DailyPrice")
     private List<Unit> dailyPrice;
+    @XStreamAlias("OtherFeeDetail")
     private List<Unit> otherFeeDetail;
     public String getRoomNo() {
         return roomNo;

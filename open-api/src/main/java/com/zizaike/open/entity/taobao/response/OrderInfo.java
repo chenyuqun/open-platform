@@ -11,6 +11,8 @@ package com.zizaike.open.entity.taobao.response;
 
 import java.util.Date;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**  
  * ClassName:OrderInfo <br/>  
  * Function: TODO ADD FUNCTION. <br/>  
@@ -21,11 +23,17 @@ import java.util.Date;
  * @since    JDK 1.7  
  * @see        
  */
+@XStreamAlias("OrderInfo")
 public class OrderInfo {
+    @XStreamAlias("CheckIn")
     private Date checkIn;
+    @XStreamAlias("CheckOut")
     private Date checkOut;
+    @XStreamAlias("RoomQuantity")
     private int roomQuantity;
+    @XStreamAlias("Hotel")
     private String hotel;
+    @XStreamAlias("RoomType")
     private String roomType;
     public Date getCheckIn() {
         return checkIn;
