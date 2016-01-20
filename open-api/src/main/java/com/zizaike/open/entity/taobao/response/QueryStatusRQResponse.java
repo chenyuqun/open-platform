@@ -8,6 +8,9 @@
 */  
   
 package com.zizaike.open.entity.taobao.response;  
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**  
  * ClassName:QueryStatusRQResponse <br/>  
  * Function: TODO ADD FUNCTION. <br/>  
@@ -18,11 +21,17 @@ package com.zizaike.open.entity.taobao.response;
  * @since    JDK 1.7  
  * @see        
  */
+@XStreamAlias("Result")
 public class QueryStatusRQResponse {
+    @XStreamAlias("TaoBaoOrderId")
     private Long taoBaoOrderId;
+    @XStreamAlias("OrderId")
     private String orderId;
+    @XStreamAlias("Status")
     private String status;
+    @XStreamAlias("OrderInfo")
     private OrderInfo orderInfo;
+    @XStreamAlias("BillInfo")
     private BillInfo billInfo;
     public Long getTaoBaoOrderId() {
         return taoBaoOrderId;
