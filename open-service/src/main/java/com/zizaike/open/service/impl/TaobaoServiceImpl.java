@@ -13,8 +13,11 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.entity.open.User;
 import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.open.alibaba.request.CancelRQRequest;
 import com.zizaike.entity.open.alibaba.request.QueryStatusRQRequest;
@@ -25,6 +28,7 @@ import com.zizaike.entity.open.alibaba.response.QueryStatusRQResponse;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.alibaba.response.ValidateRQResponse;
 import com.zizaike.is.open.TaobaoService;
+import com.zizaike.is.open.UserService;
 import com.zizaike.open.common.util.XstreamUtil;
 
 /**  
@@ -38,7 +42,8 @@ import com.zizaike.open.common.util.XstreamUtil;
  */
 @Service
 public class TaobaoServiceImpl implements TaobaoService {
-
+    @Autowired
+    private UserService userService;
     @Override
     public ValidateRQResponse validateRQ(ValidateRQRequest validateRQRequest) {
           
@@ -72,7 +77,8 @@ public class TaobaoServiceImpl implements TaobaoService {
     }
 
     @Override
-    public String service(String xml) {
+    public String service(String xml) throws ZZKServiceException {
+        
         Document doc = null;
         ResponseData responseData = null;
         try {
@@ -81,6 +87,7 @@ public class TaobaoServiceImpl implements TaobaoService {
             e.printStackTrace();  
         }
         Element root = doc.getRootElement();
+        checkUser(root);
         switch (root.getQualifiedName()) {
         case "ValidateRQ":
             responseData= validateRQ((ValidateRQRequest)XstreamUtil.getXml2Bean(xml, ValidateRQRequest.class));
@@ -98,6 +105,14 @@ public class TaobaoServiceImpl implements TaobaoService {
             break;
         }
         return XstreamUtil.getResponseXml(responseData);
+    }
+    
+    public void checkUser(Element root)throws ZZKServiceException{
+        Element authenticationToken = root.element("AuthenticationToken");
+        User user = new User();
+        user.setUsername(authenticationToken.element("Username").getText());
+        user.setPassword(authenticationToken.element("Password").getText());
+        userService.checkUser(user);
     }
 
 
