@@ -43,7 +43,7 @@ public class TaobaoServiceImpl implements TaobaoService {
     public ValidateRQResponse validateRQ(ValidateRQRequest validateRQRequest) {
           
         ValidateRQResponse validateRQResponse = new ValidateRQResponse();
-        validateRQResponse.setCancelPolicyInfo("test");
+        validateRQResponse.setMessage("这是一个test试单请求");
         return validateRQResponse;
     }
 
@@ -51,7 +51,7 @@ public class TaobaoServiceImpl implements TaobaoService {
     public BookRQResponse bookRQ(BookRQRequest bookRQRequest) {
           
         BookRQResponse bookRQResponse = new BookRQResponse();
-        bookRQResponse.setOrderId("test");
+        bookRQResponse.setMessage("这是一个test下单请求");
         return bookRQResponse;
     }
 
@@ -59,7 +59,7 @@ public class TaobaoServiceImpl implements TaobaoService {
     public QueryStatusRQResponse queryStatusRQ(QueryStatusRQRequest queryStatusRQRequest) {
           
         QueryStatusRQResponse queryStatusRQResponse = new QueryStatusRQResponse();
-        queryStatusRQRequest.setHotelId("test");
+        queryStatusRQResponse.setMessage("这是一个test查询请求");
         return queryStatusRQResponse;
     }
 
@@ -67,7 +67,7 @@ public class TaobaoServiceImpl implements TaobaoService {
     public CancelRQResponse cancelRQ(CancelRQRequest cancelRQRequest) {
           
         CancelRQResponse cancelRQResponse = new CancelRQResponse();
-        cancelRQRequest.setHotelId("test");
+        cancelRQResponse.setMessage("这是一个test取消请求");;
         return cancelRQResponse;
     }
 
