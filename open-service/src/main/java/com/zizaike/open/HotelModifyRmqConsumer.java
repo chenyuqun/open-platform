@@ -11,7 +11,7 @@ package com.zizaike.open;
 
 import org.springframework.stereotype.Service;
 
-import com.zizaike.entity.solr.Room;
+import com.zizaike.entity.open.alibaba.Hotel;
 
 
 /**  
@@ -23,9 +23,9 @@ import com.zizaike.entity.solr.Room;
  * @since    JDK 1.7  
  * @see        
  */
-@Service("orderModifyRmqConsumer")
-public class OrderModifyRmqConsumer {
-    public void reveiveOrderModifyMessage(Room object){
+@Service("hotelModifyRmqConsumer")
+public class HotelModifyRmqConsumer {
+    public void reveiveHotelModifyMessage(Hotel object){
         System.err.println("reveiveOrderModifyMessage"+object);
     }
 }

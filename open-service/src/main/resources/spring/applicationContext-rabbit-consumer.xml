@@ -14,33 +14,33 @@
     
 	<rabbit:listener-container
 		connection-factory="openConnectionFactory" 
-		message-converter="roomModifyEventMessageConverter"
+		message-converter="roomTypeModifyEventMessageConverter"
 		auto-startup="true" 
 		error-handler="" 
 		acknowledge="auto" 
 		task-executor="taskExecutor" >
-		<rabbit:listener ref="roomModifyRmqConsumer" method="reveiveRoomModifyMessage"
-			queue-names="${open.rabbitmq.room.queue}" 
+		<rabbit:listener ref="roomTypeModifyRmqConsumer" method="reveiveRoomTypeModifyMessage"
+			queue-names="${open.rabbitmq.roomType.queue}" 
 			/>
 	</rabbit:listener-container>
 	
 	<rabbit:listener-container
 		connection-factory="openConnectionFactory" 
-		message-converter="orderModifyEventMessageConverter"
+		message-converter="hotelModifyEventMessageConverter"
 		auto-startup="true" 
 		error-handler="" 
 		acknowledge="auto" 
 		task-executor="taskExecutor" >
-		<rabbit:listener ref="orderModifyRmqConsumer" method="reveiveOrderModifyMessage"
-			queue-names="${open.rabbitmq.order.queue}" 
+		<rabbit:listener ref="hotelModifyRmqConsumer" method="reveiveHotelModifyMessage"
+			queue-names="${open.rabbitmq.hotel.queue}" 
 			/>
 	</rabbit:listener-container>
 	
 
-	<bean id="roomModifyRmqConsumer" class="com.zizaike.open.RoomModifyRmqConsumer" />
-	<bean id="roomModifyEventMessageConverter" class="com.zizaike.open.repository.RoomModifyEventMessageConverter" />
-		<bean id="orderModifyRmqConsumer" class="com.zizaike.open.OrderModifyRmqConsumer" />
-	<bean id="orderModifyEventMessageConverter" class="com.zizaike.open.repository.OrderModifyEventMessageConverter" />
+	<bean id="roomTypeModifyRmqConsumer" class="com.zizaike.open.RoomTypeModifyRmqConsumer" />
+	<bean id="roomTypeModifyEventMessageConverter" class="com.zizaike.open.repository.RoomTypeModifyEventMessageConverter" />
+	<bean id="hotelModifyRmqConsumer" class="com.zizaike.open.HotelModifyRmqConsumer" />
+	<bean id="hotelModifyEventMessageConverter" class="com.zizaike.open.repository.HotelModifyEventMessageConverter" />
 	<bean id="queueListenter" class="com.zizaike.open.QueueListenter" />
 	
     

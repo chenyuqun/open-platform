@@ -11,22 +11,21 @@ package com.zizaike.open;
 
 import org.springframework.stereotype.Service;
 
-import com.zizaike.entity.recommend.Loctype;
-import com.zizaike.entity.solr.Room;
+import com.zizaike.entity.open.alibaba.RoomType;
 
 
 /**  
  * ClassName:RoomModifyRmqConsumer <br/>  
- * Function: 房间信息更新. <br/>  
+ * Function: 房型更新. <br/>  
  * Date:     2016年1月6日 下午2:23:58 <br/>  
  * @author   snow.zhang  
  * @version    
  * @since    JDK 1.7  
  * @see        
  */
-@Service("roomModifyRmqConsumer")
-public class RoomModifyRmqConsumer {
-    public void reveiveRoomModifyMessage(Room object){
+@Service("roomTypeModifyRmqConsumer")
+public class RoomTypeModifyRmqConsumer {
+    public void reveiveRoomTypeModifyMessage(RoomType object){
         System.err.println("reveiveRoomModifyMessage"+object);
     }
 }

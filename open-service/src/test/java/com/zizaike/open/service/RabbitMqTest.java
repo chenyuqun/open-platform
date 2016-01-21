@@ -15,26 +15,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
-import com.zizaike.entity.solr.Room;
+import com.zizaike.entity.open.alibaba.Action;
+import com.zizaike.entity.open.alibaba.Hotel;
+import com.zizaike.entity.open.alibaba.RoomType;
 import com.zizaike.open.bastest.BaseTest;
 
 public class RabbitMqTest extends BaseTest {
     @Autowired
-    AmqpTemplate modifyRoomTemplate;
+    AmqpTemplate modifyHotelTemplate;
     @Autowired
-    AmqpTemplate modifyOrderTemplate;
+    AmqpTemplate modifyRoomTypeTemplate;
 
-    @Test(description = "rabbitmq room convertAndSend 测试")
-    public void roomConvertAndSend() throws ZZKServiceException, InterruptedException {
-            Room room = new Room();
-            room.setUserAddress("测试地址 room");
-            modifyRoomTemplate.convertAndSend(room);
+    @Test(description = "rabbitmq hotel convertAndSend 测试")
+    public void hotelConvertAndSend() throws ZZKServiceException, InterruptedException {
+            Hotel hotel = new Hotel();
+            hotel.setAction(Action.ADD);
+            hotel.setAddress("中国 上海,测试");
+            modifyHotelTemplate.convertAndSend(hotel);
     }
-    @Test(description = "rabbitmq order convertAndSend 测试")
-    public void orderConvertAndSend() throws ZZKServiceException, InterruptedException {
-        Room room = new Room();
-        room.setUserAddress("测试地址 order");
-        modifyOrderTemplate.convertAndSend(room);
+    @Test(description = "rabbitmq roomType convertAndSend 测试")
+    public void roomTypeConvertAndSend() throws ZZKServiceException, InterruptedException {
+        RoomType roomType = new RoomType();
+        roomType.setArea("中国测试");
+        modifyRoomTypeTemplate.convertAndSend(roomType);
     }
 //    @Test(description = "rabbitmq receiveAndConvert 测试")
 //    public void receiveAndConvert() throws ZZKServiceException, InterruptedException {
