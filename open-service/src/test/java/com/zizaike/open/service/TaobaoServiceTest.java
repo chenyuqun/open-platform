@@ -19,9 +19,9 @@ public class TaobaoServiceTest extends BaseTest {
                 + "<CreateToken>22251178182015010620150107497867981843210904377</CreateToken>"
                 + "</AuthenticationToken>" + "<TaoBaoHotelId>1357757818</TaoBaoHotelId>"
                 + "<HotelId>3FENY3V11P</HotelId>" + "<TaoBaoRoomTypeId>5501264818</TaoBaoRoomTypeId>"
-                + " <RoomTypeId>3FENY3V11P-RT1241</RoomTypeId>" + "<TaoBaoRatePlanId>4978679818</TaoBaoRatePlanId>"
+                + " <RoomTypeId>398</RoomTypeId>" + "<TaoBaoRatePlanId>4978679818</TaoBaoRatePlanId>"
                 + "<RatePlanCode>3FENY3V11P-RT1241-RP846</RatePlanCode>" + " <TaoBaoGid>3824371818</TaoBaoGid>"
-                + "<CheckIn>2015-01-06</CheckIn>" + "<CheckOut>2015-01-07</CheckOut>" + "<RoomNum>1</RoomNum>"
+                + "<CheckIn>2015-01-20</CheckIn>" + "<CheckOut>2015-01-22</CheckOut>" + "<RoomNum>1</RoomNum>"
                 + "<PaymentType>1</PaymentType>"
                 + "<Extensions>{'searchid':'22251178182015010620150107497867981843210904377'}</Extensions>"
                 + " </ValidateRQ>";

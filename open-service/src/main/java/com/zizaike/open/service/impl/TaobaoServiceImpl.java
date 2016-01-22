@@ -9,6 +9,17 @@
   
 package com.zizaike.open.service.impl;  
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -16,8 +27,11 @@ import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.zizaike.core.common.util.http.HttpProxyUtil;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.User;
+import com.zizaike.entity.open.alibaba.XStreamYMDDateConverter;
 import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.open.alibaba.request.CancelRQRequest;
 import com.zizaike.entity.open.alibaba.request.QueryStatusRQRequest;
@@ -43,13 +57,47 @@ import com.zizaike.open.common.util.XstreamUtil;
 @Service
 public class TaobaoServiceImpl implements TaobaoService {
     @Autowired
+    private HttpProxyUtil httpProxy;
+    @Autowired
     private UserService userService;
     @Override
-    public ValidateRQResponse validateRQ(ValidateRQRequest validateRQRequest) {
+    public ValidateRQResponse validateRQ(ValidateRQRequest validateRQRequest) throws ZZKServiceException {  
+        try {
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+            Map map = new HashMap();
+            map.put("roomTypeId", validateRQRequest.getRoomTypeId());
+            map.put("taoBaoHotelId", validateRQRequest.getTaoBaoHotelId().toString());
+            map.put("taoBaoRatePlanId", validateRQRequest.getTaoBaoRatePlanId().toString());
+            map.put("ratePlanCode", validateRQRequest.getRatePlanCode());
+            map.put("taoBaoGid", validateRQRequest.getTaoBaoGid().toString());
+            map.put("checkIn", simpleDateFormat.format(validateRQRequest.getCheckIn()));
+            map.put("checkOut", simpleDateFormat.format(validateRQRequest.getCheckOut()));
+            map.put("roomNum", validateRQRequest.getRoomNum().toString());
+            map.put("paymentType", validateRQRequest.getPaymentType().toString());
+        //    map.put("extensions", validateRQRequest.getExtensions());
+            JSONObject result=httpProxy.httpGet("http://api.test.zizaike.com/open/alitrip/validateRQ", map);
+            ValidateRQResponse validateRQResponse = new ValidateRQResponse();
+            if(result.getString("resultCode").equals("200")){
+                validateRQResponse.setResultCode("0");
+                validateRQResponse.setMessage("处理成功");
+                validateRQResponse.setInventoryPrice(result.getJSONObject("info").getString("inventoryPrice"));              
+                return validateRQResponse;  
+            }else{
+                validateRQResponse.setResultCode("-3");
+                validateRQResponse.setMessage("满房");
+                return validateRQResponse;  
+            }
+            
+            
+      
+        } catch (IOException e) {          
+            // TODO Auto-generated catch block  
+            ValidateRQResponse validateRQResponse = new ValidateRQResponse();
+            validateRQResponse.setResultCode("-3");
+            validateRQResponse.setMessage("满房");
+            return validateRQResponse;  
+        }
           
-        ValidateRQResponse validateRQResponse = new ValidateRQResponse();
-        validateRQResponse.setMessage("这是一个test试单请求");
-        return validateRQResponse;
     }
 
     @Override
