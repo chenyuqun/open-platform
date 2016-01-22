@@ -1,12 +1,33 @@
 package com.zizaike.open.common.util;
 
+import java.io.Writer;
+
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.core.util.QuickWriter;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
+import com.thoughtworks.xstream.io.xml.XppDriver;
 import com.zizaike.entity.open.alibaba.request.RequestData;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
 public  class XstreamUtil { 
     private static final String xmlHead = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
-	private static final XStream xstream =  new XStream(new DomDriver("utf8"));
+	//private static final XStream xstream =  new XStream(new DomDriver("utf8"));
+    //去掉 &quot 等特殊字符
+    private static final XStream xstream = new XStream(new XppDriver() {
+        @Override
+        public HierarchicalStreamWriter createWriter(Writer out) {
+            return new PrettyPrintWriter(out) {
+                @Override
+                protected void writeText(QuickWriter writer, String text) {
+                    if (!text.isEmpty()) {
+                        writer.write(text);
+                    } else {
+                        super.writeText(writer, text);
+                    }
+                }
+            };
+        }
+    });
 /**
  * 
  * getXml2Bean:xml to javaBean. <br/>  

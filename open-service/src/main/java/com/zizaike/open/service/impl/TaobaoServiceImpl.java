@@ -9,29 +9,27 @@
   
 package com.zizaike.open.service.impl;  
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zizaike.core.common.util.http.HttpProxyUtil;
 import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.core.framework.exception.open.ErrorCodeFields;
+import com.zizaike.core.framework.exception.open.SystemException;
 import com.zizaike.entity.open.User;
-import com.zizaike.entity.open.alibaba.XStreamYMDDateConverter;
 import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.open.alibaba.request.CancelRQRequest;
 import com.zizaike.entity.open.alibaba.request.QueryStatusRQRequest;
@@ -56,6 +54,9 @@ import com.zizaike.open.common.util.XstreamUtil;
  */
 @Service
 public class TaobaoServiceImpl implements TaobaoService {
+    protected final Logger LOG = LoggerFactory.getLogger(TaobaoServiceImpl.class);
+    @Value("${zizaike.open..alitrip.host}")
+    private String alitripHost;
     @Autowired
     private HttpProxyUtil httpProxy;
     @Autowired
@@ -74,30 +75,34 @@ public class TaobaoServiceImpl implements TaobaoService {
             map.put("checkOut", simpleDateFormat.format(validateRQRequest.getCheckOut()));
             map.put("roomNum", validateRQRequest.getRoomNum().toString());
             map.put("paymentType", validateRQRequest.getPaymentType().toString());
-        //    map.put("extensions", validateRQRequest.getExtensions());
-            JSONObject result=httpProxy.httpGet("http://api.test.zizaike.com/open/alitrip/validateRQ", map);
+        //  map.put("extensions", validateRQRequest.getExtensions());
+            JSONObject result=httpProxy.httpGet(alitripHost+"validateRQ", map);
             ValidateRQResponse validateRQResponse = new ValidateRQResponse();
             if(result.getString("resultCode").equals("200")){
-                validateRQResponse.setResultCode("0");
-                validateRQResponse.setMessage("处理成功");
                 validateRQResponse.setInventoryPrice(result.getJSONObject("info").getString("inventoryPrice"));              
                 return validateRQResponse;  
             }else{
-                validateRQResponse.setResultCode("-3");
-                validateRQResponse.setMessage("满房");
-                return validateRQResponse;  
+                ErrorCodeFields errorCodeFields;
+                switch (result.getString("resultCode")) {
+                case "-1":
+                    errorCodeFields = ErrorCodeFields.ROOM_FULL_NOT_BOOK_ERROR;
+                    break;
+                case "-2":
+                    errorCodeFields = ErrorCodeFields.RP_ERROR;
+                    break;
+                case "-3":
+                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
+                    break;
+                default:
+                    errorCodeFields =  ErrorCodeFields.SYSTEM_ERROR;
+                    break;
+                }
+                throw new ZZKServiceException(errorCodeFields);
             }
-            
-            
-      
-        } catch (IOException e) {          
-            // TODO Auto-generated catch block  
-            ValidateRQResponse validateRQResponse = new ValidateRQResponse();
-            validateRQResponse.setResultCode("-3");
-            validateRQResponse.setMessage("满房");
-            return validateRQResponse;  
+        } catch (IOException e) {
+            LOG.error("IOException, ex={}", e);
+            throw new SystemException();
         }
-          
     }
 
     @Override
