@@ -108,9 +108,9 @@ public class Alibaba extends BaseTest{
     @Test(description = "房型添加")
     public void xhotelRoomtypeAdd() throws ZZKServiceException, ApiException {
         XhotelRoomtypeAddRequest req = new XhotelRoomtypeAddRequest();
-        req.setOuterId("12345678_124");
+        req.setOuterId("534_123");
         //req.setHid((long)123456);
-        req.setName("自在客CYQ测试房间");
+        req.setName("阮佳佳的别墅");
         req.setMaxOccupancy(2L);
         req.setArea("10平方米");
         req.setFloor("3-5层");
@@ -121,9 +121,10 @@ public class Alibaba extends BaseTest{
         req.setExtend("空");
         req.setWindowType(1L);
 //        req.setSrid(123123L);
-        req.setOutHid("12345678");
+        req.setOutHid("534");
         //req.setVendor("taobao");
-        req.setPics("[{\"url\":\"http://123.jpg\",\"ismain\":\"true\"},{\"url\":\"http://456.jpg\",\"ismain\":\"false\"},{\"url\":\"http://789.jpg\",\"ismain\":\"false\"}]");
+        req.setPics("[{\"url\":\"http://http://img1.zzkcdn.com/c9495cb6542a1ecc3b88a117df4a750dzzkcopr/2000x1500.jpg-homepic800x600.jpg\",\"ismain\":\"true\"}]");
+        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret); 
         XhotelRoomtypeAddResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
@@ -132,6 +133,7 @@ public class Alibaba extends BaseTest{
     public void xhotelRoomtypeGet() throws ZZKServiceException, ApiException {
         XhotelRoomtypeGetRequest req = new XhotelRoomtypeGetRequest();
         req.setOuterId("12345678_124");
+        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret); 
         XhotelRoomtypeGetResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }

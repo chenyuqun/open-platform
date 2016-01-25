@@ -12,8 +12,10 @@ package com.zizaike.open.service.impl;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -24,12 +26,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.taobao.api.domain.OrderGuest;
 import com.zizaike.core.common.util.http.HttpProxyUtil;
+import com.zizaike.core.framework.exception.ErrorCode;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.core.framework.exception.open.ErrorCodeFields;
 import com.zizaike.core.framework.exception.open.SystemException;
 import com.zizaike.entity.open.User;
+import com.zizaike.entity.open.alibaba.InventoryPrice;
 import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.open.alibaba.request.CancelRQRequest;
 import com.zizaike.entity.open.alibaba.request.QueryStatusRQRequest;
@@ -61,11 +68,14 @@ public class TaobaoServiceImpl implements TaobaoService {
     private HttpProxyUtil httpProxy;
     @Autowired
     private UserService userService;
+    
+    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat simpleDateFormatAccurate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Override
     public ValidateRQResponse validateRQ(ValidateRQRequest validateRQRequest) throws ZZKServiceException {  
         try {
-            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-            Map map = new HashMap();
+            
+            Map<String,String> map = new HashMap();
             map.put("roomTypeId", validateRQRequest.getRoomTypeId());
             map.put("taoBaoHotelId", validateRQRequest.getTaoBaoHotelId().toString());
             map.put("taoBaoRatePlanId", validateRQRequest.getTaoBaoRatePlanId().toString());
@@ -75,14 +85,27 @@ public class TaobaoServiceImpl implements TaobaoService {
             map.put("checkOut", simpleDateFormat.format(validateRQRequest.getCheckOut()));
             map.put("roomNum", validateRQRequest.getRoomNum().toString());
             map.put("paymentType", validateRQRequest.getPaymentType().toString());
-        //  map.put("extensions", validateRQRequest.getExtensions());
+            map.put("extensions", validateRQRequest.getExtensions());
             JSONObject result=httpProxy.httpGet(alitripHost+"validateRQ", map);
             ValidateRQResponse validateRQResponse = new ValidateRQResponse();
+            ErrorCodeFields errorCodeFields;
+         //   ErrorCodeFields errorCodeFields;
             if(result.getString("resultCode").equals("200")){
+                /**
+                 * 解析返回价格参数
+                 */
+                List<InventoryPrice> inventoryPriceList = JSON.parseArray(result.getJSONObject("info").getString("inventoryPrice"),InventoryPrice.class);
+                for(int i=0;i<inventoryPriceList.size();i++){
+                    InventoryPrice inventory=inventoryPriceList.get(i);
+                    if(inventory.getQuota()<validateRQRequest.getRoomNum()){
+                        errorCodeFields= ErrorCodeFields.ROOM_FULL_NOT_BOOK_ERROR;
+                        throw new ZZKServiceException(errorCodeFields);
+                    };
+                }
                 validateRQResponse.setInventoryPrice(result.getJSONObject("info").getString("inventoryPrice"));              
                 return validateRQResponse;  
             }else{
-                ErrorCodeFields errorCodeFields;
+                
                 switch (result.getString("resultCode")) {
                 case "-1":
                     errorCodeFields = ErrorCodeFields.ROOM_FULL_NOT_BOOK_ERROR;
@@ -106,27 +129,163 @@ public class TaobaoServiceImpl implements TaobaoService {
     }
 
     @Override
-    public BookRQResponse bookRQ(BookRQRequest bookRQRequest) {
-          
-        BookRQResponse bookRQResponse = new BookRQResponse();
-        bookRQResponse.setMessage("这是一个test下单请求");
-        return bookRQResponse;
+    public BookRQResponse bookRQ(BookRQRequest bookRQRequest) throws ZZKServiceException {
+        try {
+            //SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+            Map<String,String> map = new HashMap<String,String>();
+            map.put("taoBaoOrderId", Long.toString(bookRQRequest.getTaoBaoOrderId()));
+            map.put("taoBaoHotelId", Long.toString(bookRQRequest.getTaoBaoHotelId()));
+            map.put("hotelId", bookRQRequest.getHotelId());
+            map.put("taoBaoRoomTypeId", Long.toString(bookRQRequest.getTaoBaoRoomTypeId()));
+            map.put("roomTypeId", bookRQRequest.getRoomTypeId());
+            map.put("taoBaoRatePlanId", Long.toString(bookRQRequest.getTaoBaoRatePlanId()));
+            map.put("ratePlanCode", bookRQRequest.getRatePlanCode());
+            map.put("taoBaoGid", Long.toString(bookRQRequest.getTaoBaoGid()));
+            map.put("checkIn", simpleDateFormat.format(bookRQRequest.getCheckIn()));
+            map.put("checkOut", simpleDateFormat.format(bookRQRequest.getCheckOut()));
+            map.put("hourRent", bookRQRequest.getHourRent());
+            map.put("earliestArriveTime", simpleDateFormat.format(bookRQRequest.getEarliestArriveTime()));
+            map.put("latestArriveTime", simpleDateFormat.format(bookRQRequest.getLatestArriveTime()));
+            map.put("roomNum", Integer.toString(bookRQRequest.getRoomNum()));
+            map.put("totalPrice", Long.toString(bookRQRequest.getTotalPrice()));
+            map.put("sellerDiscount", Long.toString(bookRQRequest.getSellerDiscount()));
+            map.put("alitripDiscount", Long.toString(bookRQRequest.getAlitripDiscount()));
+            map.put("currency", bookRQRequest.getCurrency());
+            map.put("paymentType", Integer.toString(bookRQRequest.getPaymentType()));
+            map.put("contactName", bookRQRequest.getContactName());
+            map.put("contactTel", bookRQRequest.getContactTel());
+            map.put("contactEmail", bookRQRequest.getContactEmail());
+            map.put("dailyInfos", JSON.toJSON(bookRQRequest.getDailyInfos()).toString());
+//            map.put("day", bookRQRequest.getExtensions());
+//            map.put("price", bookRQRequest.getPrice());
+            map.put("orderGuests", JSON.toJSON(bookRQRequest.getOrderGuests()).toString());
+//            map.put("name", bookRQRequest);
+//            map.put("roomPos", bookRQRequest.getR);
+            map.put("comment", bookRQRequest.getComment());
+            map.put("memberCardNo", bookRQRequest.getMemberCardNo());
+            map.put("guaranteeType", bookRQRequest.getGuaranteeType());
+            map.put("extensions", bookRQRequest.getExtensions());
+            map.put("alipayTradeNo", Long.toString(bookRQRequest.getAlitripDiscount()));
+            /**
+             * zizaike下单人数
+             */
+            if(null!=(bookRQRequest.getOrderGuests().getOrderGuests())){
+                List<com.zizaike.entity.open.alibaba.request.BookRQRequest.OrderGuest> orderGuests= bookRQRequest.getOrderGuests().getOrderGuests();
+                map.put("guestNumber", orderGuests.size()>0?Integer.toString(orderGuests.size()):"1");
+            }else{
+                map.put("guestNumber","1");
+            }
+            
+            JSONObject result=httpProxy.httpGet(alitripHost+"bookRQ", map);
+            BookRQResponse bookRQResponse = new BookRQResponse();
+            ErrorCodeFields errorCodeFields;
+            if(result.getString("resultCode").equals("200")){           
+                bookRQResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
+                bookRQResponse.setPmsResID(result.getJSONObject("info").getString("pmsResId"));
+                return bookRQResponse;  
+            }else{
+                
+                switch (result.getString("resultCode")) {
+                case "-1":
+                    errorCodeFields = ErrorCodeFields.ROOM_FULL_NOT_BOOK_ERROR;
+                    break;
+                case "-2":
+                    errorCodeFields = ErrorCodeFields.RP_ERROR;
+                    break;
+                case "-3":
+                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
+                    break;
+                default:
+                    errorCodeFields =  ErrorCodeFields.SYSTEM_ERROR;
+                    break;
+                }
+                throw new ZZKServiceException(errorCodeFields);
+            }
+        } catch (IOException e) {
+            LOG.error("IOException, ex={}", e);
+            throw new SystemException();
+        }
     }
 
     @Override
-    public QueryStatusRQResponse queryStatusRQ(QueryStatusRQRequest queryStatusRQRequest) {
-          
-        QueryStatusRQResponse queryStatusRQResponse = new QueryStatusRQResponse();
-        queryStatusRQResponse.setMessage("这是一个test查询请求");
-        return queryStatusRQResponse;
+    public QueryStatusRQResponse queryStatusRQ(QueryStatusRQRequest queryStatusRQRequest) throws ZZKServiceException{
+        try {            
+            Map<String,String> map = new HashMap();
+            map.put("orderId", queryStatusRQRequest.getOrderId());
+            map.put("taoBaoOrderId", Long.toString(queryStatusRQRequest.getTaoBaoOrderId()));
+            map.put("hotelId", queryStatusRQRequest.getHotelId());
+            JSONObject result=httpProxy.httpGet(alitripHost+"queryStatusRQ", map);
+            QueryStatusRQResponse queryStatusRQResponse = new QueryStatusRQResponse();
+            ErrorCodeFields errorCodeFields;     
+            if(result.getString("resultCode").equals("200")){
+                queryStatusRQResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
+                queryStatusRQResponse.setTaoBaoOrderId(Long.parseLong(result.getJSONObject("info").getString("taoBaoOrderId")));
+                queryStatusRQResponse.setStatus(result.getJSONObject("info").getString("status"));
+//                queryStatusRQResponse.setBillInfo(billInfo);
+//                queryStatusRQResponse.setOrderInfo(orderInfo);
+                return queryStatusRQResponse;  
+            }else{
+                
+                switch (result.getString("resultCode")) {
+                case "-1":
+                    errorCodeFields = ErrorCodeFields.ROOM_FULL_NOT_BOOK_ERROR;
+                    break;
+                case "-2":
+                    errorCodeFields = ErrorCodeFields.RP_ERROR;
+                    break;
+                case "-3":
+                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
+                    break;
+                default:
+                    errorCodeFields =  ErrorCodeFields.SYSTEM_ERROR;
+                    break;
+                }
+                throw new ZZKServiceException(errorCodeFields);
+            }
+        } catch (IOException e) {
+            LOG.error("IOException, ex={}", e);
+            throw new SystemException();
+        }
     }
 
     @Override
-    public CancelRQResponse cancelRQ(CancelRQRequest cancelRQRequest) {
-          
-        CancelRQResponse cancelRQResponse = new CancelRQResponse();
-        cancelRQResponse.setMessage("这是一个test取消请求");;
-        return cancelRQResponse;
+    public CancelRQResponse cancelRQ(CancelRQRequest cancelRQRequest) throws ZZKServiceException{         
+        try {            
+            Map<String,String> map = new HashMap();
+            map.put("orderId", cancelRQRequest.getOrderId());
+            map.put("taoBaoOrderId", Long.toString(cancelRQRequest.getTaoBaoOrderId()));
+            map.put("hotelId", cancelRQRequest.getHotelId());
+            map.put("reason", cancelRQRequest.getReason());
+            map.put("hardCancel", cancelRQRequest.getHardCancel());
+            JSONObject result=httpProxy.httpGet(alitripHost+"cancelRQ", map);
+            CancelRQResponse cancelRQResponse = new CancelRQResponse();
+            ErrorCodeFields errorCodeFields;     
+            if(result.getString("resultCode").equals("200")){
+                cancelRQResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
+                return cancelRQResponse;  
+            }else{
+                throw new ZZKServiceException(result.getString("resultCode"), result.getString("message"));
+//               
+//                switch (result.getString("resultCode")) {
+//                case "-200":
+//                    errorCodeFields = ErrorCodeFields.CANCEL_FAILURE;
+//                    break;
+//                case "-203":
+//                    errorCodeFields = ErrorCodeFields.RP_ERROR;
+//                    break;
+//                case "-3":
+//                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
+//                    break;
+//                default:
+//                    errorCodeFields =  ErrorCodeFields.SYSTEM_ERROR;
+//                    break;
+//                }
+//                throw new ZZKServiceException(errorCodeFields);
+            }
+        } catch (IOException e) {
+            LOG.error("IOException, ex={}", e);
+            throw new SystemException();
+        }
     }
 
     @Override
