@@ -16,7 +16,9 @@ import org.testng.annotations.Test;
 
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
+import com.taobao.api.request.XhotelRoomtypeAddRequest;
 import com.taobao.api.request.XhotelUpdateRequest;
+import com.taobao.api.response.XhotelRoomtypeAddResponse;
 import com.taobao.api.response.XhotelUpdateResponse;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.alibaba.Action;
@@ -47,8 +49,48 @@ public class RabbitMqTest extends BaseTest {
     }
     @Test(description = "rabbitmq roomType convertAndSend 测试")
     public void roomTypeConvertAndSend() throws ZZKServiceException, InterruptedException {
+        
         RoomType roomType = new RoomType();
-        roomType.setArea("中国测试");
+        roomType.setAction(Action.ADD);
+        roomType.setOuterId("534_123");
+        //req.setHid((long)123456);
+        roomType.setName("阮佳佳的别墅");
+        roomType.setMaxOccupancy(2L);
+        roomType.setArea("10平方米");
+        roomType.setFloor("3-5层");
+        roomType.setBedType("大床");
+        roomType.setBedSize("2.1米");
+        roomType.setInternet("A");
+        roomType.setService("{\"bar\":true,\"catv\":false,\"ddd\":false,\"idd\":false,\"pubtoilet\":false,\"toilet\":false}");
+        roomType.setExtend("空");
+        roomType.setWindowType(1L);
+//        req.setSrid(123123L);
+        roomType.setOutHid("534");
+        //req.setVendor("taobao");
+        req.setPics("[{\"url\":\"http://http://img1.zzkcdn.com/c9495cb6542a1ecc3b88a117df4a750dzzkcopr/2000x1500.jpg-homepic800x600.jpg\",\"ismain\":\"true\"}]");
+        modifyRoomTypeTemplate.convertAndSend(roomType);
+    }
+    
+    @Test(description = "rabbitmq ratePlan convertAndSend 测试")
+    public void ratePlanConvertAndSend() throws ZZKServiceException, InterruptedException {
+        
+        RoomType roomType = new RoomType();
+        roomType.setOuterId("534_123");
+        //req.setHid((long)123456);
+        roomType.setName("阮佳佳的别墅");
+        roomType.setMaxOccupancy(2L);
+        roomType.setArea("10平方米");
+        roomType.setFloor("3-5层");
+        roomType.setBedType("大床");
+        roomType.setBedSize("2.1米");
+        roomType.setInternet("A");
+        roomType.setService("{\"bar\":true,\"catv\":false,\"ddd\":false,\"idd\":false,\"pubtoilet\":false,\"toilet\":false}");
+        roomType.setExtend("空");
+        roomType.setWindowType(1L);
+//        req.setSrid(123123L);
+        roomType.setOutHid("534");
+        //req.setVendor("taobao");
+        req.setPics("[{\"url\":\"http://http://img1.zzkcdn.com/c9495cb6542a1ecc3b88a117df4a750dzzkcopr/2000x1500.jpg-homepic800x600.jpg\",\"ismain\":\"true\"}]");
         modifyRoomTypeTemplate.convertAndSend(roomType);
     }
 //    @Test(description = "rabbitmq receiveAndConvert 测试")
