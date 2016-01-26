@@ -56,7 +56,7 @@ public class HotelModifyRmqConsumer {
         XhotelUpdateResponse response = client.execute(req , sessionKey);
         System.out.println("test");   
         System.out.println(response.getBody());       
-        System.err.println("reveiveOrderModifyMessage"+object);
+        System.err.println("reveiveHotelModifyMessage"+object);
     }
 }
   
