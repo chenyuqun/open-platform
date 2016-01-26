@@ -96,11 +96,11 @@ public class TaobaoServiceTest extends BaseTest {
         String xml = "<QueryStatusRQ>"
                 + "<AuthenticationToken>"
                 + "<Username>taobao</Username>"
-                + "<Password>taobao</Password>"
+                + "<Password>B75!jaJb[eO8</Password>"
                 + "<CreateToken>taobao1230123213-1387792484913</CreateToken>"
                 + "</AuthenticationToken>"
                 + " <OrderId>12321323</OrderId>"
-                + "<TaoBaoOrderId>1230123213</TaoBaoOrderId>"
+                + "<TaoBaoOrderId>1387784033264</TaoBaoOrderId>"
                 + " <HotelId>123456</HotelId>"
                 + "</QueryStatusRQ>";
         System.err.println(taobaoService.service(xml));

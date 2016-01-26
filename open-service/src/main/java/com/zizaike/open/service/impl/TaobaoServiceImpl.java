@@ -41,8 +41,10 @@ import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.open.alibaba.request.CancelRQRequest;
 import com.zizaike.entity.open.alibaba.request.QueryStatusRQRequest;
 import com.zizaike.entity.open.alibaba.request.ValidateRQRequest;
+import com.zizaike.entity.open.alibaba.response.BillInfo;
 import com.zizaike.entity.open.alibaba.response.BookRQResponse;
 import com.zizaike.entity.open.alibaba.response.CancelRQResponse;
+import com.zizaike.entity.open.alibaba.response.OrderInfo;
 import com.zizaike.entity.open.alibaba.response.QueryStatusRQResponse;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.alibaba.response.ValidateRQResponse;
@@ -107,17 +109,14 @@ public class TaobaoServiceImpl implements TaobaoService {
             }else{
                 
                 switch (result.getString("resultCode")) {
-                case "-1":
+                case "408":
                     errorCodeFields = ErrorCodeFields.ROOM_FULL_NOT_BOOK_ERROR;
                     break;
-                case "-2":
+                case "206":
                     errorCodeFields = ErrorCodeFields.RP_ERROR;
                     break;
-                case "-3":
-                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
-                    break;
                 default:
-                    errorCodeFields =  ErrorCodeFields.SYSTEM_ERROR;
+                    errorCodeFields =  ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
                     break;
                 }
                 throw new ZZKServiceException(errorCodeFields);
@@ -131,7 +130,6 @@ public class TaobaoServiceImpl implements TaobaoService {
     @Override
     public BookRQResponse bookRQ(BookRQRequest bookRQRequest) throws ZZKServiceException {
         try {
-            //SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
             Map<String,String> map = new HashMap<String,String>();
             map.put("taoBaoOrderId", Long.toString(bookRQRequest.getTaoBaoOrderId()));
             map.put("taoBaoHotelId", Long.toString(bookRQRequest.getTaoBaoHotelId()));
@@ -179,24 +177,57 @@ public class TaobaoServiceImpl implements TaobaoService {
             JSONObject result=httpProxy.httpGet(alitripHost+"bookRQ", map);
             BookRQResponse bookRQResponse = new BookRQResponse();
             ErrorCodeFields errorCodeFields;
-            if(result.getString("resultCode").equals("200")){           
+            /**
+             * 200是success 201是网站端口下单成功[非速订]
+             */
+            if(result.getString("resultCode").equals("200")||result.getString("resultCode").equals("201")){           
                 bookRQResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
                 bookRQResponse.setPmsResID(result.getJSONObject("info").getString("pmsResId"));
                 return bookRQResponse;  
             }else{
                 
                 switch (result.getString("resultCode")) {
-                case "-1":
-                    errorCodeFields = ErrorCodeFields.ROOM_FULL_NOT_BOOK_ERROR;
+                case "400":
+                    errorCodeFields = ErrorCodeFields.BOOK_PARAMS_ERROR;
                     break;
-                case "-2":
-                    errorCodeFields = ErrorCodeFields.RP_ERROR;
+                case "401":
+                    errorCodeFields = ErrorCodeFields.BOOK_ROOMTYPE_NOT_EXIST;
                     break;
-                case "-3":
-                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
+                case "402":
+                    errorCodeFields = ErrorCodeFields.BOOK_HOTEL_NOT_EXIST;
                     break;
+                case "403":
+                    errorCodeFields = ErrorCodeFields.BOOK_CONTACT_NAME_ERROR;
+                    break;
+                case "404":
+                    errorCodeFields = ErrorCodeFields.BOOK_CONTACT_PHONE_ERROR;
+                    break;
+                case "406":
+                    errorCodeFields = ErrorCodeFields.BOOK_CHECKIN_ERROR;
+                    break;                    
+                case "407":
+                    errorCodeFields = ErrorCodeFields.BOOK_CHECKOUT_ERROR;
+                    break;
+                case "408":
+                    errorCodeFields = ErrorCodeFields.BOOK_OVER_ROOM_LIMIT;
+                    break;
+//                    /**
+//                     * 409表示房间连住条件不满足
+//                     */
+//                case "409":
+//                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
+//                    break;
+//                case "2":
+//                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
+//                    break;
+//                case "206":
+//                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
+//                    break;
+//                case "205":
+//                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
+//                    break;
                 default:
-                    errorCodeFields =  ErrorCodeFields.SYSTEM_ERROR;
+                    errorCodeFields =  ErrorCodeFields.BOOK_FAILURE;
                     break;
                 }
                 throw new ZZKServiceException(errorCodeFields);
@@ -218,26 +249,21 @@ public class TaobaoServiceImpl implements TaobaoService {
             QueryStatusRQResponse queryStatusRQResponse = new QueryStatusRQResponse();
             ErrorCodeFields errorCodeFields;     
             if(result.getString("resultCode").equals("200")){
+                
                 queryStatusRQResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
                 queryStatusRQResponse.setTaoBaoOrderId(Long.parseLong(result.getJSONObject("info").getString("taoBaoOrderId")));
                 queryStatusRQResponse.setStatus(result.getJSONObject("info").getString("status"));
-//                queryStatusRQResponse.setBillInfo(billInfo);
-//                queryStatusRQResponse.setOrderInfo(orderInfo);
+                queryStatusRQResponse.setBillInfo(JSON.parseObject(result.getJSONObject("info").getString("billInfo"), BillInfo.class));
+                queryStatusRQResponse.setOrderInfo(JSON.parseObject(result.getJSONObject("info").getString("orderInfo"), OrderInfo.class));
                 return queryStatusRQResponse;  
             }else{
                 
                 switch (result.getString("resultCode")) {
-                case "-1":
-                    errorCodeFields = ErrorCodeFields.ROOM_FULL_NOT_BOOK_ERROR;
-                    break;
-                case "-2":
-                    errorCodeFields = ErrorCodeFields.RP_ERROR;
-                    break;
-                case "-3":
-                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
+                case "204":
+                    errorCodeFields = ErrorCodeFields.QUERY_ORDER_NOT_EXIST;
                     break;
                 default:
-                    errorCodeFields =  ErrorCodeFields.SYSTEM_ERROR;
+                    errorCodeFields =  ErrorCodeFields.QUERY_FAILURE;                  
                     break;
                 }
                 throw new ZZKServiceException(errorCodeFields);
@@ -264,23 +290,19 @@ public class TaobaoServiceImpl implements TaobaoService {
                 cancelRQResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
                 return cancelRQResponse;  
             }else{
-                throw new ZZKServiceException(result.getString("resultCode"), result.getString("message"));
-//               
-//                switch (result.getString("resultCode")) {
-//                case "-200":
-//                    errorCodeFields = ErrorCodeFields.CANCEL_FAILURE;
-//                    break;
-//                case "-203":
-//                    errorCodeFields = ErrorCodeFields.RP_ERROR;
-//                    break;
-//                case "-3":
-//                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
-//                    break;
-//                default:
-//                    errorCodeFields =  ErrorCodeFields.SYSTEM_ERROR;
-//                    break;
-//                }
-//                throw new ZZKServiceException(errorCodeFields);
+                switch (result.getString("resultCode")) {
+                case "205":
+                    errorCodeFields = ErrorCodeFields.CANCEL_ORDER_ALREADY_CANCELLED;
+                    break;
+                case "204":
+                    errorCodeFields = ErrorCodeFields.CANCEL_ORDER_NOT_EXIST;
+                    break;
+                default:
+                    errorCodeFields = ErrorCodeFields.CANCEL_FAILURE;
+                    break;
+                      
+                }
+                throw new ZZKServiceException(errorCodeFields);
             }
         } catch (IOException e) {
             LOG.error("IOException, ex={}", e);
