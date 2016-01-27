@@ -23,6 +23,10 @@
 		exclusive="false" name="${open.rabbitmq.roomType.queue}" />
 	<rabbit:queue durable="true" auto-delete="false"
 		exclusive="false" name="${open.rabbitmq.hotel.queue}" />
+	<rabbit:queue durable="true" auto-delete="false"
+		exclusive="false" name="${open.rabbitmq.ratePlan.queue}" />
+	<rabbit:queue durable="true" auto-delete="false"
+		exclusive="false" name="${open.rabbitmq.rates.queue}" />
 
 
 	<!-- exchange queue binging key 绑定 -->
