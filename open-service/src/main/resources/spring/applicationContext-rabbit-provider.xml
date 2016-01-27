@@ -50,10 +50,10 @@
 	<rabbit:template exchange="${open.rabbitmq.exchange}" id="modifyRoomTypeTemplate"
 		connection-factory="openConnectionFactory" routing-key="open.roomType.modify.success"
 		message-converter="fastjsonMessageConverter" />
-	<rabbit:template exchange="${open.rabbitmq.exchange}" id="modifyRoomTypeTemplate"
+	<rabbit:template exchange="${open.rabbitmq.exchange}" id="modifyRatePlanTemplate"
 		connection-factory="openConnectionFactory" routing-key="open.ratePlan.modify.success"
 		message-converter="fastjsonMessageConverter" /> 
-	<rabbit:template exchange="${open.rabbitmq.exchange}" id="modifyRoomTypeTemplate"
+	<rabbit:template exchange="${open.rabbitmq.exchange}" id="modifyRatesTemplate"
 		connection-factory="openConnectionFactory" routing-key="open.rates.modify.success"
 		message-converter="fastjsonMessageConverter" />  
 		
