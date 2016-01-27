@@ -10,15 +10,7 @@
     http://www.springframework.org/schema/task/spring-task-4.1.xsd">
 
 
-	<!-- 连接服务配置 -->
-	<rabbit:connection-factory id="openConnectionFactory"
-		host="${open.rabbitmq.host}" username="${open.rabbitmq.username}"
-		password="${open.rabbitmq.password}" port="${open.rabbitmq.port}"
-		virtual-host="${open.rabbitmq.vhost}" channel-cache-size="${open.rabbitmq.channelCacheSize}" />
 
-	<rabbit:admin connection-factory="openConnectionFactory" />
-
-	<!-- queue 队列声明 -->
 	<rabbit:queue durable="true" auto-delete="false"
 		exclusive="false" name="${open.rabbitmq.roomType.queue}" />
 	<rabbit:queue durable="true" auto-delete="false"
@@ -28,7 +20,7 @@
 	<rabbit:queue durable="true" auto-delete="false"
 		exclusive="false" name="${open.rabbitmq.rates.queue}" />
 
-	<!-- exchange queue binging key 绑定 -->
+
 	<rabbit:topic-exchange name="${open.rabbitmq.exchange}"
 		durable="true" auto-delete="false">
 		<rabbit:bindings>
@@ -55,6 +47,5 @@
 	<rabbit:template exchange="${open.rabbitmq.exchange}" id="modifyRatesTemplate"
 		connection-factory="openConnectionFactory" routing-key="open.rates.modify.success"
 		message-converter="fastjsonMessageConverter" />  
-		
-		<bean id="fastjsonMessageConverter" class="com.zizaike.core.common.util.FastJsonMessageConverter" />
+	<bean id="fastjsonMessageConverter" class="com.zizaike.core.common.util.FastJsonMessageConverter" />
 </beans>

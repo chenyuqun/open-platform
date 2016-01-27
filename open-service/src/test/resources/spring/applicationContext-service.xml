@@ -30,5 +30,12 @@
 		<constructor-arg name="staleConnCheck" value="${http.staleConnCheck}"/>
 	</bean>
 	
+	<!-- taobaoClient -->
+	<bean id="taobaoClient" class="com.taobao.api.DefaultTaobaoClient">
+		<constructor-arg name="serverUrl" value="${alibaba.serverUrl}" />
+		<constructor-arg name="appKey" value="${alibaba.appKey}" />
+		<constructor-arg name="appSecret" value="${alibaba.appSecret}" />
+	</bean>
+	
 
 </beans>

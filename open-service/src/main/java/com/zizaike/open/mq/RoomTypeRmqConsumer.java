@@ -7,13 +7,13 @@
  *  
 */  
   
-package com.zizaike.open;  
+package com.zizaike.open.mq;  
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.taobao.api.ApiException;
-import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.XhotelRoomtypeAddRequest;
 import com.taobao.api.response.XhotelRoomtypeAddResponse;
@@ -29,16 +29,18 @@ import com.zizaike.entity.open.alibaba.RoomType;
  * @since    JDK 1.7  
  * @see        
  */
-@Service("roomTypeModifyRmqConsumer")
-public class RoomTypeModifyRmqConsumer {
-    @Value("${alibaba.appkey}")
+@Service("roomTypeRmqConsumer")
+public class RoomTypeRmqConsumer {
+    @Value("${alibaba.appKey}")
     private String appkey;
     @Value("${alibaba.sessionKey}")
     private String sessionKey;
-    @Value("${alibaba.secret}")
-    private String secret;   
-    private String url="http://gw.api.tbsandbox.com/router/rest";
-    TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
+    @Value("${alibaba.appSecret}")
+    private String secret;
+    @Value("${alibaba.serverUrl}")
+    private String url;
+    @Autowired
+    private TaobaoClient taobaoClient;
     public void reveiveRoomTypeModifyMessage(RoomType object) throws ApiException{
         XhotelRoomtypeAddRequest req = new XhotelRoomtypeAddRequest();
         req.setOuterId(object.getOuterId());
@@ -55,8 +57,7 @@ public class RoomTypeModifyRmqConsumer {
         req.setWindowType(object.getWindowType());
         req.setOutHid(object.getOutHid());;
         req.setPics(object.getPics());
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret); 
-        XhotelRoomtypeAddResponse response = client.execute(req , sessionKey);
+        XhotelRoomtypeAddResponse response = taobaoClient.execute(req , sessionKey);
         System.out.println(response.getBody());       
         System.err.println("reveiveRoomModifyMessage"+object);
     }

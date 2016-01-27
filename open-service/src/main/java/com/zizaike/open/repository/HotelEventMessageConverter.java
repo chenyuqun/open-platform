@@ -17,23 +17,23 @@ import org.springframework.amqp.support.converter.MessageConversionException;
 import org.springframework.amqp.support.converter.MessageConverter;
 
 import com.alibaba.fastjson.JSON;
-import com.zizaike.entity.open.alibaba.RoomType;
+import com.zizaike.entity.open.alibaba.Hotel;
 
 /**  
  * ClassName:RoomModifyEventMessageConverter <br/>  
- * Function: 房间信息转换. <br/>  
+ * Function: order信息转换. <br/>  
  * Date:     2016年1月6日 下午2:51:56 <br/>  
  * @author   snow.zhang  
  * @version    
  * @since    JDK 1.7  
  * @see        
  */
-public class RoomTypeModifyEventMessageConverter implements MessageConverter{
-    private static final Logger LOG = LoggerFactory.getLogger(RoomTypeModifyEventMessageConverter.class);
+public class HotelEventMessageConverter implements MessageConverter{
+    private static final Logger LOG = LoggerFactory.getLogger(HotelEventMessageConverter.class);
     private String encoding = "utf-8";
     @Override
     public Object fromMessage(Message message) throws MessageConversionException {
-        RoomType room = new RoomType();
+        Hotel room = new Hotel();
         
         if(message == null){
             return room;
@@ -41,7 +41,7 @@ public class RoomTypeModifyEventMessageConverter implements MessageConverter{
         String body;
         try {
             body = new String(message.getBody(), encoding);
-            room = JSON.parseObject(body, RoomType.class);
+            room = JSON.parseObject(body, Hotel.class);
             return room;
         } catch (Exception e) {
             LOG.error("could not parse message", e);

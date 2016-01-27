@@ -7,13 +7,13 @@
  *  
 */  
   
-package com.zizaike.open;  
+package com.zizaike.open.mq;  
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.taobao.api.ApiException;
-import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.XhotelUpdateRequest;
 import com.taobao.api.response.XhotelUpdateResponse;
@@ -29,16 +29,18 @@ import com.zizaike.entity.open.alibaba.Hotel;
  * @since    JDK 1.7  
  * @see        
  */
-@Service("hotelModifyRmqConsumer")
-public class HotelModifyRmqConsumer {
-    @Value("${alibaba.appkey}")
+@Service("hotelRmqConsumer")
+public class HotelRmqConsumer {
+    @Value("${alibaba.appKey}")
     private String appkey;
     @Value("${alibaba.sessionKey}")
     private String sessionKey;
-    @Value("${alibaba.secret}")
-    private String secret;   
-    private String url="http://gw.api.tbsandbox.com/router/rest";
-    TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
+    @Value("${alibaba.appSecret}")
+    private String secret;
+    @Value("${alibaba.serverUrl}")
+    private String url;
+    @Autowired
+    private TaobaoClient taobaoClient;
     public void reveiveHotelModifyMessage(Hotel object) throws ApiException{
         XhotelUpdateRequest req = new XhotelUpdateRequest();
         
@@ -52,8 +54,7 @@ public class HotelModifyRmqConsumer {
         req.setTel(object.getTel());
 //        req.setService("{\"receiveForeignGuests\":\"true\",\"morningCall\":\"true\",\"breakfast\":\"true\"}");
 //        req.setHotelPolicies("{\"children_age_from\":\"2\",\"children_age_to\":\"3\",\"children_stay_free\":\"True\",\"infant_age\":\"1\",\"min_guest_age\":\"4\"}");
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
-        XhotelUpdateResponse response = client.execute(req , sessionKey);
+        XhotelUpdateResponse response = taobaoClient.execute(req , sessionKey);
         System.out.println("test");   
         System.out.println(response.getBody());       
         System.err.println("reveiveHotelModifyMessage"+object);

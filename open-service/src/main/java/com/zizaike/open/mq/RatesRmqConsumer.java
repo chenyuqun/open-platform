@@ -7,13 +7,11 @@
  *  
 */  
   
-package com.zizaike.open;  
+package com.zizaike.open.mq;  
 
 import org.springframework.stereotype.Service;
 
-import com.zizaike.entity.open.alibaba.InventoryPrice;
 import com.zizaike.entity.open.alibaba.InventoryPriceMap;
-import com.zizaike.entity.open.alibaba.RatePlan;
 
 /**  
  * ClassName:RatesModifyRmqConsumer <br/>  
@@ -25,8 +23,8 @@ import com.zizaike.entity.open.alibaba.RatePlan;
  * @since    JDK 1.7  
  * @see        
  */
-@Service("ratesModifyRmqConsumer")
-public class RatesModifyRmqConsumer {
+@Service("ratesRmqConsumer")
+public class RatesRmqConsumer {
     public void reveiveRatesModifyMessage(InventoryPriceMap object){
         System.err.println("reveiveRatesModifyMessage"+object);
     }

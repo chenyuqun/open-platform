@@ -1,8 +1,8 @@
 /**  
- * Project Name:open-api  <br/>
- * File Name:RoomModifyEventMessageConverter.java  <br/>
+ * Project Name:open-service  <br/>
+ * File Name:RatePlanModifyEventMessageConverter.java  <br/>
  * Package Name:com.zizaike.open.repository  <br/>
- * Date:2016年1月6日下午2:51:56  <br/>
+ * Date:2016年1月26日下午6:21:51  <br/>
  * Copyright (c) 2016, zizaike.com All Rights Reserved.  
  *  
 */  
@@ -18,34 +18,36 @@ import org.springframework.amqp.support.converter.MessageConverter;
 
 import com.alibaba.fastjson.JSON;
 import com.zizaike.entity.open.alibaba.Hotel;
+import com.zizaike.entity.open.alibaba.RatePlan;
 
 /**  
- * ClassName:RoomModifyEventMessageConverter <br/>  
- * Function: order信息转换. <br/>  
- * Date:     2016年1月6日 下午2:51:56 <br/>  
- * @author   snow.zhang  
+ * ClassName:RatePlanModifyEventMessageConverter <br/>  
+ * Function: TODO ADD FUNCTION. <br/>  
+ * Reason:   TODO ADD REASON. <br/>  
+ * Date:     2016年1月26日 下午6:21:51 <br/>  
+ * @author   alex  
  * @version    
  * @since    JDK 1.7  
  * @see        
  */
-public class HotelModifyEventMessageConverter implements MessageConverter{
-    private static final Logger LOG = LoggerFactory.getLogger(HotelModifyEventMessageConverter.class);
+public class RatePlanEventMessageConverter implements MessageConverter {
+    private static final Logger LOG = LoggerFactory.getLogger(RatePlanEventMessageConverter.class);
     private String encoding = "utf-8";
     @Override
     public Object fromMessage(Message message) throws MessageConversionException {
-        Hotel room = new Hotel();
+        RatePlan ratePlan = new RatePlan();
         
         if(message == null){
-            return room;
+            return ratePlan;
         }
         String body;
         try {
             body = new String(message.getBody(), encoding);
-            room = JSON.parseObject(body, Hotel.class);
-            return room;
+            ratePlan = JSON.parseObject(body, RatePlan.class);
+            return ratePlan;
         } catch (Exception e) {
             LOG.error("could not parse message", e);
-           return room;
+           return ratePlan;
         }
     }
 
@@ -53,6 +55,5 @@ public class HotelModifyEventMessageConverter implements MessageConverter{
     public Message toMessage(Object arg0, MessageProperties arg1) throws MessageConversionException {
         throw new UnsupportedOperationException("user password changed event should not publish by this service");
     }
-
 }
   

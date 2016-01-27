@@ -7,7 +7,7 @@
  *  
 */  
   
-package com.zizaike.open;  
+package com.zizaike.open.mq;  
 
 import org.springframework.stereotype.Service;
 
@@ -23,8 +23,8 @@ import com.zizaike.entity.open.alibaba.RatePlan;
  * @since    JDK 1.7  
  * @see        
  */
-@Service("ratePlanModifyRmqConsumer")
-public class RatePlanModifyRmqConsumer {
+@Service("ratePlanRmqConsumer")
+public class RatePlanRmqConsumer {
     public void reveiveRatePlanModifyMessage(RatePlan object){
         System.err.println("reveiveRatePlanModifyMessage"+object);
     }

@@ -29,6 +29,12 @@
 		<!-- 是否进行陈旧连接检查, 如果不开启, 则启动陈旧连接关闭线程 -->
 		<constructor-arg name="staleConnCheck" value="${http.staleConnCheck}"/>
 	</bean>
+	<!-- taobaoClient -->
+	<bean id="taobaoClient" class="com.taobao.api.DefaultTaobaoClient">
+		<constructor-arg name="serverUrl" value="${alibaba.serverUrl}" />
+		<constructor-arg name="appKey" value="${alibaba.appKey}" />
+		<constructor-arg name="appSecret" value="${alibaba.appSecret}" />
+	</bean>
 	
 
 </beans>

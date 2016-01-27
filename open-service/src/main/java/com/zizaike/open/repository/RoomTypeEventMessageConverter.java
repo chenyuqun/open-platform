@@ -1,8 +1,8 @@
 /**  
- * Project Name:open-service  <br/>
- * File Name:RatesModifyEventMessageConverter.java  <br/>
+ * Project Name:open-api  <br/>
+ * File Name:RoomModifyEventMessageConverter.java  <br/>
  * Package Name:com.zizaike.open.repository  <br/>
- * Date:2016年1月26日下午5:59:24  <br/>
+ * Date:2016年1月6日下午2:51:56  <br/>
  * Copyright (c) 2016, zizaike.com All Rights Reserved.  
  *  
 */  
@@ -17,36 +17,35 @@ import org.springframework.amqp.support.converter.MessageConversionException;
 import org.springframework.amqp.support.converter.MessageConverter;
 
 import com.alibaba.fastjson.JSON;
-import com.zizaike.entity.open.alibaba.InventoryPriceMap;
+import com.zizaike.entity.open.alibaba.RoomType;
 
 /**  
- * ClassName:RatesModifyEventMessageConverter <br/>  
- * Function: TODO ADD FUNCTION. <br/>  
- * Reason:   TODO ADD REASON. <br/>  
- * Date:     2016年1月26日 下午5:59:24 <br/>  
- * @author   alex  
+ * ClassName:RoomModifyEventMessageConverter <br/>  
+ * Function: 房间信息转换. <br/>  
+ * Date:     2016年1月6日 下午2:51:56 <br/>  
+ * @author   snow.zhang  
  * @version    
  * @since    JDK 1.7  
  * @see        
  */
-public class RatesModifyEventMessageConverter implements MessageConverter {
-    private static final Logger LOG = LoggerFactory.getLogger(RatesModifyEventMessageConverter.class);
+public class RoomTypeEventMessageConverter implements MessageConverter{
+    private static final Logger LOG = LoggerFactory.getLogger(RoomTypeEventMessageConverter.class);
     private String encoding = "utf-8";
     @Override
     public Object fromMessage(Message message) throws MessageConversionException {
-        InventoryPriceMap inventoryPriceMap = new InventoryPriceMap();
+        RoomType room = new RoomType();
         
         if(message == null){
-            return inventoryPriceMap;
+            return room;
         }
         String body;
         try {
             body = new String(message.getBody(), encoding);
-            inventoryPriceMap = JSON.parseObject(body, InventoryPriceMap.class);
-            return inventoryPriceMap;
+            room = JSON.parseObject(body, RoomType.class);
+            return room;
         } catch (Exception e) {
             LOG.error("could not parse message", e);
-           return inventoryPriceMap;
+           return room;
         }
     }
 
@@ -54,5 +53,6 @@ public class RatesModifyEventMessageConverter implements MessageConverter {
     public Message toMessage(Object arg0, MessageProperties arg1) throws MessageConversionException {
         throw new UnsupportedOperationException("user password changed event should not publish by this service");
     }
+
 }
   

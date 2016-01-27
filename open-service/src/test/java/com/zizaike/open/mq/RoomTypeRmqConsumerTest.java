@@ -17,12 +17,11 @@ import com.taobao.api.ApiException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.alibaba.Action;
 import com.zizaike.entity.open.alibaba.RoomType;
-import com.zizaike.open.RoomTypeModifyRmqConsumer;
 import com.zizaike.open.bastest.BaseTest;
 
 public class RoomTypeRmqConsumerTest extends BaseTest {
     @Autowired
-    private RoomTypeModifyRmqConsumer roomTypeRmqConsumer;
+    private RoomTypeRmqConsumer roomTypeRmqConsumer;
     @Test(description = "rabbitmq hotel convertAndSend 测试")
     public void reveiveRoomTypeModifyMessage() throws ZZKServiceException, InterruptedException, ApiException {
         RoomType roomType = new RoomType();

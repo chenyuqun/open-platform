@@ -1,8 +1,8 @@
 /**  
  * Project Name:open-service  <br/>
- * File Name:RatePlanModifyEventMessageConverter.java  <br/>
+ * File Name:RatesModifyEventMessageConverter.java  <br/>
  * Package Name:com.zizaike.open.repository  <br/>
- * Date:2016年1月26日下午6:21:51  <br/>
+ * Date:2016年1月26日下午5:59:24  <br/>
  * Copyright (c) 2016, zizaike.com All Rights Reserved.  
  *  
 */  
@@ -17,37 +17,36 @@ import org.springframework.amqp.support.converter.MessageConversionException;
 import org.springframework.amqp.support.converter.MessageConverter;
 
 import com.alibaba.fastjson.JSON;
-import com.zizaike.entity.open.alibaba.Hotel;
-import com.zizaike.entity.open.alibaba.RatePlan;
+import com.zizaike.entity.open.alibaba.InventoryPriceMap;
 
 /**  
- * ClassName:RatePlanModifyEventMessageConverter <br/>  
+ * ClassName:RatesModifyEventMessageConverter <br/>  
  * Function: TODO ADD FUNCTION. <br/>  
  * Reason:   TODO ADD REASON. <br/>  
- * Date:     2016年1月26日 下午6:21:51 <br/>  
+ * Date:     2016年1月26日 下午5:59:24 <br/>  
  * @author   alex  
  * @version    
  * @since    JDK 1.7  
  * @see        
  */
-public class RatePlanModifyEventMessageConverter implements MessageConverter {
-    private static final Logger LOG = LoggerFactory.getLogger(RatePlanModifyEventMessageConverter.class);
+public class RatesEventMessageConverter implements MessageConverter {
+    private static final Logger LOG = LoggerFactory.getLogger(RatesEventMessageConverter.class);
     private String encoding = "utf-8";
     @Override
     public Object fromMessage(Message message) throws MessageConversionException {
-        RatePlan ratePlan = new RatePlan();
+        InventoryPriceMap inventoryPriceMap = new InventoryPriceMap();
         
         if(message == null){
-            return ratePlan;
+            return inventoryPriceMap;
         }
         String body;
         try {
             body = new String(message.getBody(), encoding);
-            ratePlan = JSON.parseObject(body, RatePlan.class);
-            return ratePlan;
+            inventoryPriceMap = JSON.parseObject(body, InventoryPriceMap.class);
+            return inventoryPriceMap;
         } catch (Exception e) {
             LOG.error("could not parse message", e);
-           return ratePlan;
+           return inventoryPriceMap;
         }
     }
 

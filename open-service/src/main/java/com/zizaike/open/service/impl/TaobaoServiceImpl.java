@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -27,11 +26,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.taobao.api.domain.OrderGuest;
 import com.zizaike.core.common.util.http.HttpProxyUtil;
-import com.zizaike.core.framework.exception.ErrorCode;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.core.framework.exception.open.ErrorCodeFields;
 import com.zizaike.core.framework.exception.open.SystemException;
@@ -64,7 +60,7 @@ import com.zizaike.open.common.util.XstreamUtil;
 @Service
 public class TaobaoServiceImpl implements TaobaoService {
     protected final Logger LOG = LoggerFactory.getLogger(TaobaoServiceImpl.class);
-    @Value("${zizaike.open..alitrip.host}")
+    @Value("${zizaike.open.alitrip.host}")
     private String alitripHost;
     @Autowired
     private HttpProxyUtil httpProxy;
