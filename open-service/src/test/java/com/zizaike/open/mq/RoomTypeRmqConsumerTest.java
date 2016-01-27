@@ -39,7 +39,7 @@ public class RoomTypeRmqConsumerTest extends BaseTest {
         roomType.setExtend("空");
         roomType.setWindowType(1L);
         roomType.setOutHid("534");
-            roomTypeRmqConsumer.reveiveRoomTypeModifyMessage(roomType);
+            roomTypeRmqConsumer.reveiveRoomTypeMessage(roomType);
     }
     
 }

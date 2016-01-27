@@ -41,7 +41,7 @@ public class RoomTypeRmqConsumer {
     private String url;
     @Autowired
     private TaobaoClient taobaoClient;
-    public void reveiveRoomTypeModifyMessage(RoomType object) throws ApiException{
+    public void reveiveRoomTypeMessage(RoomType object) throws ApiException{
         XhotelRoomtypeAddRequest req = new XhotelRoomtypeAddRequest();
         req.setOuterId(object.getOuterId());
         //req.setHid((long)123456);

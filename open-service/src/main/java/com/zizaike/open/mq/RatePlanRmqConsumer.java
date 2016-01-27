@@ -25,7 +25,7 @@ import com.zizaike.entity.open.alibaba.RatePlan;
  */
 @Service("ratePlanRmqConsumer")
 public class RatePlanRmqConsumer {
-    public void reveiveRatePlanModifyMessage(RatePlan object){
+    public void reveiveRatePlanMessage(RatePlan object){
         System.err.println("reveiveRatePlanModifyMessage"+object);
     }
 }

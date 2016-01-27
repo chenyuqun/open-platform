@@ -25,7 +25,7 @@ import com.zizaike.entity.open.alibaba.InventoryPriceMap;
  */
 @Service("ratesRmqConsumer")
 public class RatesRmqConsumer {
-    public void reveiveRatesModifyMessage(InventoryPriceMap object){
+    public void reveiveRatesMessage(InventoryPriceMap object){
         System.err.println("reveiveRatesModifyMessage"+object);
     }
 }

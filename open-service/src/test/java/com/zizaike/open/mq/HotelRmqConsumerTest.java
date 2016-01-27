@@ -22,8 +22,8 @@ import com.zizaike.open.bastest.BaseTest;
 public class HotelRmqConsumerTest extends BaseTest {
     @Autowired
     private HotelRmqConsumer hotelRmqConsumer;
-    @Test(description = "rabbitmq hotel convertAndSend 测试")
-    public void reveiveHotelModifyMessage() throws ZZKServiceException, InterruptedException, ApiException {
+    @Test(description = "rabbitmq hotel addHotelMessage 测试")
+    public void addHotelMessage() throws ZZKServiceException, InterruptedException, ApiException {
             Hotel hotel = new Hotel();
             hotel.setAction(Action.ADD);
             hotel.setOuterId("12345678");
@@ -34,7 +34,21 @@ public class HotelRmqConsumerTest extends BaseTest {
             hotel.setLongitude("121.60190");
             hotel.setPositionType("G");
             hotel.setTel("4008886232");
-            hotelRmqConsumer.reveiveHotelModifyMessage(hotel);
+            hotelRmqConsumer.reveiveHotelMessage(hotel);
+    }
+    @Test(description = "rabbitmq hotel updateHotelMessage 测试")
+    public void updateHotelMessage() throws ZZKServiceException, InterruptedException, ApiException {
+        Hotel hotel = new Hotel();
+        hotel.setAction(Action.UPDATE);
+        hotel.setOuterId("12345678");
+        hotel.setName("自在客总部");
+        hotel.setCity((long) 310100);
+        hotel.setAddress("浦东金科路");
+        hotel.setLatitude("31.20624");
+        hotel.setLongitude("121.60190");
+        hotel.setPositionType("G");
+        hotel.setTel("4008886232");
+        hotelRmqConsumer.reveiveHotelMessage(hotel);
     }
     
 }
