@@ -5,9 +5,9 @@
  * Date:2016年1月6日下午2:23:58  <br/>
  * Copyright (c) 2016, zizaike.com All Rights Reserved.  
  *  
-*/  
-  
-package com.zizaike.open.mq;  
+ */
+
+package com.zizaike.open.mq;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,15 +26,15 @@ import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.alibaba.Action;
 import com.zizaike.entity.open.alibaba.RoomType;
 
-
-/**  
- * ClassName:RoomModifyRmqConsumer <br/>  
- * Function: 房型更新. <br/>  
- * Date:     2016年1月6日 下午2:23:58 <br/>  
- * @author   snow.zhang  
- * @version    
- * @since    JDK 1.7  
- * @see        
+/**
+ * ClassName:RoomModifyRmqConsumer <br/>
+ * Function: 房型更新. <br/>
+ * Date: 2016年1月6日 下午2:23:58 <br/>
+ * 
+ * @author snow.zhang
+ * @version
+ * @since JDK 1.7
+ * @see
  */
 @Service("roomTypeRmqConsumer")
 public class RoomTypeRmqConsumer {
@@ -43,12 +43,13 @@ public class RoomTypeRmqConsumer {
     private String sessionKey;
     @Autowired
     private TaobaoClient taobaoClient;
-    public void reveiveRoomTypeMessage(RoomType roomType) throws ApiException, ZZKServiceException{
+
+    public void reveiveRoomTypeMessage(RoomType roomType) throws ApiException, ZZKServiceException {
         if (roomType == null) {
-            throw new IllegalParamterException("hotel is null");
+            throw new IllegalParamterException("roomType is null");
         }
         if (roomType.getAction() == null) {
-            throw new IllegalParamterException("hotel.action is null");
+            throw new IllegalParamterException("roomType.action is null");
         }
         if (roomType.getAction() == Action.ADD) {
             addRoomType(roomType);
@@ -56,11 +57,12 @@ public class RoomTypeRmqConsumer {
             updateRoomType(roomType);
         }
     }
-    public void addRoomType(RoomType object) throws ApiException{
+
+    public void addRoomType(RoomType object) throws ApiException {
         LOG.info("mqInfo {}", object.toString());
         XhotelRoomtypeAddRequest req = new XhotelRoomtypeAddRequest();
         req.setOuterId(object.getOuterId());
-        //req.setHid((long)123456);
+        // req.setHid((long)123456);
         req.setName(object.getName());
         req.setMaxOccupancy(object.getMaxOccupancy());
         req.setArea(object.getArea());
@@ -71,16 +73,18 @@ public class RoomTypeRmqConsumer {
         req.setService(object.getService());
         req.setExtend(object.getExtend());
         req.setWindowType(object.getWindowType());
-        req.setOutHid(object.getOutHid());;
+        req.setOutHid(object.getOutHid());
+        ;
         req.setPics(object.getPics());
         LOG.info("XhotelRoomtypeAddRequest {}", req.toString());
-        XhotelRoomtypeAddResponse response = taobaoClient.execute(req , sessionKey);
+        XhotelRoomtypeAddResponse response = taobaoClient.execute(req, sessionKey);
         LOG.info("XhotelRoomtypeAddResponse {}", response.getBody().toString());
     }
-    public void updateRoomType(RoomType object) throws ApiException{
+
+    public void updateRoomType(RoomType object) throws ApiException {
         XhotelRoomtypeUpdateRequest req = new XhotelRoomtypeUpdateRequest();
         req.setOuterId(object.getOuterId());
-        //req.setHid((long)123456);
+        // req.setHid((long)123456);
         req.setName(object.getName());
         req.setMaxOccupancy(object.getMaxOccupancy());
         req.setArea(object.getArea());
@@ -93,8 +97,7 @@ public class RoomTypeRmqConsumer {
         req.setWindowType(object.getWindowType());
         req.setPics(object.getPics());
         LOG.info("XhotelRoomtypeUpdateRequest {}", req.toString());
-        XhotelRoomtypeUpdateResponse response = taobaoClient.execute(req , sessionKey);
+        XhotelRoomtypeUpdateResponse response = taobaoClient.execute(req, sessionKey);
         LOG.info("XhotelRoomtypeUpdateResponse {}", response.getBody().toString());
     }
 }
-  
