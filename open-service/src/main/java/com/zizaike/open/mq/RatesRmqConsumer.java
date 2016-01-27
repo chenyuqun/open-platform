@@ -9,9 +9,29 @@
   
 package com.zizaike.open.mq;  
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.taobao.api.ApiException;
+import com.taobao.api.TaobaoClient;
+import com.taobao.api.request.XhotelRateplanAddRequest;
+import com.taobao.api.request.XhotelRateplanUpdateRequest;
+import com.taobao.api.request.XhotelRatesUpdateRequest;
+import com.taobao.api.response.XhotelRateplanAddResponse;
+import com.taobao.api.response.XhotelRateplanUpdateResponse;
+import com.taobao.api.response.XhotelRatesUpdateResponse;
+import com.zizaike.core.framework.exception.IllegalParamterException;
+import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.entity.open.alibaba.Action;
 import com.zizaike.entity.open.alibaba.InventoryPriceMap;
+import com.zizaike.entity.open.alibaba.RatePlan;
+import com.zizaike.entity.open.alibaba.Rates;
 
 /**  
  * ClassName:RatesModifyRmqConsumer <br/>  
@@ -25,8 +45,39 @@ import com.zizaike.entity.open.alibaba.InventoryPriceMap;
  */
 @Service("ratesRmqConsumer")
 public class RatesRmqConsumer {
-    public void reveiveRatesMessage(InventoryPriceMap object){
-        System.err.println("reveiveRatesModifyMessage"+object);
+    protected final Logger LOG = LoggerFactory.getLogger(RatesRmqConsumer.class);
+    @Value("${alibaba.sessionKey}")
+    private String sessionKey;
+    @Autowired
+    private TaobaoClient taobaoClient;
+    
+    public void reveiveRatesMessage(Rates rates) throws ApiException, ZZKServiceException {
+        if (rates == null) {
+            throw new IllegalParamterException("rates is null");
+        }
+        if (rates.getAction() == null) {
+            throw new IllegalParamterException("rates.action is null");
+        }
+//        if (inventoryPriceMap.getAction() == Action.ADD) {
+//            addRates(inventoryPriceMap);
+//        } else if (inventoryPriceMap.getAction() == Action.UPDATE) {
+            updateRates(rates);
+ //       }
     }
+
+    public void updateRates(Rates object) throws ApiException, ZZKServiceException {
+        LOG.info("updateRates mqInfo {}", object.toString());
+        XhotelRatesUpdateRequest req = new XhotelRatesUpdateRequest();
+        try {
+            BeanUtils.copyProperties(req, object);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            LOG.error("updateRates copyProperties exception{}", e);
+        }
+        LOG.info("updateRates XhotelRatesUpdateRequest {}", req.toString());
+        XhotelRatesUpdateResponse response = taobaoClient.execute(req, sessionKey);
+        LOG.info("updateRates XhotelRatesUpdateResponse {}", response.getBody().toString());
+    }
+
 }
   

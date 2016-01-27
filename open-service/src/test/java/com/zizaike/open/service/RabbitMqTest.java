@@ -17,15 +17,19 @@ import org.testng.annotations.Test;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.XhotelRateplanAddRequest;
+import com.taobao.api.request.XhotelRatesUpdateRequest;
 import com.taobao.api.request.XhotelRoomtypeAddRequest;
 import com.taobao.api.request.XhotelUpdateRequest;
 import com.taobao.api.response.XhotelRateplanAddResponse;
+import com.taobao.api.response.XhotelRatesUpdateResponse;
 import com.taobao.api.response.XhotelRoomtypeAddResponse;
 import com.taobao.api.response.XhotelUpdateResponse;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.alibaba.Action;
 import com.zizaike.entity.open.alibaba.Hotel;
+import com.zizaike.entity.open.alibaba.InventoryPriceMap;
 import com.zizaike.entity.open.alibaba.RatePlan;
+import com.zizaike.entity.open.alibaba.Rates;
 import com.zizaike.entity.open.alibaba.RoomType;
 import com.zizaike.open.bastest.BaseTest;
 
@@ -34,6 +38,10 @@ public class RabbitMqTest extends BaseTest {
     AmqpTemplate modifyHotelTemplate;
     @Autowired
     AmqpTemplate modifyRoomTypeTemplate;
+    @Autowired
+    AmqpTemplate modifyRatesTemplate;
+    @Autowired
+    AmqpTemplate modifyRatePlanTemplate;
     XhotelUpdateRequest req = new XhotelUpdateRequest();
    
     @Test(description = "rabbitmq hotel convertAndSend 测试")
@@ -85,29 +93,18 @@ public class RabbitMqTest extends BaseTest {
         ratePlan.setBreakfastCount(1L);
         ratePlan.setCancelPolicy("{\"cancelPolicyType\":1}");
         ratePlan.setStatus(1L);       
-        modifyRoomTypeTemplate.convertAndSend(ratePlan);
+        modifyRatePlanTemplate.convertAndSend(ratePlan);
     }
     
     @Test(description = "rabbitmq rates convertAndSend 测试")
     public void ratesConvertAndSend() throws ZZKServiceException, InterruptedException {
-        
-        RoomType roomType = new RoomType();
-        roomType.setOuterId("534_123");
-        //req.setHid((long)123456);
-        roomType.setName("阮佳佳的别墅");
-        roomType.setMaxOccupancy(2L);
-        roomType.setArea("10平方米");
-        roomType.setFloor("3-5层");
-        roomType.setBedType("大床");
-        roomType.setBedSize("2.1米");
-        roomType.setInternet("A");
-        roomType.setService("{\"bar\":true,\"catv\":false,\"ddd\":false,\"idd\":false,\"pubtoilet\":false,\"toilet\":false}");
-        roomType.setExtend("空");
-        roomType.setWindowType(1L);
-//        req.setSrid(123123L);
-        roomType.setOutHid("534");
-        //req.setVendor("taobao");
-        req.setPics("[{\"url\":\"http://http://img1.zzkcdn.com/c9495cb6542a1ecc3b88a117df4a750dzzkcopr/2000x1500.jpg-homepic800x600.jpg\",\"ismain\":\"true\"}]");
-        modifyRoomTypeTemplate.convertAndSend(roomType);
+        Rates rates=new Rates();
+        //XhotelRatesUpdateRequest req = new XhotelRatesUpdateRequest();
+        rates.setRateInventoryPrcie("[{\"out_rid\":\"12345678_123\",\"rateplan_code\":\"ZIZAIKE_1\",\"vendor\":\"\","
+                + "\"data\":{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-01-28,\"quota\":3,\"price\":1500,\"status\":1},{\"date\":2016-01-29,\"quota\":1,\"price\":2500,\"status\":1}]}},"
+                + "{\"out_rid\":\"12345678_124\",\"rateplan_code\":\"ZIZAIKE_2\",\"vendor\":\"\","
+                + "\"data\":{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-01-28,\"quota\":10,\"price\":2000,\"status\":1},{\"date\":2016-01-29,\"quota\":10,\"price\":4000,\"status\":1}]}}]");
+        rates.setAction(Action.ADD);
+        modifyRatesTemplate.convertAndSend(rates);
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.amqp.support.converter.MessageConverter;
 
 import com.alibaba.fastjson.JSON;
 import com.zizaike.entity.open.alibaba.InventoryPriceMap;
+import com.zizaike.entity.open.alibaba.Rates;
 
 /**  
  * ClassName:RatesModifyEventMessageConverter <br/>  
@@ -34,19 +35,19 @@ public class RatesEventMessageConverter implements MessageConverter {
     private String encoding = "utf-8";
     @Override
     public Object fromMessage(Message message) throws MessageConversionException {
-        InventoryPriceMap inventoryPriceMap = new InventoryPriceMap();
+        Rates rates = new Rates();
         
         if(message == null){
-            return inventoryPriceMap;
+            return rates;
         }
         String body;
         try {
             body = new String(message.getBody(), encoding);
-            inventoryPriceMap = JSON.parseObject(body, InventoryPriceMap.class);
-            return inventoryPriceMap;
+            rates = JSON.parseObject(body, Rates.class);
+            return rates;
         } catch (Exception e) {
             LOG.error("could not parse message", e);
-           return inventoryPriceMap;
+           return rates;
         }
     }
 

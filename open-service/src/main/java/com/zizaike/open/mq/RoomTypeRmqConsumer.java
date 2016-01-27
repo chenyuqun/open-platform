@@ -9,14 +9,27 @@
   
 package com.zizaike.open.mq;  
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.taobao.api.ApiException;
 import com.taobao.api.TaobaoClient;
+import com.taobao.api.request.XhotelRateplanAddRequest;
+import com.taobao.api.request.XhotelRateplanUpdateRequest;
 import com.taobao.api.request.XhotelRoomtypeAddRequest;
+import com.taobao.api.response.XhotelRateplanAddResponse;
+import com.taobao.api.response.XhotelRateplanUpdateResponse;
 import com.taobao.api.response.XhotelRoomtypeAddResponse;
+import com.zizaike.core.framework.exception.IllegalParamterException;
+import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.entity.open.alibaba.Action;
+import com.zizaike.entity.open.alibaba.RoomType;
 import com.zizaike.entity.open.alibaba.RoomType;
 
 
@@ -31,35 +44,52 @@ import com.zizaike.entity.open.alibaba.RoomType;
  */
 @Service("roomTypeRmqConsumer")
 public class RoomTypeRmqConsumer {
-    @Value("${alibaba.appKey}")
-    private String appkey;
+    protected final Logger LOG = LoggerFactory.getLogger(RoomTypeRmqConsumer.class);
     @Value("${alibaba.sessionKey}")
     private String sessionKey;
-    @Value("${alibaba.appSecret}")
-    private String secret;
-    @Value("${alibaba.serverUrl}")
-    private String url;
     @Autowired
     private TaobaoClient taobaoClient;
-    public void reveiveRoomTypeMessage(RoomType object) throws ApiException{
-        XhotelRoomtypeAddRequest req = new XhotelRoomtypeAddRequest();
-        req.setOuterId(object.getOuterId());
-        //req.setHid((long)123456);
-        req.setName(object.getName());
-        req.setMaxOccupancy(object.getMaxOccupancy());
-        req.setArea(object.getArea());
-        req.setFloor(object.getFloor());
-        req.setBedType(object.getBedType());
-        req.setBedSize(object.getBedSize());
-        req.setInternet(object.getInternet());
-        req.setService(object.getService());
-        req.setExtend(object.getExtend());
-        req.setWindowType(object.getWindowType());
-        req.setOutHid(object.getOutHid());;
-        req.setPics(object.getPics());
-        XhotelRoomtypeAddResponse response = taobaoClient.execute(req , sessionKey);
-        System.out.println(response.getBody());       
-        System.err.println("reveiveRoomModifyMessage"+object);
+    
+    public void reveiveRoomTypeMessage(RoomType roomType) throws ApiException, ZZKServiceException {
+        if (roomType == null) {
+            throw new IllegalParamterException("roomType is null");
+        }
+        if (roomType.getAction() == null) {
+            throw new IllegalParamterException("roomType.action is null");
+        }
+        if (roomType.getAction() == Action.ADD) {
+            addRoomType(roomType);
+        } else if (roomType.getAction() == Action.UPDATE) {
+            updateRoomType(roomType);
+        }
+    }
+
+    public void addRoomType(RoomType object) throws ApiException, ZZKServiceException {
+        LOG.info("addRoomType mqInfo {}", object.toString());
+        XhotelRateplanAddRequest req = new XhotelRateplanAddRequest();
+        try {
+            BeanUtils.copyProperties(req, object);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            LOG.error("addRoomType copyProperties exception{}", e);
+        }
+        LOG.info("addRoomType XhotelRateplanAddRequest {}", req.toString());
+        XhotelRateplanAddResponse response = taobaoClient.execute(req, sessionKey);
+        LOG.info("addRoomType XhotelRateplanAddResponse {}", response.getBody().toString());
+    }
+
+    public void updateRoomType(RoomType object) throws ApiException {
+        LOG.info("updateRoomType mqInfo {}", object.toString());
+        XhotelRateplanUpdateRequest req = new XhotelRateplanUpdateRequest();
+        try {
+            BeanUtils.copyProperties(req, object);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            LOG.error("updateRoomType copyProperties exception{}", e);
+        }
+        LOG.info("updateRoomType XhotelRateplanUpdateRequest {}", req.toString());
+        XhotelRateplanUpdateResponse response = taobaoClient.execute(req, sessionKey);
+        LOG.info("updateRoomType XhotelRateplanUpdateResponse {}", response.getBody().toString());
     }
 }
   
