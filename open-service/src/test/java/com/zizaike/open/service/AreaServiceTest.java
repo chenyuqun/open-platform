@@ -15,7 +15,6 @@ import org.testng.annotations.Test;
 
 import com.taobao.api.ApiException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
-import com.zizaike.entity.open.alibaba.Area;
 import com.zizaike.is.open.AreaService;
 import com.zizaike.open.bastest.BaseTest;
 
@@ -33,8 +32,8 @@ public class AreaServiceTest extends BaseTest{
     private AreaService areaService;
     @Test(description = "checkUser")
     public void queryByTypeCode() throws ZZKServiceException, ApiException {
-       Area area =  areaService.queryByTypeCode("1000103");
-       Assert.assertNotNull(area);
+       String areaCode =  areaService.getAreaCodeTypeCode("1000111");
+       Assert.assertNotNull(areaCode);
     }
     
    

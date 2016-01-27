@@ -12,7 +12,6 @@ package com.zizaike.open.mq;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +56,9 @@ public class HotelRmqConsumer {
         }
         if (hotel.getAction() == null) {
             throw new IllegalParamterException("hotel.action is null");
+        }
+        if(hotel.getCity()!=null){
+            hotel.setCity(Long.valueOf(areaService.getAreaCodeTypeCode(""+hotel.getCity())));
         }
         if (hotel.getAction() == Action.ADD) {
             addHotel(hotel);
