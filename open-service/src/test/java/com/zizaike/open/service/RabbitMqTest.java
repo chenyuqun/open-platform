@@ -16,13 +16,16 @@ import org.testng.annotations.Test;
 
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
+import com.taobao.api.request.XhotelRateplanAddRequest;
 import com.taobao.api.request.XhotelRoomtypeAddRequest;
 import com.taobao.api.request.XhotelUpdateRequest;
+import com.taobao.api.response.XhotelRateplanAddResponse;
 import com.taobao.api.response.XhotelRoomtypeAddResponse;
 import com.taobao.api.response.XhotelUpdateResponse;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.alibaba.Action;
 import com.zizaike.entity.open.alibaba.Hotel;
+import com.zizaike.entity.open.alibaba.RatePlan;
 import com.zizaike.entity.open.alibaba.RoomType;
 import com.zizaike.open.bastest.BaseTest;
 
@@ -74,6 +77,20 @@ public class RabbitMqTest extends BaseTest {
     @Test(description = "rabbitmq ratePlan convertAndSend 测试")
     public void ratePlanConvertAndSend() throws ZZKServiceException, InterruptedException {
         
+        RatePlan ratePlan=new RatePlan();
+        ratePlan.setAction(Action.ADD);
+        ratePlan.setRateplanCode("12345AAAAA");
+        ratePlan.setName("含早提前3天");
+        ratePlan.setPaymentType(1L);
+        ratePlan.setBreakfastCount(1L);
+        ratePlan.setCancelPolicy("{\"cancelPolicyType\":1}");
+        ratePlan.setStatus(1L);       
+        modifyRoomTypeTemplate.convertAndSend(ratePlan);
+    }
+    
+    @Test(description = "rabbitmq rates convertAndSend 测试")
+    public void ratesConvertAndSend() throws ZZKServiceException, InterruptedException {
+        
         RoomType roomType = new RoomType();
         roomType.setOuterId("534_123");
         //req.setHid((long)123456);
@@ -93,8 +110,4 @@ public class RabbitMqTest extends BaseTest {
         req.setPics("[{\"url\":\"http://http://img1.zzkcdn.com/c9495cb6542a1ecc3b88a117df4a750dzzkcopr/2000x1500.jpg-homepic800x600.jpg\",\"ismain\":\"true\"}]");
         modifyRoomTypeTemplate.convertAndSend(roomType);
     }
-//    @Test(description = "rabbitmq receiveAndConvert 测试")
-//    public void receiveAndConvert() throws ZZKServiceException, InterruptedException {
-//        System.err.println(modifyRoomTemplate.receiveAndConvert());
-//    }
 }
