@@ -44,9 +44,9 @@ public class HotelEventMessageConverter implements MessageConverter{
             room = JSON.parseObject(body, Hotel.class);
             return room;
         } catch (Exception e) {
-            LOG.error("could not parse message", e);
-           return room;
+            LOG.error("could not parse message exception{},Message{}", e,message);
         }
+        return null;
     }
 
     @Override

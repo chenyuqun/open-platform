@@ -46,9 +46,9 @@ public class RatesEventMessageConverter implements MessageConverter {
             rates = JSON.parseObject(body, Rates.class);
             return rates;
         } catch (Exception e) {
-            LOG.error("could not parse message", e);
-           return rates;
+            LOG.error("could not parse message exception{},Message{}", e,message);
         }
+        return null;
     }
 
     @Override

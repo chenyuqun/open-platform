@@ -17,13 +17,13 @@
 	<rabbit:admin connection-factory="openConnectionFactory" />
     <!-- 异步的线程池，线程池的最在数不能设定太小，不然<rabbit:listener/>/@RabbitListener太多的话，会出现发无法正常消费问题 -->  
   <task:executor id="taskExecutor" pool-size="10-256" keep-alive="30000" queue-capacity="128" />  
-    
+    <!-- acknowledge auto(异常不消费) none(异常也通知消费)-->
 	<rabbit:listener-container
 		connection-factory="openConnectionFactory" 
 		message-converter="roomTypeEventMessageConverter"
 		auto-startup="true" 
 		error-handler="" 
-		acknowledge="auto" 
+		acknowledge="none" 
 		task-executor="taskExecutor" >
 		<rabbit:listener ref="roomTypeRmqConsumer" method="reveiveRoomTypeMessage"
 			queue-names="${open.rabbitmq.roomType.queue}" 
@@ -34,8 +34,8 @@
 		connection-factory="openConnectionFactory" 
 		message-converter="hotelEventMessageConverter"
 		auto-startup="true" 
-		error-handler="" 
-		acknowledge="auto" 
+		error-handler="messageErrorHandler" 
+		acknowledge="none" 
 		task-executor="taskExecutor" >
 		<rabbit:listener ref="hotelRmqConsumer" method="reveiveHotelMessage"
 			queue-names="${open.rabbitmq.hotel.queue}" 
@@ -46,8 +46,8 @@
 		connection-factory="openConnectionFactory" 
 		message-converter="ratesEventMessageConverter"
 		auto-startup="true" 
-		error-handler="" 
-		acknowledge="auto" 
+		error-handler="messageErrorHandler" 
+		acknowledge="none" 
 		task-executor="taskExecutor" >
 		<rabbit:listener ref="ratesRmqConsumer" method="reveiveRatesMessage"
 			queue-names="${open.rabbitmq.rates.queue}" 
@@ -58,11 +58,11 @@
 		connection-factory="openConnectionFactory" 
 		message-converter="ratePlanEventMessageConverter"
 		auto-startup="true" 
-		error-handler="" 
-		acknowledge="auto" 
+		error-handler="messageErrorHandler" 
+		acknowledge="none" 
 		task-executor="taskExecutor" >
 		<rabbit:listener ref="ratePlanRmqConsumer" method="reveiveRatePlanMessage"
-			queue-names="${open.rabbitmq.ratePlan.queue}" 
+			queue-names="${open.rabbitmq.ratePlan.queue}"
 			/>
 	</rabbit:listener-container>
 	
@@ -75,6 +75,6 @@
 	<bean id="ratePlanEventMessageConverter" class="com.zizaike.open.repository.RatePlanEventMessageConverter" />
 	<bean id="ratesRmqConsumer" class="com.zizaike.open.mq.RatesRmqConsumer" />
 	<bean id="ratesEventMessageConverter" class="com.zizaike.open.repository.RatesEventMessageConverter" />
-	
+	<bean id="messageErrorHandler" class="com.zizaike.open.repository.MessageErrorHandler"></bean>
     
 </beans>
