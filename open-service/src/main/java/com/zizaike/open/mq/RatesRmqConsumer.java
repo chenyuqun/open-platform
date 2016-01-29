@@ -18,19 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.taobao.api.ApiException;
 import com.taobao.api.TaobaoClient;
-import com.taobao.api.request.XhotelRateplanAddRequest;
-import com.taobao.api.request.XhotelRateplanUpdateRequest;
 import com.taobao.api.request.XhotelRatesUpdateRequest;
-import com.taobao.api.response.XhotelRateplanAddResponse;
-import com.taobao.api.response.XhotelRateplanUpdateResponse;
 import com.taobao.api.response.XhotelRatesUpdateResponse;
 import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
-import com.zizaike.entity.open.alibaba.Action;
-import com.zizaike.entity.open.alibaba.InventoryPriceMap;
-import com.zizaike.entity.open.alibaba.RatePlan;
 import com.zizaike.entity.open.alibaba.Rates;
 
 /**  
@@ -70,6 +64,7 @@ public class RatesRmqConsumer {
         XhotelRatesUpdateRequest req = new XhotelRatesUpdateRequest();
         try {
             BeanUtils.copyProperties(req, object);
+            req.setRateInventoryPriceMap(JSON.toJSONString(object.getRateInventoryPriceMap()));
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             LOG.error("updateRates copyProperties exception{}", e);

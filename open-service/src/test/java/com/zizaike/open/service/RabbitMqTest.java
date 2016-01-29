@@ -14,20 +14,10 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
-import com.taobao.api.DefaultTaobaoClient;
-import com.taobao.api.TaobaoClient;
-import com.taobao.api.request.XhotelRateplanAddRequest;
-import com.taobao.api.request.XhotelRatesUpdateRequest;
-import com.taobao.api.request.XhotelRoomtypeAddRequest;
 import com.taobao.api.request.XhotelUpdateRequest;
-import com.taobao.api.response.XhotelRateplanAddResponse;
-import com.taobao.api.response.XhotelRatesUpdateResponse;
-import com.taobao.api.response.XhotelRoomtypeAddResponse;
-import com.taobao.api.response.XhotelUpdateResponse;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.alibaba.Action;
 import com.zizaike.entity.open.alibaba.Hotel;
-import com.zizaike.entity.open.alibaba.InventoryPriceMap;
 import com.zizaike.entity.open.alibaba.RatePlan;
 import com.zizaike.entity.open.alibaba.Rates;
 import com.zizaike.entity.open.alibaba.RoomType;
@@ -100,11 +90,11 @@ public class RabbitMqTest extends BaseTest {
     public void ratesConvertAndSend() throws ZZKServiceException, InterruptedException {
         Rates rates=new Rates();
         //XhotelRatesUpdateRequest req = new XhotelRatesUpdateRequest();
-        rates.setRateInventoryPrcie("[{\"out_rid\":\"12345678_123\",\"rateplan_code\":\"ZIZAIKE_1\",\"vendor\":\"\","
-                + "\"data\":{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-01-28,\"quota\":3,\"price\":1500,\"status\":1},{\"date\":2016-01-29,\"quota\":1,\"price\":2500,\"status\":1}]}},"
-                + "{\"out_rid\":\"12345678_124\",\"rateplan_code\":\"ZIZAIKE_2\",\"vendor\":\"\","
-                + "\"data\":{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-01-28,\"quota\":10,\"price\":2000,\"status\":1},{\"date\":2016-01-29,\"quota\":10,\"price\":4000,\"status\":1}]}}]");
-        rates.setAction(Action.ADD);
+//        rates.setRateInventoryPrcie("[{\"out_rid\":\"12345678_123\",\"rateplan_code\":\"ZIZAIKE_1\",\"vendor\":\"\","
+//                + "\"data\":{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-01-28,\"quota\":3,\"price\":1500,\"status\":1},{\"date\":2016-01-29,\"quota\":1,\"price\":2500,\"status\":1}]}},"
+//                + "{\"out_rid\":\"12345678_124\",\"rateplan_code\":\"ZIZAIKE_2\",\"vendor\":\"\","
+//                + "\"data\":{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-01-28,\"quota\":10,\"price\":2000,\"status\":1},{\"date\":2016-01-29,\"quota\":10,\"price\":4000,\"status\":1}]}}]");
+//        rates.setAction(Action.ADD);
         modifyRatesTemplate.convertAndSend(rates);
     }
 }

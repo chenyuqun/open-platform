@@ -17,7 +17,6 @@ import org.springframework.amqp.support.converter.MessageConversionException;
 import org.springframework.amqp.support.converter.MessageConverter;
 
 import com.alibaba.fastjson.JSON;
-import com.zizaike.entity.open.alibaba.InventoryPriceMap;
 import com.zizaike.entity.open.alibaba.Rates;
 
 /**  
