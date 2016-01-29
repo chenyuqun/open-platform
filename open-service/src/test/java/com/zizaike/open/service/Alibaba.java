@@ -9,6 +9,7 @@
   
 package com.zizaike.open.service;  
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.testng.annotations.Test;
 
@@ -59,19 +60,14 @@ import com.zizaike.open.bastest.BaseTest;
  * @see        
  */
 public class Alibaba extends BaseTest{
-    @Value("${alibaba.appkey}")
-    private String appkey;
     @Value("${alibaba.sessionKey}")
     private String sessionKey;
-    @Value("${alibaba.secret}")
-    private String secret;   
-    private String url="http://gw.api.tbsandbox.com/router/rest";
-    TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
+    @Autowired
+    private TaobaoClient client;
     @Test(description = "XhotelGet")
     public void XhotelGet() throws ZZKServiceException, ApiException {
         XhotelGetRequest req = new XhotelGetRequest();
         req.setOuterId("12345678");
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
         XhotelGetResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());      
     }
@@ -82,7 +78,6 @@ public class Alibaba extends BaseTest{
         req.setOuterId("12345678");
         req.setName("自在客");
         req.setCity((long) 310100);
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
         XhotelAddResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
@@ -100,7 +95,6 @@ public class Alibaba extends BaseTest{
         req.setTel("4008886232");
 //        req.setService("{\"receiveForeignGuests\":\"true\",\"morningCall\":\"true\",\"breakfast\":\"true\"}");
 //        req.setHotelPolicies("{\"children_age_from\":\"2\",\"children_age_to\":\"3\",\"children_stay_free\":\"True\",\"infant_age\":\"1\",\"min_guest_age\":\"4\"}");
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
         XhotelUpdateResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
@@ -124,7 +118,6 @@ public class Alibaba extends BaseTest{
         req.setOutHid("534");
         //req.setVendor("taobao");
         req.setPics("[{\"url\":\"http://http://img1.zzkcdn.com/c9495cb6542a1ecc3b88a117df4a750dzzkcopr/2000x1500.jpg-homepic800x600.jpg\",\"ismain\":\"true\"}]");
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret); 
         XhotelRoomtypeAddResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
@@ -132,8 +125,7 @@ public class Alibaba extends BaseTest{
     @Test(description = "房型查询")
     public void xhotelRoomtypeGet() throws ZZKServiceException, ApiException {
         XhotelRoomtypeGetRequest req = new XhotelRoomtypeGetRequest();
-        req.setOuterId("12345678_124");
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret); 
+        req.setOuterId("12345678_124"); 
         XhotelRoomtypeGetResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
@@ -158,7 +150,6 @@ public class Alibaba extends BaseTest{
         //req.setVendor("taobao");
         //req.setPics("[{\"url\":\"http://123.jpg\",\"ismain\":\"true\"},{\"url\":\"http://456.jpg\",\"ismain\":\"false\"},{\"url\":\"http://789.jpg\",\"ismain\":\"false\"}]");
         req.setPics("[{\"url\":\"http://http://img1.zzkcdn.com/c9495cb6542a1ecc3b88a117df4a750dzzkcopr/2000x1500.jpg-homepic800x600.jpg\",\"ismain\":\"true\"}]");
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret); 
         XhotelRoomtypeAddResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
@@ -168,8 +159,7 @@ public class Alibaba extends BaseTest{
         XhotelRoomsIncrementRequest req = new XhotelRoomsIncrementRequest();
         req.setRoomQuotaMap("[{\"out_rid\":\"12345678_123\",\"vendor\":\"\","
                 + "\"roomQuota\":[{\"date\":2010-01-28,\"quota\":10},{\"date\":2010-01-29,\"quota\":10}]},"
-                + "{\"out_rid\":\"12345678_124\",\"vendor\":\"\",\"roomQuota\":[{\"date\":2010-01-28,\"quota\":20},{\"date\":2010-01-29,\"quota\":20}]}]");
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret); 
+                + "{\"out_rid\":\"12345678_124\",\"vendor\":\"\",\"roomQuota\":[{\"date\":2010-01-28,\"quota\":20},{\"date\":2010-01-29,\"quota\":20}]}]"); 
         XhotelRoomsIncrementResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
@@ -217,8 +207,7 @@ public class Alibaba extends BaseTest{
 //        req.setRpType("1");
 //        req.setHourage("4");
 //        req.setCanCheckinEnd("08:00");
-//        req.setCanCheckinStart("16:00");
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);  
+//        req.setCanCheckinStart("16:00"); 
         XhotelRateplanAddResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
@@ -266,8 +255,7 @@ public class Alibaba extends BaseTest{
 //        req.setRpType("1");
 //        req.setHourage("4");
 //        req.setCanCheckinEnd("08:00");
-//        req.setCanCheckinStart("16:00");
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);  
+//        req.setCanCheckinStart("16:00"); 
         XhotelRateplanUpdateResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
                 
@@ -278,8 +266,7 @@ public class Alibaba extends BaseTest{
         XhotelRateplanGetRequest req = new XhotelRateplanGetRequest();
         req.setRpid(5069252626L);
         req.setRateplanCode("12345AAAA");
-        //req.setVendor("taobao");
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);  
+        //req.setVendor("taobao");  
         XhotelRateplanGetResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
@@ -291,8 +278,7 @@ public class Alibaba extends BaseTest{
         req.setRpid(5069252626L);
         req.setRateplanCode("12345AAAA");
         req.setGid(12568017626L);
-        //req.setVendor("taobao");
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);  
+        //req.setVendor("taobao"); 
         XhotelRateGetResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
@@ -304,8 +290,7 @@ public class Alibaba extends BaseTest{
         req.setRateplanCode("ZIZAIKE_1");
         req.setGid(12568017626L);
         req.setOutRid("12345678_123");
-        req.setInventoryPrice("{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-01-30,\"quota\":100,\"price\":500},{\"date\":2016-01-31,\"quota\":100,\"price\":600}]}");
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);  
+        req.setInventoryPrice("{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-01-30,\"quota\":100,\"price\":500},{\"date\":2016-01-31,\"quota\":100,\"price\":600}]}"); 
         XhotelRateUpdateResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
@@ -314,10 +299,9 @@ public class Alibaba extends BaseTest{
     public void xhotelRatesUpdate() throws ZZKServiceException, ApiException {
         XhotelRatesUpdateRequest req = new XhotelRatesUpdateRequest();
         req.setRateInventoryPriceMap("[{\"out_rid\":\"12345678_123\",\"rateplan_code\":\"ZIZAIKE_1\",\"vendor\":\"\","
-                + "\"data\":{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-01-28,\"quota\":3,\"price\":1500,\"status\":1},{\"date\":2016-01-29,\"quota\":1,\"price\":2500,\"status\":1}]}},"
+                + "\"data\":{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-02-28,\"quota\":999,\"price\":1500,\"status\":1},{\"date\":2016-02-29,\"quota\":999,\"price\":2500,\"status\":1}]}},"
                 + "{\"out_rid\":\"12345678_124\",\"rateplan_code\":\"ZIZAIKE_2\",\"vendor\":\"\","
-                + "\"data\":{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-01-28,\"quota\":10,\"price\":2000,\"status\":1},{\"date\":2016-01-29,\"quota\":10,\"price\":4000,\"status\":1}]}}]");
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);  
+                + "\"data\":{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-02-23,\"quota\":123,\"price\":2000,\"status\":1},{\"date\":2016-02-24,\"quota\":345,\"price\":4000,\"status\":0}]}}]"); 
         XhotelRatesUpdateResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
@@ -328,7 +312,6 @@ public class Alibaba extends BaseTest{
         XhotelRateRelationshipwithrpGetRequest req = new XhotelRateRelationshipwithrpGetRequest();
         req.setGid(12568017626L);
         req.setPageNo(1L);
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret); 
         XhotelRateRelationshipwithrpGetResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
@@ -338,15 +321,13 @@ public class Alibaba extends BaseTest{
     public void xhotelRateRelationshipwithroomGet() throws ZZKServiceException, ApiException {
         XhotelRateRelationshipwithroomGetRequest req = new XhotelRateRelationshipwithroomGetRequest();
         req.setRpId(5069252626L);
-        req.setPageNo(1L);
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);  
+        req.setPageNo(1L);  
         XhotelRateRelationshipwithroomGetResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
     
     @Test(description = "酒店订单状态更新接口")
     public void xhotelOrderAlipayfaceUpdate() throws ZZKServiceException, ApiException {
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
         XhotelOrderAlipayfaceUpdateRequest req = new XhotelOrderAlipayfaceUpdateRequest();
         //淘宝订单号 目前无法模拟
         req.setTid(5069252626L);
