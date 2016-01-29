@@ -78,7 +78,7 @@ public class RoomTypeRmqConsumer {
         req.setPics(object.getPics());
         LOG.info("XhotelRoomtypeAddRequest {}", req.toString());
         XhotelRoomtypeAddResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("XhotelRoomtypeAddResponse {}", response.getBody().toString());
+        LOG.info("XhotelRoomtypeAddResponse {}", response.toString());
     }
 
     public void updateRoomType(RoomType object) throws ApiException {
@@ -98,6 +98,6 @@ public class RoomTypeRmqConsumer {
         req.setPics(object.getPics());
         LOG.info("XhotelRoomtypeUpdateRequest {}", req.toString());
         XhotelRoomtypeUpdateResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("XhotelRoomtypeUpdateResponse {}", response.getBody().toString());
+        LOG.info("XhotelRoomtypeUpdateResponse {}", response.toString());
     }
 }

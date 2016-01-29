@@ -88,7 +88,7 @@ public class HotelRmqConsumer {
         // req.setHotelPolicies("{\"children_age_from\":\"2\",\"children_age_to\":\"3\",\"children_stay_free\":\"True\",\"infant_age\":\"1\",\"min_guest_age\":\"4\"}");
         LOG.info("addHotel XhotelAddRequest {}", req.toString());
         XhotelAddResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("addHotel XhotelAddResponse {}", response.getBody().toString());
+        LOG.info("addHotel XhotelAddResponse {}", response.toString());
     }
 
     public void updateHotel(Hotel object) throws ApiException {
@@ -112,6 +112,6 @@ public class HotelRmqConsumer {
         // req.setHotelPolicies("{\"children_age_from\":\"2\",\"children_age_to\":\"3\",\"children_stay_free\":\"True\",\"infant_age\":\"1\",\"min_guest_age\":\"4\"}");
         LOG.info("updateHotel XhotelAddRequest {}", req.toString());
         XhotelUpdateResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("updateHotel response {}", response.getBody().toString());
+        LOG.info("updateHotel response {}", response.toString());
     }
 }

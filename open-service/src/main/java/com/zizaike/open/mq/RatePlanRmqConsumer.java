@@ -78,7 +78,7 @@ public class RatePlanRmqConsumer {
         }
         LOG.info("addRatePlan XhotelRateplanAddRequest {}", req.toString());
         XhotelRateplanAddResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("addRatePlan XhotelRateplanAddResponse {}", response.getBody().toString());
+        LOG.info("addRatePlan XhotelRateplanAddResponse {}", response.toString());
     }
 
     public void updateRatePlan(RatePlan object) throws ApiException {
@@ -92,7 +92,7 @@ public class RatePlanRmqConsumer {
         }
         LOG.info("updateRatePlan XhotelRateplanUpdateRequest {}", req.toString());
         XhotelRateplanUpdateResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("updateRatePlan XhotelRateplanUpdateResponse {}", response.getBody().toString());
+        LOG.info("updateRatePlan XhotelRateplanUpdateResponse {}", response.toString());
     }
     
 }

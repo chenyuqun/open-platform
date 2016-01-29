@@ -76,7 +76,7 @@ public class RatesRmqConsumer {
         }
         LOG.info("updateRates XhotelRatesUpdateRequest {}", req.toString());
         XhotelRatesUpdateResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("updateRates XhotelRatesUpdateResponse {}", response.getBody().toString());
+        LOG.info("updateRates XhotelRatesUpdateResponse {}", response.toString());
     }
 
 }
