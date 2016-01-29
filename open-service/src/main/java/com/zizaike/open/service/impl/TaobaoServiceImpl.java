@@ -73,7 +73,7 @@ public class TaobaoServiceImpl implements TaobaoService {
     public ValidateRQResponse validateRQ(ValidateRQRequest validateRQRequest) throws ZZKServiceException {  
         try {
             
-            Map<String,String> map = new HashMap();
+            Map<String,String> map = new HashMap<String, String>();
             map.put("roomTypeId", validateRQRequest.getRoomTypeId());
             map.put("taoBaoHotelId", validateRQRequest.getTaoBaoHotelId().toString());
             map.put("taoBaoRatePlanId", validateRQRequest.getTaoBaoRatePlanId().toString());
@@ -87,7 +87,6 @@ public class TaobaoServiceImpl implements TaobaoService {
             JSONObject result=httpProxy.httpGet(alitripHost+"validateRQ", map);
             ValidateRQResponse validateRQResponse = new ValidateRQResponse();
             ErrorCodeFields errorCodeFields;
-         //   ErrorCodeFields errorCodeFields;
             if(result.getString("resultCode").equals("200")){
                 /**
                  * 解析返回价格参数
@@ -237,7 +236,7 @@ public class TaobaoServiceImpl implements TaobaoService {
     @Override
     public QueryStatusRQResponse queryStatusRQ(QueryStatusRQRequest queryStatusRQRequest) throws ZZKServiceException{
         try {            
-            Map<String,String> map = new HashMap();
+            Map<String,String> map = new HashMap<String, String>();
             map.put("orderId", queryStatusRQRequest.getOrderId());
             map.put("taoBaoOrderId", Long.toString(queryStatusRQRequest.getTaoBaoOrderId()));
             map.put("hotelId", queryStatusRQRequest.getHotelId());
@@ -273,7 +272,7 @@ public class TaobaoServiceImpl implements TaobaoService {
     @Override
     public CancelRQResponse cancelRQ(CancelRQRequest cancelRQRequest) throws ZZKServiceException{         
         try {            
-            Map<String,String> map = new HashMap();
+            Map<String,String> map = new HashMap<String, String>();
             map.put("orderId", cancelRQRequest.getOrderId());
             map.put("taoBaoOrderId", Long.toString(cancelRQRequest.getTaoBaoOrderId()));
             map.put("hotelId", cancelRQRequest.getHotelId());

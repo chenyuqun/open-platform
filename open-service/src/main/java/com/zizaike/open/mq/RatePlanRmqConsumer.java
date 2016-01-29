@@ -69,7 +69,7 @@ public class RatePlanRmqConsumer {
     }
 
     public void addRatePlan(RatePlan object) throws ApiException, ZZKServiceException {
-        LOG.info("addRatePlan mqInfo {}", object.toString());
+        LOG.debug("addRatePlan mqInfo {}", object.toString());
         XhotelRateplanAddRequest req = new XhotelRateplanAddRequest();
         try {
             BeanUtils.copyProperties(req, object);
@@ -77,13 +77,13 @@ public class RatePlanRmqConsumer {
             e.printStackTrace();
             LOG.error("addRatePlan copyProperties exception{}", e);
         }
-        LOG.info("addRatePlan XhotelRateplanAddRequest {}", ToStringBuilder.reflectionToString(req));
+        LOG.debug("addRatePlan XhotelRateplanAddRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelRateplanAddResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("addRatePlan XhotelRateplanAddResponse {}", ToStringBuilder.reflectionToString(response));
+        LOG.debug("addRatePlan XhotelRateplanAddResponse {}", ToStringBuilder.reflectionToString(response));
     }
 
     public void updateRatePlan(RatePlan object) throws ApiException {
-        LOG.info("updateRatePlan mqInfo {}", object.toString());
+        LOG.debug("updateRatePlan mqInfo {}", object.toString());
         XhotelRateplanUpdateRequest req = new XhotelRateplanUpdateRequest();
         try {
             BeanUtils.copyProperties(req, object);
@@ -91,9 +91,9 @@ public class RatePlanRmqConsumer {
             e.printStackTrace();
             LOG.error("updateRatePlan copyProperties exception{}", e);
         }
-        LOG.info("updateRatePlan XhotelRateplanUpdateRequest {}", ToStringBuilder.reflectionToString(req));
+        LOG.debug("updateRatePlan XhotelRateplanUpdateRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelRateplanUpdateResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("updateRatePlan XhotelRateplanUpdateResponse {}", ToStringBuilder.reflectionToString(response));
+        LOG.debug("updateRatePlan XhotelRateplanUpdateResponse {}", ToStringBuilder.reflectionToString(response));
     }
     
 }
