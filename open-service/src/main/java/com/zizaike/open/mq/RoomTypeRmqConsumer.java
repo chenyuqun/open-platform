@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,9 +97,9 @@ public class RoomTypeRmqConsumer {
             e.printStackTrace();
             LOG.error("addRoomType copyProperties exception{}", e);
         }
-        LOG.info("XhotelRoomtypeAddRequest {}", req.toString());
+        LOG.info("XhotelRoomtypeAddRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelRoomtypeAddResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("XhotelRoomtypeAddResponse {}", response.toString());
+        LOG.info("XhotelRoomtypeAddResponse {}", ToStringBuilder.reflectionToString(response));
     }
 
     public void updateRoomType(RoomType object) throws ApiException {
@@ -130,8 +131,8 @@ public class RoomTypeRmqConsumer {
             e.printStackTrace();
             LOG.error("update copyProperties exception{}", e);
         }
-        LOG.info("XhotelRoomtypeUpdateResponse {}", req.toString());
+        LOG.info("XhotelRoomtypeUpdateResponse {}", ToStringBuilder.reflectionToString(req));
         XhotelRoomtypeUpdateResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("XhotelRoomtypeUpdateResponse {}", response.toString());
+        LOG.info("XhotelRoomtypeUpdateResponse {}", ToStringBuilder.reflectionToString(response));
     }
 }

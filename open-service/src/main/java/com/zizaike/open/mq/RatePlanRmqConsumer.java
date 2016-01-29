@@ -12,6 +12,7 @@ package com.zizaike.open.mq;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,9 +77,9 @@ public class RatePlanRmqConsumer {
             e.printStackTrace();
             LOG.error("addRatePlan copyProperties exception{}", e);
         }
-        LOG.info("addRatePlan XhotelRateplanAddRequest {}", req.toString());
+        LOG.info("addRatePlan XhotelRateplanAddRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelRateplanAddResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("addRatePlan XhotelRateplanAddResponse {}", response.toString());
+        LOG.info("addRatePlan XhotelRateplanAddResponse {}", ToStringBuilder.reflectionToString(response));
     }
 
     public void updateRatePlan(RatePlan object) throws ApiException {
@@ -90,9 +91,9 @@ public class RatePlanRmqConsumer {
             e.printStackTrace();
             LOG.error("updateRatePlan copyProperties exception{}", e);
         }
-        LOG.info("updateRatePlan XhotelRateplanUpdateRequest {}", req.toString());
+        LOG.info("updateRatePlan XhotelRateplanUpdateRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelRateplanUpdateResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("updateRatePlan XhotelRateplanUpdateResponse {}", response.toString());
+        LOG.info("updateRatePlan XhotelRateplanUpdateResponse {}", ToStringBuilder.reflectionToString(response));
     }
     
 }

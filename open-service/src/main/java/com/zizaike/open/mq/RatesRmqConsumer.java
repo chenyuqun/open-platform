@@ -12,6 +12,7 @@ package com.zizaike.open.mq;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,9 +70,9 @@ public class RatesRmqConsumer {
             e.printStackTrace();
             LOG.error("updateRates copyProperties exception{}", e);
         }
-        LOG.info("updateRates XhotelRatesUpdateRequest {}", req.toString());
+        LOG.info("updateRates XhotelRatesUpdateRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelRatesUpdateResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("updateRates XhotelRatesUpdateResponse {}", response.toString());
+        LOG.info("updateRates XhotelRatesUpdateResponse {}", ToStringBuilder.reflectionToString(response));
     }
 
 }

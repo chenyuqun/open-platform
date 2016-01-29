@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,9 +84,9 @@ public class HotelRmqConsumer {
             e.printStackTrace();
             LOG.error("addHotel copyProperties exception{}", e);
         }
-        LOG.info("addHotel XhotelAddRequest {}", req.toString());
+        LOG.info("addHotel XhotelAddRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelAddResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("addHotel XhotelAddResponse {}", response.toString());
+        LOG.info("addHotel XhotelAddResponse {}",  ToStringBuilder.reflectionToString(response));
     }
 
     public void updateHotel(Hotel object) throws ApiException {
@@ -103,8 +104,8 @@ public class HotelRmqConsumer {
             e.printStackTrace();
             LOG.error("updateHotel copyProperties exception{}", e);
         }
-        LOG.info("updateHotel XhotelAddRequest {}", req.toString());
+        LOG.info("updateHotel XhotelAddRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelUpdateResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("updateHotel response {}", response.toString());
+        LOG.info("updateHotel response {}", ToStringBuilder.reflectionToString(response));
     }
 }
