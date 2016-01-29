@@ -69,7 +69,7 @@ public class RoomTypeRmqConsumer {
     }
 
     public void addRoomType(RoomType object) throws ApiException {
-        LOG.info("addRoomType mqInfo {}", object.toString());
+        LOG.debug("addRoomType mqInfo {}", object.toString());
         XhotelRoomtypeAddRequest req = new XhotelRoomtypeAddRequest();
         if(StringUtils.isNotEmpty(object.getInternet())){
             if(object.getInternet().equals("1")){
@@ -97,13 +97,13 @@ public class RoomTypeRmqConsumer {
             e.printStackTrace();
             LOG.error("addRoomType copyProperties exception{}", e);
         }
-        LOG.info("XhotelRoomtypeAddRequest {}", ToStringBuilder.reflectionToString(req));
+        LOG.debug("XhotelRoomtypeAddRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelRoomtypeAddResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("XhotelRoomtypeAddResponse {}", ToStringBuilder.reflectionToString(response));
+        LOG.debug("XhotelRoomtypeAddResponse {}", ToStringBuilder.reflectionToString(response));
     }
 
     public void updateRoomType(RoomType object) throws ApiException {
-        LOG.info("updateRoomType mqInfo {}", object.toString());
+        LOG.debug("updateRoomType mqInfo {}", object.toString());
         XhotelRoomtypeUpdateRequest req = new XhotelRoomtypeUpdateRequest();
         if(StringUtils.isNotEmpty(object.getInternet())){
             if(object.getInternet().equals("1")){
@@ -131,8 +131,8 @@ public class RoomTypeRmqConsumer {
             e.printStackTrace();
             LOG.error("update copyProperties exception{}", e);
         }
-        LOG.info("XhotelRoomtypeUpdateResponse {}", ToStringBuilder.reflectionToString(req));
+        LOG.debug("XhotelRoomtypeUpdateResponse {}", ToStringBuilder.reflectionToString(req));
         XhotelRoomtypeUpdateResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("XhotelRoomtypeUpdateResponse {}", ToStringBuilder.reflectionToString(response));
+        LOG.debug("XhotelRoomtypeUpdateResponse {}", ToStringBuilder.reflectionToString(response));
     }
 }

@@ -70,7 +70,7 @@ public class HotelRmqConsumer {
     }
 
     public void addHotel(Hotel object) throws ApiException, ZZKServiceException {
-        LOG.info("addHotel mqInfo {}", object.toString());
+        LOG.debug("addHotel mqInfo {}", object.toString());
         XhotelAddRequest req = new XhotelAddRequest();
         if(StringUtils.isNotEmpty(object.getLatitude())){
             object.setLatitude(object.getLatitude().substring(0, 10));
@@ -84,13 +84,13 @@ public class HotelRmqConsumer {
             e.printStackTrace();
             LOG.error("addHotel copyProperties exception{}", e);
         }
-        LOG.info("addHotel XhotelAddRequest {}", ToStringBuilder.reflectionToString(req));
+        LOG.debug("addHotel XhotelAddRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelAddResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("addHotel XhotelAddResponse {}",  ToStringBuilder.reflectionToString(response));
+        LOG.debug("addHotel XhotelAddResponse {}",  ToStringBuilder.reflectionToString(response));
     }
 
     public void updateHotel(Hotel object) throws ApiException {
-        LOG.info("updateHotel mqInfo {}", object.toString());
+        LOG.debug("updateHotel mqInfo {}", object.toString());
         XhotelUpdateRequest req = new XhotelUpdateRequest();
         if(StringUtils.isNotEmpty(object.getLatitude())){
             object.setLatitude(object.getLatitude().substring(0, 10));
@@ -104,8 +104,8 @@ public class HotelRmqConsumer {
             e.printStackTrace();
             LOG.error("updateHotel copyProperties exception{}", e);
         }
-        LOG.info("updateHotel XhotelAddRequest {}", ToStringBuilder.reflectionToString(req));
+        LOG.debug("updateHotel XhotelAddRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelUpdateResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("updateHotel response {}", ToStringBuilder.reflectionToString(response));
+        LOG.debug("updateHotel response {}", ToStringBuilder.reflectionToString(response));
     }
 }

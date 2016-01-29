@@ -61,7 +61,7 @@ public class RatesRmqConsumer {
     }
 
     public void updateRates(Rates object) throws ApiException, ZZKServiceException {
-        LOG.info("updateRates mqInfo {}", object.toString());
+        LOG.debug("updateRates mqInfo {}", object.toString());
         XhotelRatesUpdateRequest req = new XhotelRatesUpdateRequest();
         try {
             BeanUtils.copyProperties(req, object);
@@ -70,9 +70,9 @@ public class RatesRmqConsumer {
             e.printStackTrace();
             LOG.error("updateRates copyProperties exception{}", e);
         }
-        LOG.info("updateRates XhotelRatesUpdateRequest {}", ToStringBuilder.reflectionToString(req));
+        LOG.debug("updateRates XhotelRatesUpdateRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelRatesUpdateResponse response = taobaoClient.execute(req, sessionKey);
-        LOG.info("updateRates XhotelRatesUpdateResponse {}", ToStringBuilder.reflectionToString(response));
+        LOG.debug("updateRates XhotelRatesUpdateResponse {}", ToStringBuilder.reflectionToString(response));
     }
 
 }
