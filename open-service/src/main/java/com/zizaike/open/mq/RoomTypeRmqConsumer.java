@@ -9,16 +9,25 @@
 
 package com.zizaike.open.mq;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.taobao.api.ApiException;
 import com.taobao.api.TaobaoClient;
+import com.taobao.api.request.XhotelAddRequest;
 import com.taobao.api.request.XhotelRoomtypeAddRequest;
 import com.taobao.api.request.XhotelRoomtypeUpdateRequest;
+import com.taobao.api.response.XhotelAddResponse;
 import com.taobao.api.response.XhotelRoomtypeAddResponse;
 import com.taobao.api.response.XhotelRoomtypeUpdateResponse;
 import com.zizaike.core.framework.exception.IllegalParamterException;
@@ -59,44 +68,69 @@ public class RoomTypeRmqConsumer {
     }
 
     public void addRoomType(RoomType object) throws ApiException {
-        LOG.info("mqInfo {}", object.toString());
+        LOG.info("addRoomType mqInfo {}", object.toString());
         XhotelRoomtypeAddRequest req = new XhotelRoomtypeAddRequest();
-        req.setOuterId(object.getOuterId());
-        // req.setHid((long)123456);
-        req.setName(object.getName());
-        req.setMaxOccupancy(object.getMaxOccupancy());
-        req.setArea(object.getArea());
-        req.setFloor(object.getFloor());
-        req.setBedType(object.getBedType());
-        req.setBedSize(object.getBedSize());
-        req.setInternet(object.getInternet());
-        req.setService(object.getService());
-        req.setExtend(object.getExtend());
-        req.setWindowType(object.getWindowType());
-        req.setOutHid(object.getOutHid());
-        ;
-        req.setPics(object.getPics());
+        if(StringUtils.isNotEmpty(object.getInternet())){
+            if(object.getInternet().equals("1")){
+                object.setInternet("B");
+            }else if(object.getInternet().equals("0")){
+                object.setInternet("A");
+            }else{
+                object.setInternet(null);
+            }
+        };
+        if(StringUtils.isNotEmpty(object.getService())){
+            HashMap map=JSON.parseObject(object.getService(), new TypeReference<HashMap<String,String>>(){});
+            HashMap serviceMap=new HashMap();
+            if(map.get("1")!=null&&map.get("1").equals("1")){
+                serviceMap.put("catv", "true");
+            }else{
+                serviceMap.put("catv", "false");
+            }
+            object.setService(serviceMap.toString());
+            //object.getService()object.getService()
+        };
+        try {
+            BeanUtils.copyProperties(req, object);     
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            LOG.error("addRoomType copyProperties exception{}", e);
+        }
         LOG.info("XhotelRoomtypeAddRequest {}", req.toString());
         XhotelRoomtypeAddResponse response = taobaoClient.execute(req, sessionKey);
         LOG.info("XhotelRoomtypeAddResponse {}", response.getBody().toString());
     }
 
     public void updateRoomType(RoomType object) throws ApiException {
+        LOG.info("updateRoomType mqInfo {}", object.toString());
         XhotelRoomtypeUpdateRequest req = new XhotelRoomtypeUpdateRequest();
-        req.setOuterId(object.getOuterId());
-        // req.setHid((long)123456);
-        req.setName(object.getName());
-        req.setMaxOccupancy(object.getMaxOccupancy());
-        req.setArea(object.getArea());
-        req.setFloor(object.getFloor());
-        req.setBedType(object.getBedType());
-        req.setBedSize(object.getBedSize());
-        req.setInternet(object.getInternet());
-        req.setService(object.getService());
-        req.setExtend(object.getExtend());
-        req.setWindowType(object.getWindowType());
-        req.setPics(object.getPics());
-        LOG.info("XhotelRoomtypeUpdateRequest {}", req.toString());
+        if(StringUtils.isNotEmpty(object.getInternet())){
+            if(object.getInternet().equals("1")){
+                object.setInternet("B");
+            }else if(object.getInternet().equals("0")){
+                object.setInternet("A");
+            }else{
+                object.setInternet(null);
+            }
+        };
+        if(StringUtils.isNotEmpty(object.getService())){
+            HashMap map=JSON.parseObject(object.getService(), new TypeReference<HashMap<String,String>>(){});
+            HashMap serviceMap=new HashMap();
+            if(map.get("1")!=null&&map.get("1").equals("1")){
+                serviceMap.put("catv", "true");
+            }else{
+                serviceMap.put("catv", "false");
+            }
+            object.setService(serviceMap.toString());
+            //object.getService()object.getService()
+        };
+        try {
+            BeanUtils.copyProperties(req, object);     
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            LOG.error("update copyProperties exception{}", e);
+        }
+        LOG.info("XhotelRoomtypeUpdateResponse {}", req.toString());
         XhotelRoomtypeUpdateResponse response = taobaoClient.execute(req, sessionKey);
         LOG.info("XhotelRoomtypeUpdateResponse {}", response.getBody().toString());
     }

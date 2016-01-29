@@ -12,6 +12,7 @@ package com.zizaike.open.mq;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,22 +71,18 @@ public class HotelRmqConsumer {
     public void addHotel(Hotel object) throws ApiException, ZZKServiceException {
         LOG.info("addHotel mqInfo {}", object.toString());
         XhotelAddRequest req = new XhotelAddRequest();
+        if(StringUtils.isNotEmpty(object.getLatitude())){
+            object.setLatitude(object.getLatitude().substring(0, 10));
+        }
+        if(StringUtils.isNotEmpty(object.getLongitude())){
+            object.setLongitude(object.getLongitude().substring(0, 10));
+        }
         try {
             BeanUtils.copyProperties(req, object);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             LOG.error("addHotel copyProperties exception{}", e);
         }
-        // req.setOuterId(object.getOuterId());
-        // req.setName(object.getName());
-        // req.setCity(object.getCity());
-        // req.setAddress(object.getAddress());
-        // req.setLatitude(object.getLatitude());
-        // req.setLongitude(object.getLongitude());
-        // req.setPositionType(object.getPositionType());
-        // req.setTel(object.getTel());
-        // req.setService("{\"receiveForeignGuests\":\"true\",\"morningCall\":\"true\",\"breakfast\":\"true\"}");
-        // req.setHotelPolicies("{\"children_age_from\":\"2\",\"children_age_to\":\"3\",\"children_stay_free\":\"True\",\"infant_age\":\"1\",\"min_guest_age\":\"4\"}");
         LOG.info("addHotel XhotelAddRequest {}", req.toString());
         XhotelAddResponse response = taobaoClient.execute(req, sessionKey);
         LOG.info("addHotel XhotelAddResponse {}", response.getBody().toString());
@@ -94,22 +91,18 @@ public class HotelRmqConsumer {
     public void updateHotel(Hotel object) throws ApiException {
         LOG.info("updateHotel mqInfo {}", object.toString());
         XhotelUpdateRequest req = new XhotelUpdateRequest();
+        if(StringUtils.isNotEmpty(object.getLatitude())){
+            object.setLatitude(object.getLatitude().substring(0, 10));
+        }
+        if(StringUtils.isNotEmpty(object.getLongitude())){
+            object.setLongitude(object.getLongitude().substring(0, 10));
+        }
         try {
             BeanUtils.copyProperties(req, object);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             LOG.error("updateHotel copyProperties exception{}", e);
         }
-        // req.setOuterId(object.getOuterId());
-        // req.setName(object.getName());
-        // req.setCity(object.getCity());
-        // req.setAddress(object.getAddress());
-        // req.setLatitude(object.getLatitude());
-        // req.setLongitude(object.getLongitude());
-        // req.setPositionType(object.getPositionType());
-        // req.setTel(object.getTel());
-        // req.setService("{\"receiveForeignGuests\":\"true\",\"morningCall\":\"true\",\"breakfast\":\"true\"}");
-        // req.setHotelPolicies("{\"children_age_from\":\"2\",\"children_age_to\":\"3\",\"children_stay_free\":\"True\",\"infant_age\":\"1\",\"min_guest_age\":\"4\"}");
         LOG.info("updateHotel XhotelAddRequest {}", req.toString());
         XhotelUpdateResponse response = taobaoClient.execute(req, sessionKey);
         LOG.info("updateHotel response {}", response.getBody().toString());
