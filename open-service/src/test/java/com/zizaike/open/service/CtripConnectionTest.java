@@ -11,6 +11,8 @@ package com.zizaike.open.service;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,45 +31,31 @@ import com.zizaike.open.common.util.SoapFastUtil;
  * @since    JDK 1.7  
  * @see        
  */
-public class httpUrlConnectionTest extends BaseTest{
+public class CtripConnectionTest extends BaseTest{
     @Test(description = "httpUrl")
     public void xmlSender() throws ZZKServiceException, MalformedURLException {
         URL url = new URL("http://58.221.127.196:8089/hotel/hotel-vendor-commonreceive/commonreceiveservice.asmx");
         String prefix = "soap_template/ctrip";
-        String template = "SetRoomPrice.vm";
-        String SOAPAction = "http://tempuri.org/CheckMember";
+        String template = "GetCtripRoomTypeInfo.vm";
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(currentTime);
+        Map map = new HashMap();
+        map.put("userName", "zhilianjishuzhuanshu");
+        map.put("password", "zhilianzhuanshu11!!");
+        map.put("userId", 204);
+        map.put("date", dateString);
+        map.put("hotelGroupRoomTypeCode", 228215);
+        map.put("hotelGroupHotelCode", 81687);
+        map.put("hotelGroupRatePlanCode", "");
         try {
-          String xmlStr = SoapFastUtil.post(null, prefix, template, url, SOAPAction);
-          System.err.println(xmlStr);
+            for (int i = 0; i < 1000; i++) {
+                String xmlStr = SoapFastUtil.post(map, prefix, template, url, "");
+                System.err.println(xmlStr);
+            }
         } catch (Exception e) {
           e.printStackTrace();
         }
     }
-    @Test(description = "大宁查询会员信息")
-    public void checkMember() {
-      Map model = new HashMap();
-      model.put("callUserCode", "TTPOS");
-      model.put("callPassword", "TTPOS");
-      model.put("telephone", "13757123287");
-      // model.put("telephone", "13793395120");
-      String urlString = "http://180.168.67.66:13252/crm.asmx";
-      URL url = null;
-      try {
-        url = new URL(urlString);
-      } catch (MalformedURLException e) {
-        e.printStackTrace();
-
-      }
-      String prefix = "soap_template/daning";
-      String template = "checkMember.vm";
-      String SOAPAction = "http://tempuri.org/CheckMember";
-      try {
-        String xmlStr = SoapFastUtil.post(model, prefix, template, url, SOAPAction);
-        System.err.println(xmlStr);
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
-   
 }
   

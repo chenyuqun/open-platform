@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap12:Envelope xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">  
+  <soap12:Header>
+	<CtripSoapHeader >
+	  <Login>${userName}</Login>  
+	  <Password>${password}</Password>  
+      <Company>${userId}</Company> 
+  	</CtripSoapHeader>
+  </soap12:Header>
+  <soap12:Body> 
+    <Request xmlns="http://www.ctrip.com/">  
+  <HeaderInfo UserID="${userId}" RequestorId="Ctrip.com" AsyncRequest="false" TimeStamp="${date}">
+    <Authentication UserName="${userName}" Password="${password}"/>
+    <RequestType Name="GetCtripRoomTypeInfo" Version="1.0" />
+  </HeaderInfo>
+  <HotelGroupInterfaceRoomTypeListRequest>
+    <HotelGroupRoomTypeCode>${hotelGroupRoomTypeCode}</HotelGroupRoomTypeCode>
+    <HotelGroupHotelCode>${hotelGroupHotelCode}</HotelGroupHotelCode>
+    <HotelGroupRatePlanCode>${hotelGroupRatePlanCode}</HotelGroupRatePlanCode>
+  </HotelGroupInterfaceRoomTypeListRequest>
+    </Request> 
+  </soap12:Body> 
+</soap12:Envelope>

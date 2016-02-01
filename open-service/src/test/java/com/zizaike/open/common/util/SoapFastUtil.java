@@ -52,7 +52,7 @@ public class SoapFastUtil {
     byte[] buf = xmlReqeust.getBytes();
     httpConn.setRequestProperty("Content-Length", String.valueOf(buf.length));
     httpConn.setRequestProperty("Content-Type", "text/xml; charset=utf-8");
-    httpConn.setRequestProperty("soapActionString", SOAPAction);
+   // httpConn.setRequestProperty("soapActionString", SOAPAction);
     httpConn.setRequestMethod("POST");
     httpConn.setDoOutput(true);
     httpConn.setDoInput(true);
