@@ -10,17 +10,17 @@
 package com.zizaike.open.service;  
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
+import com.zizaike.core.common.util.http.SoapFastUtil;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.open.bastest.BaseTest;
-import com.zizaike.open.common.util.SoapFastUtil;
 
 /**  
  * ClassName:httpUrlConnectionTest <br/>  
@@ -32,9 +32,11 @@ import com.zizaike.open.common.util.SoapFastUtil;
  * @see        
  */
 public class CtripConnectionTest extends BaseTest{
-    @Test(description = "httpUrl")
+    @Autowired
+    private SoapFastUtil soapFastUtil;
+    @Test(description = "获得房型对照")
     public void xmlSender() throws ZZKServiceException, MalformedURLException {
-        URL url = new URL("http://58.221.127.196:8089/hotel/hotel-vendor-commonreceive/commonreceiveservice.asmx");
+        String url = "http://58.221.127.196:8089/hotel/hotel-vendor-commonreceive/commonreceiveservice.asmx";
         String prefix = "soap_template/ctrip";
         String template = "GetCtripRoomTypeInfo.vm";
         Date currentTime = new Date();
@@ -49,10 +51,10 @@ public class CtripConnectionTest extends BaseTest{
         map.put("hotelGroupHotelCode", 81687);
         map.put("hotelGroupRatePlanCode", "");
         try {
-            for (int i = 0; i < 1000; i++) {
-                String xmlStr = SoapFastUtil.post(map, prefix, template, url, "");
+            long start = System.currentTimeMillis();
+                String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
                 System.err.println(xmlStr);
-            }
+              System.err.println(System.currentTimeMillis() - start);  
         } catch (Exception e) {
           e.printStackTrace();
         }
