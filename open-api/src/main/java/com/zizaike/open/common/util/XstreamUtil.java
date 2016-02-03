@@ -2,8 +2,8 @@ package com.zizaike.open.common.util;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-import com.zizaike.entity.open.alibaba.request.RequestData;
-import com.zizaike.entity.open.alibaba.response.ResponseData;
+import com.zizaike.entity.open.RequestData;
+import com.zizaike.entity.open.ResponseData;
 
 public  class XstreamUtil { 
     private static final String xmlHead = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
