@@ -10,7 +10,6 @@
 package com.zizaike.open.service;  
 
 import java.net.MalformedURLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.testng.annotations.Test;
 
 import com.taobao.api.ApiException;
-import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.XhotelAddRequest;
 import com.taobao.api.request.XhotelGetRequest;
