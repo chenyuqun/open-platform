@@ -9,6 +9,8 @@
   
 package com.zizaike.open.controller;  
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,11 +35,13 @@ import com.zizaike.open.BaseAjaxController;
 @Controller
 @RequestMapping("/taobaoService")
 public class TaoBaoController extends BaseAjaxController {
+    protected final Logger LOG = LoggerFactory.getLogger(TaoBaoController.class);
     @Autowired
     private TaobaoService taobaoService;
     @RequestMapping(value = "", method = RequestMethod.POST,produces={"application/xml"},consumes={"application/xml"})
     @ResponseBody
     public String getSearchResult(@RequestBody String xml ) throws ZZKServiceException {
+        LOG.info("taobaoService xml:{}",xml);
        return taobaoService.service(xml);
     }
 }
