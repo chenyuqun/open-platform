@@ -38,7 +38,7 @@ public class TaoBaoController extends BaseAjaxController {
     protected final Logger LOG = LoggerFactory.getLogger(TaoBaoController.class);
     @Autowired
     private TaobaoService taobaoService;
-    @RequestMapping(value = "", method = RequestMethod.POST,produces={"application/xml"},consumes={"application/xml"})
+    @RequestMapping(value = "", method = RequestMethod.POST,produces={"text/xml"},consumes={"text/xml"})
     @ResponseBody
     public String getSearchResult(@RequestBody String xml ) throws ZZKServiceException {
         LOG.info("taobaoService xml:{}",xml);
