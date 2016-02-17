@@ -137,8 +137,8 @@ public class TaobaoServiceImpl implements TaobaoService {
             map.put("checkIn", simpleDateFormat.format(bookRQRequest.getCheckIn()));
             map.put("checkOut", simpleDateFormat.format(bookRQRequest.getCheckOut()));
             map.put("hourRent", bookRQRequest.getHourRent());
-            map.put("earliestArriveTime", simpleDateFormat.format(bookRQRequest.getEarliestArriveTime()));
-            map.put("latestArriveTime", simpleDateFormat.format(bookRQRequest.getLatestArriveTime()));
+            map.put("earliestArriveTime", simpleDateFormatAccurate.format(bookRQRequest.getEarliestArriveTime()));
+            map.put("latestArriveTime", simpleDateFormatAccurate.format(bookRQRequest.getLatestArriveTime()));
             map.put("roomNum", Integer.toString(bookRQRequest.getRoomNum()));
             map.put("totalPrice", Long.toString(bookRQRequest.getTotalPrice()));
             map.put("sellerDiscount", Long.toString(bookRQRequest.getSellerDiscount()));
