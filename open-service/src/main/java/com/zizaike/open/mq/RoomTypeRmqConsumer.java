@@ -10,7 +10,15 @@
 package com.zizaike.open.mq;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -22,6 +30,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.TypeReference;
 import com.taobao.api.ApiException;
 import com.taobao.api.TaobaoClient;
@@ -71,6 +80,9 @@ public class RoomTypeRmqConsumer {
     public void addRoomType(RoomType object) throws ApiException {
         LOG.debug("addRoomType mqInfo {}", object.toString());
         XhotelRoomtypeAddRequest req = new XhotelRoomtypeAddRequest();
+        /**
+         * 互联网
+         */
         if(StringUtils.isNotEmpty(object.getInternet())){
             if(object.getInternet().equals("1")){
                 object.setInternet("B");
@@ -80,6 +92,17 @@ public class RoomTypeRmqConsumer {
                 object.setInternet(null);
             }
         };
+        /**
+         * 面积
+         */
+        if(StringUtils.isNotEmpty(object.getArea())){
+            Pattern p =Pattern.compile("[^0-9]");
+            Matcher m=p.matcher(object.getArea());
+            object.setArea(m.replaceAll("").trim());
+        }
+        /**
+         * 服务
+         */
         if(StringUtils.isNotEmpty(object.getService())){
             HashMap map=JSON.parseObject(object.getService(), new TypeReference<HashMap<String,String>>(){});
             HashMap serviceMap=new HashMap();
@@ -91,6 +114,28 @@ public class RoomTypeRmqConsumer {
             object.setService(serviceMap.toString());
             //object.getService()object.getService()
         };
+        /**
+         * 图片转义
+         */
+        if(StringUtils.isNotEmpty(object.getPics())){
+            HashMap<String,String> hashmap=JSON.parseObject(object.getPics(), new TypeReference<HashMap<String,String>>(){});
+            List<Map<String,String>> pics = new ArrayList<>();
+            Boolean isMain = true;
+            for (String key : hashmap.keySet()) 
+                {
+                Map map = new HashMap();
+                map.put("url", hashmap.get(key));
+                if(isMain==true){
+                    map.put("isMain", "true");
+                    isMain=false;
+                }else{
+                    map.put("isMain", "false");
+                }     
+                 pics.add(map);
+                }
+              
+            object.setPics(JSON.toJSONString(pics));
+        }
         try {
             BeanUtils.copyProperties(req, object);     
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -105,6 +150,9 @@ public class RoomTypeRmqConsumer {
     public void updateRoomType(RoomType object) throws ApiException {
         LOG.debug("updateRoomType mqInfo {}", object.toString());
         XhotelRoomtypeUpdateRequest req = new XhotelRoomtypeUpdateRequest();
+        /**
+         * 网络
+         */
         if(StringUtils.isNotEmpty(object.getInternet())){
             if(object.getInternet().equals("1")){
                 object.setInternet("B");
@@ -114,6 +162,17 @@ public class RoomTypeRmqConsumer {
                 object.setInternet(null);
             }
         };
+        /**
+         * 面积
+         */
+        if(StringUtils.isNotEmpty(object.getArea())){
+            Pattern p =Pattern.compile("[^0-9]");
+            Matcher m=p.matcher(object.getArea());
+            object.setArea(m.replaceAll("").trim());
+        }
+        /**
+         * 服务
+         */
         if(StringUtils.isNotEmpty(object.getService())){
             HashMap map=JSON.parseObject(object.getService(), new TypeReference<HashMap<String,String>>(){});
             HashMap serviceMap=new HashMap();
@@ -125,6 +184,28 @@ public class RoomTypeRmqConsumer {
             object.setService(serviceMap.toString());
             //object.getService()object.getService()
         };
+        /**
+         * 图片转义
+         */
+        if(StringUtils.isNotEmpty(object.getPics())){
+            HashMap<String,String> hashmap=JSON.parseObject(object.getPics(), new TypeReference<HashMap<String,String>>(){});
+            List<Map<String,String>> pics = new ArrayList<>();
+            Boolean isMain = true;
+            for (String key : hashmap.keySet()) 
+                {
+                Map map = new HashMap();
+                map.put("url", hashmap.get(key));
+                if(isMain==true){
+                    map.put("isMain", "true");
+                    isMain=false;
+                }else{
+                    map.put("isMain", "false");
+                }     
+                 pics.add(map);
+                }
+              
+            object.setPics(JSON.toJSONString(pics));
+        }
         try {
             BeanUtils.copyProperties(req, object);     
         } catch (IllegalAccessException | InvocationTargetException e) {
