@@ -226,7 +226,7 @@ public class Alibaba extends BaseTest{
 //        req.setFeeServiceAmount(150L);
 //        req.setFeeServicePercent(15L);
 //        req.setExtendFee("aaa");
-//        req.setMinDays(1L);
+          req.setMinDays(3L);
 //        req.setMaxDays(90L);
 //        req.setMinAmount(1L);
 //        req.setMinAdvHours(1L);
@@ -299,7 +299,7 @@ public class Alibaba extends BaseTest{
     public void xhotelRatesUpdate() throws ZZKServiceException, ApiException {
         XhotelRatesUpdateRequest req = new XhotelRatesUpdateRequest();
         req.setRateInventoryPriceMap("[{\"out_rid\":\"12345678_123\",\"rateplan_code\":\"ZIZAIKE_1\",\"vendor\":\"\","
-                + "\"data\":{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-02-28,\"quota\":999,\"price\":1500,\"status\":1},{\"date\":2016-02-29,\"quota\":999,\"price\":2500,\"status\":1}]}},"
+                + "\"data\":{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-02-23,\"quota\":999,\"price\":100,\"status\":1},{\"date\":2016-02-24,\"quota\":999,\"price\":200,\"status\":1}]}},"
                 + "{\"out_rid\":\"12345678_124\",\"rateplan_code\":\"ZIZAIKE_2\",\"vendor\":\"\","
                 + "\"data\":{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-02-23,\"quota\":123,\"price\":2000,\"status\":1},{\"date\":2016-02-24,\"quota\":345,\"price\":4000,\"status\":0}]}}]"); 
         XhotelRatesUpdateResponse response = client.execute(req , sessionKey);

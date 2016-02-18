@@ -81,6 +81,14 @@ public class RoomTypeRmqConsumer {
         LOG.debug("addRoomType mqInfo {}", object.toString());
         XhotelRoomtypeAddRequest req = new XhotelRoomtypeAddRequest();
         /**
+         * 房型名称不能超过30
+         */
+        if(StringUtils.isNotEmpty(object.getName())){
+            if(object.getName().length()>30){
+                object.setName(object.getName().substring(0, 30));
+            }
+        }
+        /**
          * 互联网
          */
         if(StringUtils.isNotEmpty(object.getInternet())){
@@ -151,6 +159,14 @@ public class RoomTypeRmqConsumer {
         LOG.debug("updateRoomType mqInfo {}", object.toString());
         XhotelRoomtypeUpdateRequest req = new XhotelRoomtypeUpdateRequest();
         /**
+         * 房型名称不能超过30
+         */
+        if(StringUtils.isNotEmpty(object.getName())){
+            if(object.getName().length()>30){
+                object.setName(object.getName().substring(0, 30));
+            }
+        }
+        /**
          * 网络
          */
         if(StringUtils.isNotEmpty(object.getInternet())){
@@ -207,7 +223,8 @@ public class RoomTypeRmqConsumer {
             object.setPics(JSON.toJSONString(pics));
         }
         try {
-            BeanUtils.copyProperties(req, object);     
+            BeanUtils.copyProperties(req, object); 
+            req.setHotelCode(object.getOutHid());
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             LOG.error("update copyProperties exception{}", e);
