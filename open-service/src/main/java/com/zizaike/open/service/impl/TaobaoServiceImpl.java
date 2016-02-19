@@ -158,7 +158,7 @@ public class TaobaoServiceImpl implements TaobaoService {
             map.put("memberCardNo", bookRQRequest.getMemberCardNo());
             map.put("guaranteeType", bookRQRequest.getGuaranteeType());
             map.put("extensions", bookRQRequest.getExtensions());
-            map.put("openTradeNo", Long.toString(bookRQRequest.getAlitripDiscount()));
+            map.put("openTradeNo", bookRQRequest.getAlipayTradeNo());
             /**
              * zizaike下单人数
              */
