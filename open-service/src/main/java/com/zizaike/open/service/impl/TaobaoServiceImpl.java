@@ -246,7 +246,7 @@ public class TaobaoServiceImpl implements TaobaoService {
             if(result.getString("resultCode").equals("200")){
                 
                 queryStatusRQResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
-                queryStatusRQResponse.setTaoBaoOrderId(Long.parseLong(result.getJSONObject("info").getString("taoBaoOrderId")));
+                queryStatusRQResponse.setTaoBaoOrderId(Long.parseLong(result.getJSONObject("info").getString("openOrderId")));
                 queryStatusRQResponse.setStatus(result.getJSONObject("info").getString("status"));
                 queryStatusRQResponse.setBillInfo(JSON.parseObject(result.getJSONObject("info").getString("billInfo"), BillInfo.class));
                 queryStatusRQResponse.setOrderInfo(JSON.parseObject(result.getJSONObject("info").getString("orderInfo"), OrderInfo.class));
