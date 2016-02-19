@@ -75,10 +75,10 @@ public class TaobaoServiceImpl implements TaobaoService {
             
             Map<String,String> map = new HashMap<String, String>();
             map.put("roomTypeId", validateRQRequest.getRoomTypeId());
-            map.put("taoBaoHotelId", validateRQRequest.getTaoBaoHotelId().toString());
-            map.put("taoBaoRatePlanId", validateRQRequest.getTaoBaoRatePlanId().toString());
+            map.put("openHotelId", validateRQRequest.getTaoBaoHotelId().toString());
+            map.put("openRatePlanId", validateRQRequest.getTaoBaoRatePlanId().toString());
             map.put("ratePlanCode", validateRQRequest.getRatePlanCode());
-            map.put("taoBaoGid", validateRQRequest.getTaoBaoGid().toString());
+            map.put("openGid", validateRQRequest.getTaoBaoGid().toString());
             map.put("checkIn", simpleDateFormat.format(validateRQRequest.getCheckIn()));
             map.put("checkOut", simpleDateFormat.format(validateRQRequest.getCheckOut()));
             map.put("roomNum", validateRQRequest.getRoomNum().toString());
@@ -126,14 +126,14 @@ public class TaobaoServiceImpl implements TaobaoService {
     public BookRQResponse bookRQ(BookRQRequest bookRQRequest) throws ZZKServiceException {
         try {
             Map<String,String> map = new HashMap<String,String>();
-            map.put("taoBaoOrderId", Long.toString(bookRQRequest.getTaoBaoOrderId()));
-            map.put("taoBaoHotelId", Long.toString(bookRQRequest.getTaoBaoHotelId()));
+            map.put("openOrderId", Long.toString(bookRQRequest.getTaoBaoOrderId()));
+            map.put("openHotelId", Long.toString(bookRQRequest.getTaoBaoHotelId()));
             map.put("hotelId", bookRQRequest.getHotelId());
-            map.put("taoBaoRoomTypeId", Long.toString(bookRQRequest.getTaoBaoRoomTypeId()));
+            map.put("openRoomTypeId", Long.toString(bookRQRequest.getTaoBaoRoomTypeId()));
             map.put("roomTypeId", bookRQRequest.getRoomTypeId());
-            map.put("taoBaoRatePlanId", Long.toString(bookRQRequest.getTaoBaoRatePlanId()));
+            map.put("openRatePlanId", Long.toString(bookRQRequest.getTaoBaoRatePlanId()));
             map.put("ratePlanCode", bookRQRequest.getRatePlanCode());
-            map.put("taoBaoGid", Long.toString(bookRQRequest.getTaoBaoGid()));
+            map.put("openGid", Long.toString(bookRQRequest.getTaoBaoGid()));
             map.put("checkIn", simpleDateFormat.format(bookRQRequest.getCheckIn()));
             map.put("checkOut", simpleDateFormat.format(bookRQRequest.getCheckOut()));
             map.put("hourRent", bookRQRequest.getHourRent());
@@ -158,7 +158,7 @@ public class TaobaoServiceImpl implements TaobaoService {
             map.put("memberCardNo", bookRQRequest.getMemberCardNo());
             map.put("guaranteeType", bookRQRequest.getGuaranteeType());
             map.put("extensions", bookRQRequest.getExtensions());
-            map.put("alipayTradeNo", Long.toString(bookRQRequest.getAlitripDiscount()));
+            map.put("openTradeNo", Long.toString(bookRQRequest.getAlitripDiscount()));
             /**
              * zizaike下单人数
              */
@@ -238,7 +238,7 @@ public class TaobaoServiceImpl implements TaobaoService {
         try {            
             Map<String,String> map = new HashMap<String, String>();
             map.put("orderId", queryStatusRQRequest.getOrderId());
-            map.put("taoBaoOrderId", Long.toString(queryStatusRQRequest.getTaoBaoOrderId()));
+            map.put("openOrderId", Long.toString(queryStatusRQRequest.getTaoBaoOrderId()));
             map.put("hotelId", queryStatusRQRequest.getHotelId());
             JSONObject result=httpProxy.httpGet(alitripHost+"queryStatusRQ", map);
             QueryStatusRQResponse queryStatusRQResponse = new QueryStatusRQResponse();
@@ -274,7 +274,7 @@ public class TaobaoServiceImpl implements TaobaoService {
         try {            
             Map<String,String> map = new HashMap<String, String>();
             map.put("orderId", cancelRQRequest.getOrderId());
-            map.put("taoBaoOrderId", Long.toString(cancelRQRequest.getTaoBaoOrderId()));
+            map.put("openOrderId", Long.toString(cancelRQRequest.getTaoBaoOrderId()));
             map.put("hotelId", cancelRQRequest.getHotelId());
             map.put("reason", cancelRQRequest.getReason());
             map.put("hardCancel", cancelRQRequest.getHardCancel());
