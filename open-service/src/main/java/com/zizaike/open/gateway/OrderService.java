@@ -11,6 +11,8 @@ package com.zizaike.open.gateway;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.entity.order.request.BookOrderRequest;
+import com.zizaike.entity.order.request.CancelOrderRequest;
 import com.zizaike.entity.order.request.ValidateOrderRequest;
 
 /**  
@@ -34,5 +36,26 @@ public interface OrderService {
      * @since JDK 1.7
      */
     JSONObject validateRQ(ValidateOrderRequest validateOrderRequest)throws ZZKServiceException;
+    /**
+     * 
+     * bookRQ:订单预定. <br/>  
+     * @author alex 
+     * @param bookOrderRequest
+     * @return
+     * @throws ZZKServiceException  
+     * @since JDK 1.7
+     */
+    JSONObject bookRQ(BookOrderRequest bookOrderRequest)throws ZZKServiceException;
+    /**
+     * 
+     * cancelRQ:订单预定. <br/>  
+     * @author alex 
+     * @param cancelOrderRequest
+     * @return
+     * @throws ZZKServiceException  
+     * @since JDK 1.7
+     */
+    JSONObject cancelRQ(CancelOrderRequest cancelOrderRequest)throws ZZKServiceException;
+    
 }
   

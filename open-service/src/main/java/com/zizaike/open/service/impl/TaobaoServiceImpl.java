@@ -45,6 +45,8 @@ import com.zizaike.entity.open.alibaba.response.OrderInfo;
 import com.zizaike.entity.open.alibaba.response.QueryStatusRQResponse;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.alibaba.response.ValidateRQResponse;
+import com.zizaike.entity.order.request.BookOrderRequest;
+import com.zizaike.entity.order.request.CancelOrderRequest;
 import com.zizaike.entity.order.request.ValidateOrderRequest;
 import com.zizaike.is.open.TaobaoService;
 import com.zizaike.is.open.UserService;
@@ -136,52 +138,82 @@ public class TaobaoServiceImpl implements TaobaoService {
 
     @Override
     public BookRQResponse bookRQ(BookRQRequest bookRQRequest) throws ZZKServiceException {
-        try {
-            Map<String,String> map = new HashMap<String,String>();
-            map.put("openOrderId", Long.toString(bookRQRequest.getTaoBaoOrderId()));
-            map.put("openHotelId", Long.toString(bookRQRequest.getTaoBaoHotelId()));
-            map.put("hotelId", bookRQRequest.getHotelId());
-            map.put("openRoomTypeId", Long.toString(bookRQRequest.getTaoBaoRoomTypeId()));
-            map.put("roomTypeId", bookRQRequest.getRoomTypeId());
-            map.put("openRatePlanId", Long.toString(bookRQRequest.getTaoBaoRatePlanId()));
-            map.put("ratePlanCode", bookRQRequest.getRatePlanCode());
-            map.put("openGid", Long.toString(bookRQRequest.getTaoBaoGid()));
-            map.put("checkIn", simpleDateFormat.format(bookRQRequest.getCheckIn()));
-            map.put("checkOut", simpleDateFormat.format(bookRQRequest.getCheckOut()));
-            map.put("hourRent", bookRQRequest.getHourRent());
-            map.put("earliestArriveTime", simpleDateFormatAccurate.format(bookRQRequest.getEarliestArriveTime()));
-            map.put("latestArriveTime", simpleDateFormatAccurate.format(bookRQRequest.getLatestArriveTime()));
-            map.put("roomNum", Integer.toString(bookRQRequest.getRoomNum()));
-            map.put("totalPrice", Long.toString(bookRQRequest.getTotalPrice()));
-            map.put("sellerDiscount", Long.toString(bookRQRequest.getSellerDiscount()));
-            map.put("alitripDiscount", Long.toString(bookRQRequest.getAlitripDiscount()));
-            map.put("currency", bookRQRequest.getCurrency());
-            map.put("paymentType", Integer.toString(bookRQRequest.getPaymentType()));
-            map.put("contactName", bookRQRequest.getContactName());
-            map.put("contactTel", bookRQRequest.getContactTel());
-            map.put("contactEmail", bookRQRequest.getContactEmail());
-            map.put("dailyInfos", JSON.toJSON(bookRQRequest.getDailyInfos()).toString());
-//            map.put("day", bookRQRequest.getExtensions());
-//            map.put("price", bookRQRequest.getPrice());
-            map.put("orderGuests", JSON.toJSON(bookRQRequest.getOrderGuests()).toString());
-//            map.put("name", bookRQRequest);
-//            map.put("roomPos", bookRQRequest.getR);
-            map.put("comment", bookRQRequest.getComment());
-            map.put("memberCardNo", bookRQRequest.getMemberCardNo());
-            map.put("guaranteeType", bookRQRequest.getGuaranteeType());
-            map.put("extensions", bookRQRequest.getExtensions());
-            map.put("openTradeNo", bookRQRequest.getAlipayTradeNo());
-            /**
-             * zizaike下单人数
-             */
-            if(null!=(bookRQRequest.getOrderGuests().getOrderGuests())){
-                List<com.zizaike.entity.open.alibaba.request.BookRQRequest.OrderGuest> orderGuests= bookRQRequest.getOrderGuests().getOrderGuests();
-                map.put("guestNumber", orderGuests.size()>0?Integer.toString(orderGuests.size()):"1");
-            }else{
-                map.put("guestNumber","1");
-            }
+      
+//            Map<String,String> map = new HashMap<String,String>();
+//            map.put("openOrderId", Long.toString(bookRQRequest.getTaoBaoOrderId()));
+//            map.put("openHotelId", Long.toString(bookRQRequest.getTaoBaoHotelId()));
+//            map.put("hotelId", bookRQRequest.getHotelId());
+//            map.put("openRoomTypeId", Long.toString(bookRQRequest.getTaoBaoRoomTypeId()));
+//            map.put("roomTypeId", bookRQRequest.getRoomTypeId());
+//            map.put("openRatePlanId", Long.toString(bookRQRequest.getTaoBaoRatePlanId()));
+//            map.put("ratePlanCode", bookRQRequest.getRatePlanCode());
+//            map.put("openGid", Long.toString(bookRQRequest.getTaoBaoGid()));
+//            map.put("checkIn", simpleDateFormat.format(bookRQRequest.getCheckIn()));
+//            map.put("checkOut", simpleDateFormat.format(bookRQRequest.getCheckOut()));
+//            map.put("hourRent", bookRQRequest.getHourRent());
+//            map.put("earliestArriveTime", simpleDateFormatAccurate.format(bookRQRequest.getEarliestArriveTime()));
+//            map.put("latestArriveTime", simpleDateFormatAccurate.format(bookRQRequest.getLatestArriveTime()));
+//            map.put("roomNum", Integer.toString(bookRQRequest.getRoomNum()));
+//            map.put("totalPrice", Long.toString(bookRQRequest.getTotalPrice()));
+//            map.put("sellerDiscount", Long.toString(bookRQRequest.getSellerDiscount()));
+//            map.put("alitripDiscount", Long.toString(bookRQRequest.getAlitripDiscount()));
+//            map.put("currency", bookRQRequest.getCurrency());
+//            map.put("paymentType", Integer.toString(bookRQRequest.getPaymentType()));
+//            map.put("contactName", bookRQRequest.getContactName());
+//            map.put("contactTel", bookRQRequest.getContactTel());
+//            map.put("contactEmail", bookRQRequest.getContactEmail());
+//            map.put("dailyInfos", JSON.toJSON(bookRQRequest.getDailyInfos()).toString());
+//            map.put("orderGuests", JSON.toJSON(bookRQRequest.getOrderGuests()).toString());
+//            map.put("comment", bookRQRequest.getComment());
+//            map.put("memberCardNo", bookRQRequest.getMemberCardNo());
+//            map.put("guaranteeType", bookRQRequest.getGuaranteeType());
+//            map.put("extensions", bookRQRequest.getExtensions());
+//            map.put("openTradeNo", bookRQRequest.getAlipayTradeNo());
+//            /**
+//             * zizaike下单人数
+//             */
+//            if(null!=(bookRQRequest.getOrderGuests().getOrderGuests())){
+//                List<com.zizaike.entity.open.alibaba.request.BookRQRequest.OrderGuest> orderGuests= bookRQRequest.getOrderGuests().getOrderGuests();
+//                map.put("guestNumber", orderGuests.size()>0?Integer.toString(orderGuests.size()):"1");
+//            }else{
+//                map.put("guestNumber","1");
+//            }
+//            
+//            JSONObject result=httpProxy.httpGet(alitripHost+"bookRQ", map);
+            BookOrderRequest bookOrderRequest = new BookOrderRequest();
+            bookOrderRequest.setAlipayTradeNo(bookRQRequest.getAlipayTradeNo());
+            bookOrderRequest.setAlitripDiscount(bookRQRequest.getAlitripDiscount());
+            bookOrderRequest.setCheckIn(bookRQRequest.getCheckIn());
+            bookOrderRequest.setCheckOut(bookRQRequest.getCheckOut());
+            bookOrderRequest.setComment(bookRQRequest.getComment());
+            bookOrderRequest.setContactEmail(bookRQRequest.getContactEmail());
+            bookOrderRequest.setContactName(bookRQRequest.getContactName());
+            bookOrderRequest.setContactTel(bookRQRequest.getContactTel());
+            bookOrderRequest.setCurrency(bookRQRequest.getCurrency());
+            bookOrderRequest.setDailyInfos(bookRQRequest.getDailyInfos());
+            bookOrderRequest.setEarliestArriveTime(bookRQRequest.getEarliestArriveTime());
+            bookOrderRequest.setExtensions(bookRQRequest.getExtensions());
+            bookOrderRequest.setGuaranteeType(bookRQRequest.getGuaranteeType());
+            bookOrderRequest.setHotelId(bookRQRequest.getHotelId());
+            bookOrderRequest.setHourRent(bookRQRequest.getHourRent());
+            bookOrderRequest.setLatestArriveTime(bookRQRequest.getLatestArriveTime());
+            bookOrderRequest.setMemberCardNo(bookRQRequest.getMemberCardNo());
+            bookOrderRequest.setOrderGuests(bookRQRequest.getOrderGuests());
+            bookOrderRequest.setPaymentType(bookRQRequest.getPaymentType());
+            bookOrderRequest.setRatePlanCode(bookRQRequest.getRatePlanCode());
+            bookOrderRequest.setReceiptInfo(bookRQRequest.getReceiptInfo());
+            bookOrderRequest.setRoomNum(bookRQRequest.getRoomNum());
+            bookOrderRequest.setRoomTypeId(bookRQRequest.getRoomTypeId());
+            bookOrderRequest.setSellerDiscount(bookRQRequest.getSellerDiscount());
+            bookOrderRequest.setOpenGid(bookRQRequest.getTaoBaoGid());
+            bookOrderRequest.setOpenHotelId(bookRQRequest.getTaoBaoHotelId());
+            bookOrderRequest.setOpenOrderId(bookRQRequest.getTaoBaoOrderId());
+            bookOrderRequest.setOpenRatePlanId(bookRQRequest.getTaoBaoRatePlanId());
+            bookOrderRequest.setOpenRoomTypeId(bookRQRequest.getTaoBaoRoomTypeId());
+            bookOrderRequest.setTotalPrice(bookRQRequest.getTotalPrice());
             
-            JSONObject result=httpProxy.httpGet(alitripHost+"bookRQ", map);
+         
+            JSONObject result = orderService.bookRQ(bookOrderRequest);
             BookRQResponse bookRQResponse = new BookRQResponse();
             ErrorCodeFields errorCodeFields;
             /**
@@ -228,19 +260,31 @@ public class TaobaoServiceImpl implements TaobaoService {
                  * 价格校验失败
                  */
                 case "207":
-                    //errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
-                    Map<String,String> pricemap = new HashMap<String, String>();
-                    pricemap.put("roomTypeId", bookRQRequest.getRoomTypeId());
-                    pricemap.put("openHotelId", String.valueOf(bookRQRequest.getTaoBaoHotelId()));
-                    pricemap.put("openRatePlanId", String.valueOf(bookRQRequest.getTaoBaoRatePlanId()));
-                    pricemap.put("ratePlanCode", bookRQRequest.getRatePlanCode());
-                    pricemap.put("openGid", String.valueOf(bookRQRequest.getTaoBaoGid()));
-                    pricemap.put("checkIn", simpleDateFormat.format(bookRQRequest.getCheckIn()));
-                    pricemap.put("checkOut", simpleDateFormat.format(bookRQRequest.getCheckOut()));
-                    pricemap.put("roomNum", String.valueOf(bookRQRequest.getRoomNum()));
-                    pricemap.put("paymentType", String.valueOf(bookRQRequest.getPaymentType()));
-                    //pricemap.put("extensions", bookRQRequest.getExtensions());
-                    JSONObject priceResult=httpProxy.httpGet(alitripHost+"validateRQ", map);
+                                       
+                    ValidateOrderRequest validateOrderRequest = new ValidateOrderRequest();
+                    validateOrderRequest.setRoomTypeId(bookRQRequest.getRoomTypeId());
+                    validateOrderRequest.setOpenHotelId(bookRQRequest.getTaoBaoHotelId()+"");
+                    validateOrderRequest.setOpenRatePlanId(bookRQRequest.getTaoBaoRatePlanId());
+                    validateOrderRequest.setRatePlanCode(bookRQRequest.getRatePlanCode());
+                    validateOrderRequest.setOpenGid(bookRQRequest.getTaoBaoGid()+"");
+                    validateOrderRequest.setCheckIn(bookRQRequest.getCheckIn());
+                    validateOrderRequest.setCheckOut(bookRQRequest.getCheckOut());
+                    validateOrderRequest.setRoomNum(bookRQRequest.getRoomNum());
+                    validateOrderRequest.setPaymentType(bookRQRequest.getPaymentType());
+                    validateOrderRequest.setExtensions(bookRQRequest.getExtensions());
+                    JSONObject priceResult = orderService.validateRQ(validateOrderRequest);                  
+//                    Map<String,String> pricemap = new HashMap<String, String>();
+//                    pricemap.put("roomTypeId", bookRQRequest.getRoomTypeId());
+//                    pricemap.put("openHotelId", String.valueOf(bookRQRequest.getTaoBaoHotelId()));
+//                    pricemap.put("openRatePlanId", String.valueOf(bookRQRequest.getTaoBaoRatePlanId()));
+//                    pricemap.put("ratePlanCode", bookRQRequest.getRatePlanCode());
+//                    pricemap.put("openGid", String.valueOf(bookRQRequest.getTaoBaoGid()));
+//                    pricemap.put("checkIn", simpleDateFormat.format(bookRQRequest.getCheckIn()));
+//                    pricemap.put("checkOut", simpleDateFormat.format(bookRQRequest.getCheckOut()));
+//                    pricemap.put("roomNum", String.valueOf(bookRQRequest.getRoomNum()));
+//                    pricemap.put("paymentType", String.valueOf(bookRQRequest.getPaymentType()));
+//                    //pricemap.put("extensions", bookRQRequest.getExtensions());
+//                    JSONObject priceResult=httpProxy.httpGet(alitripHost+"validateRQ", map);
                     if(priceResult.getString("resultCode").equals("200")){
                         JSONObject object = new JSONObject();  // 创建一个json对象
                         object.put("reason","价格校验失败");
@@ -258,12 +302,6 @@ public class TaobaoServiceImpl implements TaobaoService {
                         errorCodeFields =  ErrorCodeFields.BOOK_FAILURE;
                         break;
                     }
-                    
-                    //break;
-                /**
-                 * 库存校验失败
-                 */
-                //case ""
 //                case "206":
 //                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
 //                    break;
@@ -276,10 +314,6 @@ public class TaobaoServiceImpl implements TaobaoService {
                 }
                 throw new ZZKServiceException(errorCodeFields);
             }
-        } catch (IOException e) {
-            LOG.error("IOException, ex={}", e);
-            throw new SystemException();
-        }
     }
 
     @Override
@@ -326,15 +360,23 @@ public class TaobaoServiceImpl implements TaobaoService {
     }
 
     @Override
-    public CancelRQResponse cancelRQ(CancelRQRequest cancelRQRequest) throws ZZKServiceException{         
-        try {            
-            Map<String,String> map = new HashMap<String, String>();
-            map.put("orderId", cancelRQRequest.getOrderId());
-            map.put("openOrderId", Long.toString(cancelRQRequest.getTaoBaoOrderId()));
-            map.put("hotelId", cancelRQRequest.getHotelId());
-            map.put("reason", cancelRQRequest.getReason());
-            map.put("hardCancel", cancelRQRequest.getHardCancel());
-            JSONObject result=httpProxy.httpGet(alitripHost+"cancelRQ", map);
+    public CancelRQResponse cancelRQ(CancelRQRequest cancelRQRequest) throws ZZKServiceException{                     
+//            Map<String,String> map = new HashMap<String, String>();
+//            map.put("orderId", cancelRQRequest.getOrderId());
+//            map.put("openOrderId", Long.toString(cancelRQRequest.getTaoBaoOrderId()));
+//            map.put("hotelId", cancelRQRequest.getHotelId());
+//            map.put("reason", cancelRQRequest.getReason());
+//            map.put("hardCancel", cancelRQRequest.getHardCancel());
+//            JSONObject result=httpProxy.httpGet(alitripHost+"cancelRQ", map);
+            
+            CancelOrderRequest cancelOrderRequest = new CancelOrderRequest();
+            cancelOrderRequest.setCancelId(cancelRQRequest.getCancelId());
+            cancelOrderRequest.setHardCancel(cancelRQRequest.getHardCancel());
+            cancelOrderRequest.setOpenOrderId(cancelRQRequest.getTaoBaoOrderId());
+            cancelOrderRequest.setOrderId(cancelRQRequest.getOrderId());
+            cancelOrderRequest.setReason(cancelRQRequest.getReason());
+            cancelOrderRequest.setHotelId(cancelRQRequest.getHotelId());   
+            JSONObject result = orderService.cancelRQ(cancelOrderRequest);
             CancelRQResponse cancelRQResponse = new CancelRQResponse();
             ErrorCodeFields errorCodeFields;     
             if(result.getString("resultCode").equals("200")){
@@ -355,10 +397,7 @@ public class TaobaoServiceImpl implements TaobaoService {
                 }
                 throw new ZZKServiceException(errorCodeFields);
             }
-        } catch (IOException e) {
-            LOG.error("IOException, ex={}", e);
-            throw new SystemException();
-        }
+       
     }
 
     @Override
