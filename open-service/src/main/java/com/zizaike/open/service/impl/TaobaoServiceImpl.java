@@ -11,6 +11,7 @@ package com.zizaike.open.service.impl;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,12 +43,15 @@ import com.zizaike.entity.open.alibaba.response.BillInfo;
 import com.zizaike.entity.open.alibaba.response.BookRQResponse;
 import com.zizaike.entity.open.alibaba.response.CancelRQResponse;
 import com.zizaike.entity.open.alibaba.response.OrderInfo;
+import com.zizaike.entity.open.alibaba.response.PriceUnit;
 import com.zizaike.entity.open.alibaba.response.QueryStatusRQResponse;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.alibaba.response.ValidateRQResponse;
 import com.zizaike.entity.order.request.BookOrderRequest;
 import com.zizaike.entity.order.request.CancelOrderRequest;
 import com.zizaike.entity.order.request.ValidateOrderRequest;
+import com.zizaike.entity.order.request.QueryStatusOrderRequest;
+import com.zizaike.entity.order.response.QueryStatusOrderResponse;
 import com.zizaike.is.open.TaobaoService;
 import com.zizaike.is.open.UserService;
 import com.zizaike.open.common.util.XstreamUtil;
@@ -318,18 +322,23 @@ public class TaobaoServiceImpl implements TaobaoService {
 
     @Override
     public QueryStatusRQResponse queryStatusRQ(QueryStatusRQRequest queryStatusRQRequest) throws ZZKServiceException{
-        try {            
-            Map<String,String> map = new HashMap<String, String>();
+          /**  Map<String,String> map = new HashMap<String, String>();
             map.put("orderId", queryStatusRQRequest.getOrderId());
             map.put("openOrderId", Long.toString(queryStatusRQRequest.getTaoBaoOrderId()));
             map.put("hotelId", queryStatusRQRequest.getHotelId());
-            JSONObject result=httpProxy.httpGet(alitripHost+"queryStatusRQ", map);
+            JSONObject result=httpProxy.httpGet(alitripHost+"queryStatusRQ", map); **/
+        QueryStatusOrderRequest queryStatusOrderRequest = new QueryStatusOrderRequest();
+        queryStatusOrderRequest.setHotelId(queryStatusRQRequest.getHotelId());
+        queryStatusOrderRequest.setOpenOrderId(queryStatusRQRequest.getTaoBaoOrderId()+"");
+        queryStatusOrderRequest.setOrderId(queryStatusRQRequest.getOrderId());
+        JSONObject result=orderService.aueryStatusOrder(queryStatusOrderRequest); 
             QueryStatusRQResponse queryStatusRQResponse = new QueryStatusRQResponse();
+            QueryStatusOrderResponse queryStatusOrderResponse  = null;
             ErrorCodeFields errorCodeFields;     
             if(result.getString("resultCode").equals("200")){
-                
+                queryStatusOrderResponse = JSON.parseObject(result.getJSONObject("info").toString(),QueryStatusOrderResponse.class);
                 queryStatusRQResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
-                queryStatusRQResponse.setTaoBaoOrderId(Long.parseLong(result.getJSONObject("info").getString("openOrderId")));
+                queryStatusRQResponse.setTaoBaoOrderId(Long.parseLong(queryStatusOrderResponse.getOpenOrderId()));
                 /**
                  * 订单状态转义
                  */
@@ -338,9 +347,44 @@ public class TaobaoServiceImpl implements TaobaoService {
                 }else{
                     queryStatusRQResponse.setStatus("6");
                 }
-                queryStatusRQResponse.setBillInfo(JSON.parseObject(result.getJSONObject("info").getString("billInfo"), BillInfo.class));
-                queryStatusRQResponse.setOrderInfo(JSON.parseObject(result.getJSONObject("info").getString("orderInfo"), OrderInfo.class));
-                return queryStatusRQResponse;  
+                if(queryStatusOrderResponse.getBillInfo()!=null){
+                    BillInfo billInfo = new BillInfo();
+                    billInfo.setRoomNo(queryStatusOrderResponse.getBillInfo().getRoomNo());
+                    billInfo.setTotalRoomPrice(queryStatusOrderResponse.getBillInfo().getTotalRoomPrice());
+                    List<com.zizaike.entity.order.response.PriceUnit> dailyPrice = queryStatusOrderResponse.getBillInfo().getDailyPrice();
+                    List<com.zizaike.entity.open.alibaba.response.PriceUnit> units = new ArrayList<com.zizaike.entity.open.alibaba.response.PriceUnit>();
+                    for (com.zizaike.entity.order.response.PriceUnit obj : dailyPrice) {
+                        com.zizaike.entity.open.alibaba.response.PriceUnit unit = new com.zizaike.entity.open.alibaba.response.PriceUnit();
+                        unit.setDate(obj.getDate());
+                        unit.setPrice(obj.getPrice());
+                        units.add(unit);
+                    }
+                    List<com.zizaike.entity.order.response.DetailUnit> detailPrice = queryStatusOrderResponse.getBillInfo().getOtherFeeDetail();
+                    List<com.zizaike.entity.open.alibaba.response.DetailUnit> detailUnitlist = new ArrayList<com.zizaike.entity.open.alibaba.response.DetailUnit>();
+                    for (com.zizaike.entity.order.response.DetailUnit obj : detailPrice) {
+                        com.zizaike.entity.open.alibaba.response.DetailUnit unit = new com.zizaike.entity.open.alibaba.response.DetailUnit();
+                        unit.setName(obj.getName());
+                        unit.setPrice(obj.getPrice());
+                        detailUnitlist.add(unit);
+                    }
+                    billInfo.setDailyPrice(units);
+                    billInfo.setOtherFee(queryStatusOrderResponse.getBillInfo().getOtherFee());
+                    billInfo.setOtherFeeDetail(detailUnitlist);
+                    billInfo.setRemark(queryStatusOrderResponse.getBillInfo().getRemark());
+                    queryStatusRQResponse.setBillInfo(billInfo); 
+                }
+                if(queryStatusOrderResponse.getOrderInfo()!=null){
+                    OrderInfo orderInfo = new OrderInfo();
+                    orderInfo.setCheckIn(queryStatusOrderResponse.getOrderInfo().getCheckIn());
+                    orderInfo.setCheckOut(queryStatusOrderResponse.getOrderInfo().getCheckOut());
+                    orderInfo.setRoomQuantity(queryStatusOrderResponse.getOrderInfo().getRoomQuantity());
+                    orderInfo.setHotel(queryStatusOrderResponse.getOrderInfo().getHotel());
+                    orderInfo.setRoomType(queryStatusOrderResponse.getOrderInfo().getRoomType()); 
+                    queryStatusRQResponse.setOrderInfo(orderInfo);
+                }
+               
+                
+                return queryStatusRQResponse;
             }else{
                 
                 switch (result.getString("resultCode")) {
@@ -353,10 +397,6 @@ public class TaobaoServiceImpl implements TaobaoService {
                 }
                 throw new ZZKServiceException(errorCodeFields);
             }
-        } catch (IOException e) {
-            LOG.error("IOException, ex={}", e);
-            throw new SystemException();
-        }
     }
 
     @Override
@@ -441,4 +481,5 @@ public class TaobaoServiceImpl implements TaobaoService {
 
 
 }
+
   

@@ -14,6 +14,7 @@ import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.order.request.BookOrderRequest;
 import com.zizaike.entity.order.request.CancelOrderRequest;
 import com.zizaike.entity.order.request.ValidateOrderRequest;
+import com.zizaike.entity.order.request.QueryStatusOrderRequest;
 
 /**  
  * ClassName:OrderService <br/>  
@@ -46,9 +47,20 @@ public interface OrderService {
      * @since JDK 1.7
      */
     JSONObject bookRQ(BookOrderRequest bookOrderRequest)throws ZZKServiceException;
+     /**
+     * 
+     * QueryStatusOrder:查询订单. <br/>  
+     *  
+     * @author snow.zhang  
+     * @param queryStatusOrderRequest
+     * @return
+     * @throws ZZKServiceException  
+     * @since JDK 1.7
+     */
+    JSONObject aueryStatusOrder(QueryStatusOrderRequest queryStatusOrderRequest)throws ZZKServiceException;
     /**
      * 
-     * cancelRQ:订单预定. <br/>  
+     * cancelRQ:订单取消. <br/>  
      * @author alex 
      * @param cancelOrderRequest
      * @return
@@ -58,4 +70,3 @@ public interface OrderService {
     JSONObject cancelRQ(CancelOrderRequest cancelOrderRequest)throws ZZKServiceException;
     
 }
-  
