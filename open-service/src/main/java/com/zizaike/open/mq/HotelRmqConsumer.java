@@ -72,11 +72,11 @@ public class HotelRmqConsumer {
     public void addHotel(Hotel object) throws ApiException, ZZKServiceException {
         LOG.debug("addHotel mqInfo {}", object.toString());
         XhotelAddRequest req = new XhotelAddRequest();
-        if(StringUtils.isNotEmpty(object.getLatitude())){
-            object.setLatitude(object.getLatitude().substring(0, 10));
+        if(StringUtils.isNotEmpty(object.getLatitude())){          
+            object.setLatitude(object.getLatitude().length()>10?object.getLatitude().substring(0, 10):object.getLatitude());
         }
         if(StringUtils.isNotEmpty(object.getLongitude())){
-            object.setLongitude(object.getLongitude().substring(0, 10));
+            object.setLongitude(object.getLongitude().length()>10?object.getLongitude().substring(0, 10):object.getLongitude());
         }
         try {
             BeanUtils.copyProperties(req, object);
@@ -92,11 +92,11 @@ public class HotelRmqConsumer {
     public void updateHotel(Hotel object) throws ApiException {
         LOG.debug("updateHotel mqInfo {}", object.toString());
         XhotelUpdateRequest req = new XhotelUpdateRequest();
-        if(StringUtils.isNotEmpty(object.getLatitude())){
-            object.setLatitude(object.getLatitude().substring(0, 10));
+        if(StringUtils.isNotEmpty(object.getLatitude())){          
+            object.setLatitude(object.getLatitude().length()>10?object.getLatitude().substring(0, 10):object.getLatitude());
         }
         if(StringUtils.isNotEmpty(object.getLongitude())){
-            object.setLongitude(object.getLongitude().substring(0, 10));
+            object.setLongitude(object.getLongitude().length()>10?object.getLongitude().substring(0, 10):object.getLongitude());
         }
         try {
             BeanUtils.copyProperties(req, object);

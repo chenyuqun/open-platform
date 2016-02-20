@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zizaike.core.common.util.http.HttpProxyUtil;
 import com.zizaike.core.framework.exception.ZZKServiceException;
@@ -223,9 +224,46 @@ public class TaobaoServiceImpl implements TaobaoService {
 //                case "409":
 //                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
 //                    break;
-//                case "2":
-//                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
-//                    break;
+                /**
+                 * 价格校验失败
+                 */
+                case "207":
+                    //errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
+                    Map<String,String> pricemap = new HashMap<String, String>();
+                    pricemap.put("roomTypeId", bookRQRequest.getRoomTypeId());
+                    pricemap.put("openHotelId", String.valueOf(bookRQRequest.getTaoBaoHotelId()));
+                    pricemap.put("openRatePlanId", String.valueOf(bookRQRequest.getTaoBaoRatePlanId()));
+                    pricemap.put("ratePlanCode", bookRQRequest.getRatePlanCode());
+                    pricemap.put("openGid", String.valueOf(bookRQRequest.getTaoBaoGid()));
+                    pricemap.put("checkIn", simpleDateFormat.format(bookRQRequest.getCheckIn()));
+                    pricemap.put("checkOut", simpleDateFormat.format(bookRQRequest.getCheckOut()));
+                    pricemap.put("roomNum", String.valueOf(bookRQRequest.getRoomNum()));
+                    pricemap.put("paymentType", String.valueOf(bookRQRequest.getPaymentType()));
+                    //pricemap.put("extensions", bookRQRequest.getExtensions());
+                    JSONObject priceResult=httpProxy.httpGet(alitripHost+"validateRQ", map);
+                    if(priceResult.getString("resultCode").equals("200")){
+                        JSONObject object = new JSONObject();  // 创建一个json对象
+                        object.put("reason","价格校验失败");
+                        JSONArray resultArray=JSON.parseArray(priceResult.getJSONObject("info").getString("inventoryPrice"));
+                        JSONArray priceArray=new JSONArray();
+                        for(int i=0;i<resultArray.size();i++){
+                            JSONObject daliyPrice=new JSONObject();
+                            daliyPrice.put("date", resultArray.getJSONObject(i).getString("date"));
+                            daliyPrice.put("price", resultArray.getJSONObject(i).getString("price"));
+                            priceArray.add(daliyPrice);
+                        }
+                        object.put("precisDailyPrice", priceArray);
+                        throw new ZZKServiceException("-103",object.toJSONString());
+                    }else{
+                        errorCodeFields =  ErrorCodeFields.BOOK_FAILURE;
+                        break;
+                    }
+                    
+                    //break;
+                /**
+                 * 库存校验失败
+                 */
+                //case ""
 //                case "206":
 //                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
 //                    break;
@@ -258,7 +296,14 @@ public class TaobaoServiceImpl implements TaobaoService {
                 
                 queryStatusRQResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
                 queryStatusRQResponse.setTaoBaoOrderId(Long.parseLong(result.getJSONObject("info").getString("openOrderId")));
-                queryStatusRQResponse.setStatus(result.getJSONObject("info").getString("status"));
+                /**
+                 * 订单状态转义
+                 */
+                if("2".equals(result.getJSONObject("info").getString("status"))||"6".equals(result.getJSONObject("info").getString("status"))){
+                    queryStatusRQResponse.setStatus("1");
+                }else{
+                    queryStatusRQResponse.setStatus("6");
+                }
                 queryStatusRQResponse.setBillInfo(JSON.parseObject(result.getJSONObject("info").getString("billInfo"), BillInfo.class));
                 queryStatusRQResponse.setOrderInfo(JSON.parseObject(result.getJSONObject("info").getString("orderInfo"), OrderInfo.class));
                 return queryStatusRQResponse;  
