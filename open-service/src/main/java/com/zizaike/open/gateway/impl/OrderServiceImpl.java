@@ -26,6 +26,7 @@ import com.zizaike.core.common.util.http.HttpProxyUtil;
 import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.core.framework.exception.open.ErrorCodeFields;
+import com.zizaike.entity.order.request.QueryStatusOrderRequest;
 import com.zizaike.entity.order.request.ValidateOrderRequest;
 import com.zizaike.open.gateway.OrderService;
 
@@ -88,6 +89,33 @@ public class OrderServiceImpl implements OrderService {
             e.printStackTrace();
             LOG.error("validateRQ IOException {}", e.toString());
             throw new ZZKServiceException(ErrorCodeFields.NETWORK_ERROR);
+        }
+        return result;
+    }
+
+    @Override
+    public JSONObject aueryStatusOrder(QueryStatusOrderRequest queryStatusOrderRequest) throws ZZKServiceException {
+        if (queryStatusOrderRequest == null) {
+            throw new IllegalParamterException("queryStatusOrderRequest is null");
+        }
+        if(StringUtils.isEmpty(queryStatusOrderRequest.getHotelId())){
+            throw new IllegalParamterException("hotelId is null");
+        }
+        if(StringUtils.isEmpty(queryStatusOrderRequest.getOpenOrderId())){
+            throw new IllegalParamterException("openOrderId is null");
+        }
+        Map<String,String> map = new HashMap<String, String>();
+        map.put("orderId", queryStatusOrderRequest.getOrderId());
+        map.put("openOrderId", queryStatusOrderRequest.getOpenOrderId());
+        map.put("hotelId", queryStatusOrderRequest.getHotelId());
+        JSONObject result = null;
+        try {
+            result=httpProxy.httpGet(alitripHost+"queryStatusRQ", map);
+        } catch (IOException e) {
+            e.printStackTrace();
+            LOG.error("QueryStatusOrder IOException {}", e.toString());
+            throw new ZZKServiceException(ErrorCodeFields.NETWORK_ERROR);
+            
         }
         return result;
     }
