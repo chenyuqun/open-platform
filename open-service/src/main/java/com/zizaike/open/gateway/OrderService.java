@@ -8,6 +8,11 @@
 */  
   
 package com.zizaike.open.gateway;  
+
+import com.alibaba.fastjson.JSONObject;
+import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.entity.order.request.ValidateOrderRequest;
+
 /**  
  * ClassName:OrderService <br/>  
  * Function:. <br/>  
@@ -18,6 +23,16 @@ package com.zizaike.open.gateway;
  * @see        
  */
 public interface OrderService {
-    
+    /**
+     * 
+     * validateRQ:验证价格库存. <br/>  
+     *  
+     * @author snow.zhang  
+     * @param validateOrderRequest
+     * @return
+     * @throws ZZKServiceException  
+     * @since JDK 1.7
+     */
+    JSONObject validateRQ(ValidateOrderRequest validateOrderRequest)throws ZZKServiceException;
 }
   

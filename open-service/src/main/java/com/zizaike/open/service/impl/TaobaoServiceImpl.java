@@ -44,9 +44,11 @@ import com.zizaike.entity.open.alibaba.response.OrderInfo;
 import com.zizaike.entity.open.alibaba.response.QueryStatusRQResponse;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.alibaba.response.ValidateRQResponse;
+import com.zizaike.entity.order.request.ValidateOrderRequest;
 import com.zizaike.is.open.TaobaoService;
 import com.zizaike.is.open.UserService;
 import com.zizaike.open.common.util.XstreamUtil;
+import com.zizaike.open.gateway.OrderService;
 
 /**  
  * ClassName:TaoBaoServiceImpl <br/>  
@@ -66,14 +68,15 @@ public class TaobaoServiceImpl implements TaobaoService {
     private HttpProxyUtil httpProxy;
     @Autowired
     private UserService userService;
+    @Autowired
+    private OrderService orderService;
     
     SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat simpleDateFormatAccurate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Override
     public ValidateRQResponse validateRQ(ValidateRQRequest validateRQRequest) throws ZZKServiceException {  
-        try {
             
-            Map<String,String> map = new HashMap<String, String>();
+           /** Map<String,String> map = new HashMap<String, String>();
             map.put("roomTypeId", validateRQRequest.getRoomTypeId());
             map.put("openHotelId", validateRQRequest.getTaoBaoHotelId().toString());
             map.put("openRatePlanId", validateRQRequest.getTaoBaoRatePlanId().toString());
@@ -84,7 +87,19 @@ public class TaobaoServiceImpl implements TaobaoService {
             map.put("roomNum", validateRQRequest.getRoomNum().toString());
             map.put("paymentType", validateRQRequest.getPaymentType().toString());
             map.put("extensions", validateRQRequest.getExtensions());
-            JSONObject result=httpProxy.httpGet(alitripHost+"validateRQ", map);
+            JSONObject result=httpProxy.httpGet(alitripHost+"validateRQ", map);**/
+            ValidateOrderRequest validateOrderRequest = new ValidateOrderRequest();
+            validateOrderRequest.setRoomTypeId(validateRQRequest.getRoomTypeId());
+            validateOrderRequest.setOpenHotelId(validateRQRequest.getTaoBaoHotelId()+"");
+            validateOrderRequest.setOpenRatePlanId(validateRQRequest.getTaoBaoRatePlanId());
+            validateOrderRequest.setRatePlanCode(validateRQRequest.getRatePlanCode());
+            validateOrderRequest.setOpenGid(validateRQRequest.getTaoBaoGid()+"");
+            validateOrderRequest.setCheckIn(validateRQRequest.getCheckIn());
+            validateOrderRequest.setCheckOut(validateRQRequest.getCheckOut());
+            validateOrderRequest.setRoomNum(validateRQRequest.getRoomNum());
+            validateOrderRequest.setPaymentType(validateRQRequest.getPaymentType());
+            validateOrderRequest.setExtensions(validateRQRequest.getExtensions());
+            JSONObject result = orderService.validateRQ(validateOrderRequest);
             ValidateRQResponse validateRQResponse = new ValidateRQResponse();
             ErrorCodeFields errorCodeFields;
             if(result.getString("resultCode").equals("200")){
@@ -116,10 +131,6 @@ public class TaobaoServiceImpl implements TaobaoService {
                 }
                 throw new ZZKServiceException(errorCodeFields);
             }
-        } catch (IOException e) {
-            LOG.error("IOException, ex={}", e);
-            throw new SystemException();
-        }
     }
 
     @Override
