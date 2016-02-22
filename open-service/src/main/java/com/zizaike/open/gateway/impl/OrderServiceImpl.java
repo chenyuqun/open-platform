@@ -103,6 +103,9 @@ public class OrderServiceImpl implements OrderService {
         if (bookOrderRequest == null) {
             throw new IllegalParamterException("bookOrderRequest is null");
         }
+        if(bookOrderRequest.getOpenChannelType()==null){
+            throw new IllegalParamterException("openChannelType is null");
+        }
         if(StringUtils.isEmpty(bookOrderRequest.getRoomTypeId())){
             throw new IllegalParamterException("roomTypeId is null");
         }
@@ -119,8 +122,8 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalParamterException("paymentType is not 1");
         }
         Map<String, String> map = new HashMap<String, String>();
-      map.put("openOrderId", Long.toString(bookOrderRequest.getOpenOrderId()));
-      map.put("openHotelId", Long.toString(bookOrderRequest.getOpenHotelId()));
+      map.put("openOrderId", bookOrderRequest.getOpenChannelType()+bookOrderRequest.getOpenOrderId());
+      map.put("openHotelId",  bookOrderRequest.getOpenChannelType()+bookOrderRequest.getOpenHotelId());
       map.put("hotelId", bookOrderRequest.getHotelId());
       map.put("openRoomTypeId", Long.toString(bookOrderRequest.getOpenRoomTypeId()));
       map.put("roomTypeId", bookOrderRequest.getRoomTypeId());
@@ -175,12 +178,15 @@ public class OrderServiceImpl implements OrderService {
         if (cancelOrderRequest == null) {
             throw new IllegalParamterException("cancelOrderRequest is null");
         }
-        if(cancelOrderRequest.getOpenOrderId()==0){
+        if(cancelOrderRequest.getOpenChannelType()==null){
+            throw new IllegalParamterException("openChannelType is null");
+        }
+        if(StringUtils.isEmpty(cancelOrderRequest.getOpenOrderId())){
             throw new IllegalParamterException("openOrderId is null");
         }
         Map<String,String> map = new HashMap<String, String>();
           map.put("orderId", cancelOrderRequest.getOrderId());
-          map.put("openOrderId", Long.toString(cancelOrderRequest.getOpenOrderId()));
+          map.put("openOrderId",  cancelOrderRequest.getOpenChannelType()+cancelOrderRequest.getOpenOrderId());
           map.put("hotelId", cancelOrderRequest.getHotelId());
           map.put("reason", cancelOrderRequest.getReason());
           map.put("hardCancel", cancelOrderRequest.getHardCancel());
@@ -200,6 +206,9 @@ public class OrderServiceImpl implements OrderService {
         if (queryStatusOrderRequest == null) {
             throw new IllegalParamterException("queryStatusOrderRequest is null");
         }
+        if(queryStatusOrderRequest.getOpenChannelType()==null){
+            throw new IllegalParamterException("openChannelType is null");
+        }
         if(StringUtils.isEmpty(queryStatusOrderRequest.getHotelId())){
             throw new IllegalParamterException("hotelId is null");
         }
@@ -208,7 +217,7 @@ public class OrderServiceImpl implements OrderService {
         }
         Map<String,String> map = new HashMap<String, String>();
         map.put("orderId", queryStatusOrderRequest.getOrderId());
-        map.put("openOrderId", queryStatusOrderRequest.getOpenOrderId());
+        map.put("openOrderId", queryStatusOrderRequest.getOpenChannelType()+queryStatusOrderRequest.getOpenOrderId());
         map.put("hotelId", queryStatusOrderRequest.getHotelId());
         JSONObject result = null;
         try {

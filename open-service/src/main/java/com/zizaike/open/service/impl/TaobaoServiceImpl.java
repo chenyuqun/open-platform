@@ -29,6 +29,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.zizaike.core.common.util.http.HttpProxyUtil;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.core.framework.exception.open.ErrorCodeFields;
+import com.zizaike.entity.open.OpenChannelType;
 import com.zizaike.entity.open.User;
 import com.zizaike.entity.open.alibaba.InventoryPrice;
 import com.zizaike.entity.open.alibaba.request.BookRQRequest;
@@ -205,12 +206,12 @@ public class TaobaoServiceImpl implements TaobaoService {
             bookOrderRequest.setRoomTypeId(bookRQRequest.getRoomTypeId());
             bookOrderRequest.setSellerDiscount(bookRQRequest.getSellerDiscount());
             bookOrderRequest.setOpenGid(bookRQRequest.getTaoBaoGid());
-            bookOrderRequest.setOpenHotelId(bookRQRequest.getTaoBaoHotelId());
-            bookOrderRequest.setOpenOrderId(bookRQRequest.getTaoBaoOrderId());
+            bookOrderRequest.setOpenHotelId(bookRQRequest.getTaoBaoHotelId()+"");
+            bookOrderRequest.setOpenOrderId(bookRQRequest.getTaoBaoOrderId()+"");
             bookOrderRequest.setOpenRatePlanId(bookRQRequest.getTaoBaoRatePlanId());
             bookOrderRequest.setOpenRoomTypeId(bookRQRequest.getTaoBaoRoomTypeId());
             bookOrderRequest.setTotalPrice(bookRQRequest.getTotalPrice());
-            
+            bookOrderRequest.setOpenChannelType(OpenChannelType.ALITRIP);
          
             JSONObject result = orderService.bookRQ(bookOrderRequest);
             BookRQResponse bookRQResponse = new BookRQResponse();
@@ -326,6 +327,7 @@ public class TaobaoServiceImpl implements TaobaoService {
         queryStatusOrderRequest.setHotelId(queryStatusRQRequest.getHotelId());
         queryStatusOrderRequest.setOpenOrderId(queryStatusRQRequest.getTaoBaoOrderId()+"");
         queryStatusOrderRequest.setOrderId(queryStatusRQRequest.getOrderId());
+        queryStatusOrderRequest.setOpenChannelType(OpenChannelType.ALITRIP);
         JSONObject result=orderService.aueryStatusOrder(queryStatusOrderRequest); 
             QueryStatusRQResponse queryStatusRQResponse = new QueryStatusRQResponse();
             QueryStatusOrderResponse queryStatusOrderResponse  = null;
@@ -405,9 +407,10 @@ public class TaobaoServiceImpl implements TaobaoService {
 //            JSONObject result=httpProxy.httpGet(alitripHost+"cancelRQ", map);
             
             CancelOrderRequest cancelOrderRequest = new CancelOrderRequest();
+            cancelOrderRequest.setOpenChannelType(OpenChannelType.ALITRIP);
             cancelOrderRequest.setCancelId(cancelRQRequest.getCancelId());
             cancelOrderRequest.setHardCancel(cancelRQRequest.getHardCancel());
-            cancelOrderRequest.setOpenOrderId(cancelRQRequest.getTaoBaoOrderId());
+            cancelOrderRequest.setOpenOrderId(cancelRQRequest.getTaoBaoOrderId()+"");
             cancelOrderRequest.setOrderId(cancelRQRequest.getOrderId());
             cancelOrderRequest.setReason(cancelRQRequest.getReason());
             cancelOrderRequest.setHotelId(cancelRQRequest.getHotelId());   
