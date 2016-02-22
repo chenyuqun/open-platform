@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                http://www.springframework.org/schema/rabbit
+                http://www.springframework.org/schema/rabbit/spring-rabbit-1.4.xsd
+                http://www.springframework.org/schema/task  
+    http://www.springframework.org/schema/task/spring-task-4.1.xsd">
+	<!-- 连接服务配置 -->
+	<rabbit:connection-factory id="openConnectionFactory"
+		host="${open.rabbitmq.host}" username="${open.rabbitmq.username}"
+		password="${open.rabbitmq.password}" port="${open.rabbitmq.port}"
+		virtual-host="${open.rabbitmq.vhost}" channel-cache-size="${open.rabbitmq.channelCacheSize}" />
+
+	<rabbit:admin connection-factory="openConnectionFactory" />
+    <!-- 异步的线程池，线程池的最在数不能设定太小，不然<rabbit:listener/>/@RabbitListener太多的话，会出现发无法正常消费问题 -->  
+  <task:executor id="taskExecutor" pool-size="10-256" keep-alive="30000" queue-capacity="128" />  
+    <!-- acknowledge auto(异常不消费) none(异常也通知消费)-->
+	<rabbit:listener-container
+		connection-factory="openConnectionFactory" 
+		message-converter="roomTypeEventMessageConverter"
+		auto-startup="true" 
+		error-handler="" 
+		acknowledge="none" 
+		task-executor="taskExecutor" >
+		<rabbit:listener ref="roomTypeRmqConsumer" method="reveiveRoomTypeMessage"
+			queue-names="${open.rabbitmq.roomType.queue}" 
+			/>
+	</rabbit:listener-container>
+	
+	<rabbit:listener-container
+		connection-factory="openConnectionFactory" 
+		message-converter="hotelEventMessageConverter"
+		auto-startup="true" 
+		error-handler="messageErrorHandler" 
+		acknowledge="none" 
+		task-executor="taskExecutor" >
+		<rabbit:listener ref="hotelRmqConsumer" method="reveiveHotelMessage"
+			queue-names="${open.rabbitmq.hotel.queue}" 
+			/>
+	</rabbit:listener-container>
+	
+<rabbit:listener-container
+		connection-factory="openConnectionFactory" 
+		message-converter="ratesEventMessageConverter"
+		auto-startup="true" 
+		error-handler="messageErrorHandler" 
+		acknowledge="none" 
+		task-executor="taskExecutor" >
+		<rabbit:listener ref="ratesRmqConsumer" method="reveiveRatesMessage"
+			queue-names="${open.rabbitmq.rates.queue}" 
+			/>
+	</rabbit:listener-container>
+	
+		<rabbit:listener-container
+		connection-factory="openConnectionFactory" 
+		message-converter="ratePlanEventMessageConverter"
+		auto-startup="true" 
+		error-handler="messageErrorHandler" 
+		acknowledge="none" 
+		task-executor="taskExecutor" >
+		<rabbit:listener ref="ratePlanRmqConsumer" method="reveiveRatePlanMessage"
+			queue-names="${open.rabbitmq.ratePlan.queue}"
+			/>
+	</rabbit:listener-container>
+	
+
+	<bean id="roomTypeRmqConsumer" class="com.zizaike.open.mq.RoomTypeRmqConsumer" />
+	<bean id="roomTypeEventMessageConverter" class="com.zizaike.open.repository.RoomTypeEventMessageConverter" />
+	<bean id="hotelRmqConsumer" class="com.zizaike.open.mq.HotelRmqConsumer" />
+	<bean id="hotelEventMessageConverter" class="com.zizaike.open.repository.HotelEventMessageConverter" />
+	<bean id="ratePlanRmqConsumer" class="com.zizaike.open.mq.RatePlanRmqConsumer" />
+	<bean id="ratePlanEventMessageConverter" class="com.zizaike.open.repository.RatePlanEventMessageConverter" />
+	<bean id="ratesRmqConsumer" class="com.zizaike.open.mq.RatesRmqConsumer" />
+	<bean id="ratesEventMessageConverter" class="com.zizaike.open.repository.RatesEventMessageConverter" />
+	<bean id="messageErrorHandler" class="com.zizaike.open.repository.MessageErrorHandler"></bean>
+    
+</beans>

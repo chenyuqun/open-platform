@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                http://www.springframework.org/schema/context
+                http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                http://www.springframework.org/schema/task
+                http://www.springframework.org/schema/task/spring-task-4.0.xsd
+                http://www.springframework.org/schema/aop    
+                http://www.springframework.org/schema/aop/spring-aop-4.0.xsd  
+                http://www.springframework.org/schema/tx
+                http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<!-- httpProxy初始化 -->
+	<bean id="httpComponent" class="com.zizaike.core.common.util.http.HttpComponent" />
+	<bean id="httpProxy" class="com.zizaike.core.common.util.http.HttpProxyUtil">
+		<!-- 单个站点最大允许连接 -->
+		<constructor-arg name="maxPerRoute" value="${http.maxPerRoute}" />
+		<!-- 最大允许连接数 -->
+		<constructor-arg name="maxTotal" value="${http.maxTotal}" />
+		<!-- 连接超时时间 -->
+		<constructor-arg name="connTimeout" value="${http.connTimeout}" />
+		<!-- 数据接收超时时间 -->
+		<constructor-arg name="soTimeout" value="${http.soTimeout}" />
+		<!-- 是否进行陈旧连接检查, 如果不开启, 则启动陈旧连接关闭线程 -->
+		<constructor-arg name="staleConnCheck" value="${http.staleConnCheck}"/>
+	</bean>
+	<!-- taobaoClient -->
+	<bean id="taobaoClient" class="com.taobao.api.DefaultTaobaoClient">
+		<constructor-arg name="serverUrl" value="${alibaba.serverUrl}" />
+		<constructor-arg name="appKey" value="${alibaba.appKey}" />
+		<constructor-arg name="appSecret" value="${alibaba.appSecret}" />
+	</bean>
+	
+
+</beans>

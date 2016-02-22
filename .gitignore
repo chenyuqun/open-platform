@@ -1,0 +1,17 @@
+.settings
+.classpath
+.project
+classes
+.idea
+/.checkstyle
+/ws/*
+/target/*
+/bin/*
+/*/target/*
+/*/bin/*
+/*/.*
+.*
+/*.bat
+!.travis.yml
+*.iml
+

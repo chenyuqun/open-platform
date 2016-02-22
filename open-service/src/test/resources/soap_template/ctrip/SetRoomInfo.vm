@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Header>
+		<CtripSoapHeader xmlns="http://www.ctrip.com/">
+			<Login>${userName}</Login>
+			<Password>${password}</Password>
+			<Company>${userId}</Company>
+		</CtripSoapHeader>
+	</soap:Header>
+	<soap:Body>
+		<Request xmlns="http://www.ctrip.com/">
+			<requestXml>
+			&lt;Request&gt;
+			&lt;HeaderInfo UserID=&quot;${userId}&quot; RequestorId=&quot;Ctrip.com&quot; AsyncRequest=&quot;false&quot;
+			TimeStamp=&quot;${date}&quot;&gt;
+			&lt;Authentication UserName="zhilianjishuzhuanshu"
+			Password="zhilianzhuanshu11!!"/&gt;
+			&lt;RequestType Name="SetRoomInfo" Version="1.0"/&gt;
+			&lt;/HeaderInfo&gt;
+			&lt;SetRoomInfoRequest&gt;
+			&lt;RoomInfoItems&gt; 
+				#foreach ($roomInfoItem in $roomInfoItems)
+					&lt;RoomInfoItem&gt;
+					&lt;Stays&gt;$roomInfoItem.stays&lt;/Stays&gt;
+					&lt;ChangeDefault&gt;$roomInfoItem.changeDefault&lt;/ChangeDefault&gt;
+					&lt;Recommend&gt;$roomInfoItem.recommend&lt;/Recommend&gt;
+					&lt;Recommend_Intl&gt;$roomInfoItem.recommendIntl&lt;/Recommend_Intl&gt;
+					&lt;HoldDeadline&gt;$roomInfoItem.holdDeadline&lt;/HoldDeadline&gt;
+					&lt;Roomstatus&gt;$roomInfoItem.roomstatus&lt;/Roomstatus&gt;
+					&lt;RoomsInv&gt;$roomInfoItem.roomsInv&lt;/RoomsInv&gt;
+					&lt;UserLimited&gt;$roomInfoItem.userLimited&lt;/UserLimited&gt;
+					&lt;Note&gt;$roomInfoItem.note&lt;/Note&gt;
+					&lt;ReserveTime&gt;$roomInfoItem.reserveTime&lt;/ReserveTime&gt;
+					&lt;Restorable&gt;$roomInfoItem.restorable&lt;/Restorable&gt;
+					&lt;Guarantee&gt;$roomInfoItem.guarantee&lt;/Guarantee&gt;
+					&lt;CheckType&gt;$roomInfoItem.checkType&lt;/CheckType&gt;
+					&lt;GuaranteeLCT&gt;$roomInfoItem.guaranteeLCT&lt;/GuaranteeLCT&gt;
+					&lt;PrepayLCT&gt;$roomInfoItem.prepayLCT&lt;/PrepayLCT&gt;
+					&lt;AllNeedGuarantee&gt;$roomInfoItem.allNeedGuarantee&lt;/AllNeedGuarantee&gt;
+					&lt;RoomGiftID&gt;$roomInfoItem.roomGiftID&lt;/RoomGiftID&gt;
+					&lt;LateReserveTime&gt;$roomInfoItem.lateReserveTime&lt;/LateReserveTime&gt; 
+					&lt;DeductType&gt;$roomInfoItem.deductType&lt;/DeductType&gt;
+					&lt;/RoomInfoItem&gt;		
+				#end
+			&lt;/RoomInfoItems&gt;
+			&lt;RoomID&gt;$roomID&lt;/RoomID&gt;
+			&lt;StartDate&gt;$startDate&lt;/StartDate&gt;
+			&lt;EndDate&gt;$endDate&lt;/EndDate&gt;
+			&lt;Editer&gt;$editer&lt;/Editer&gt;
+			&lt;/SetRoomInfoRequest&gt;
+			&lt;/Request&gt;
+			</requestXml>
+		</Request>
+	</soap:Body>
+</soap:Envelope>
