@@ -7,8 +7,8 @@ import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
-import com.zizaike.entity.open.RequestData;
-import com.zizaike.entity.open.ResponseData;
+import com.zizaike.entity.open.alibaba.request.RequestData;
+import com.zizaike.entity.open.alibaba.response.ResponseData;
 public  class XstreamUtil { 
     private static final String xmlHead = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
 	//private static final XStream xstream =  new XStream(new DomDriver("utf8"));

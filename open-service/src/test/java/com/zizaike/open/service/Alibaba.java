@@ -225,7 +225,7 @@ public class Alibaba extends BaseTest{
 //        req.setFeeServiceAmount(150L);
 //        req.setFeeServicePercent(15L);
 //        req.setExtendFee("aaa");
-//        req.setMinDays(1L);
+          req.setMinDays(3L);
 //        req.setMaxDays(90L);
 //        req.setMinAmount(1L);
 //        req.setMinAdvHours(1L);
@@ -263,8 +263,8 @@ public class Alibaba extends BaseTest{
     @Test(description = "价格计划rateplan查询")
     public void xhotelRateplanGet() throws ZZKServiceException, ApiException {
         XhotelRateplanGetRequest req = new XhotelRateplanGetRequest();
-        req.setRpid(5069252626L);
-        req.setRateplanCode("12345AAAA");
+        //req.setRpid(5069252626L);
+        req.setRateplanCode("32027");
         //req.setVendor("taobao");  
         XhotelRateplanGetResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
@@ -297,9 +297,7 @@ public class Alibaba extends BaseTest{
     @Test(description = "价格推送接口（批量全量）")
     public void xhotelRatesUpdate() throws ZZKServiceException, ApiException {
         XhotelRatesUpdateRequest req = new XhotelRatesUpdateRequest();
-        req.setRateInventoryPriceMap("[{\"out_rid\":\"12345678_123\",\"rateplan_code\":\"ZIZAIKE_1\",\"vendor\":\"\","
-                + "\"data\":{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-02-28,\"quota\":999,\"price\":1500,\"status\":1},{\"date\":2016-02-29,\"quota\":999,\"price\":2500,\"status\":1}]}},"
-                + "{\"out_rid\":\"12345678_124\",\"rateplan_code\":\"ZIZAIKE_2\",\"vendor\":\"\","
+        req.setRateInventoryPriceMap("[{\"out_rid\":\"32027\",\"rateplan_code\":\"32027\",\"vendor\":\"\","
                 + "\"data\":{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-02-23,\"quota\":123,\"price\":2000,\"status\":1},{\"date\":2016-02-24,\"quota\":345,\"price\":4000,\"status\":0}]}}]"); 
         XhotelRatesUpdateResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
@@ -319,7 +317,7 @@ public class Alibaba extends BaseTest{
     @Test(description = "查询rpId")
     public void xhotelRateRelationshipwithroomGet() throws ZZKServiceException, ApiException {
         XhotelRateRelationshipwithroomGetRequest req = new XhotelRateRelationshipwithroomGetRequest();
-        req.setRpId(5069252626L);
+        req.setRpId(5547096478L);
         req.setPageNo(1L);  
         XhotelRateRelationshipwithroomGetResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       

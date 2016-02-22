@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zizaike.core.framework.exception.IErrorCode;
 import com.zizaike.core.framework.exception.ZZKServiceException;
-import com.zizaike.entity.open.ResponseData;
+import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.alibaba.response.ResponseExceptionData;
 import com.zizaike.open.common.util.XstreamUtil;
 
