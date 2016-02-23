@@ -20,13 +20,11 @@ import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.zizaike.core.common.util.http.HttpProxyUtil;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.core.framework.exception.open.ErrorCodeFields;
 import com.zizaike.entity.open.OpenChannelType;
@@ -65,10 +63,6 @@ import com.zizaike.open.gateway.OrderService;
 @Service
 public class TaobaoServiceImpl implements TaobaoService {
     protected final Logger LOG = LoggerFactory.getLogger(TaobaoServiceImpl.class);
-    @Value("${zizaike.open.alitrip.host}")
-    private String alitripHost;
-    @Autowired
-    private HttpProxyUtil httpProxy;
     @Autowired
     private UserService userService;
     @Autowired
