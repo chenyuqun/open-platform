@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -189,7 +190,7 @@ public class TaobaoServiceImpl implements TaobaoService {
             bookOrderRequest.setCheckOut(bookRQRequest.getCheckOut());
             bookOrderRequest.setComment(bookRQRequest.getComment());
             bookOrderRequest.setContactEmail(bookRQRequest.getContactEmail());
-            bookOrderRequest.setContactName(bookRQRequest.getContactName());
+            bookOrderRequest.setContactName(StringUtils.isNotEmpty(bookRQRequest.getContactName())?bookRQRequest.getContactName().replaceAll("@", " "):bookRQRequest.getContactName());
             bookOrderRequest.setContactTel(bookRQRequest.getContactTel());
             bookOrderRequest.setCurrency(bookRQRequest.getCurrency());
             bookOrderRequest.setDailyInfos(bookRQRequest.getDailyInfos());
@@ -508,7 +509,6 @@ public class TaobaoServiceImpl implements TaobaoService {
         user.setPassword(authenticationToken.element("Password").getText());
         userService.checkUser(user);
     }
-
     
 
 
