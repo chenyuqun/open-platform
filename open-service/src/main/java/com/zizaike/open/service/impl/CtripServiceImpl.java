@@ -20,12 +20,15 @@ import org.springframework.stereotype.Service;
 
 import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.entity.open.RoomTypeMapping;
 import com.zizaike.entity.open.User;
+import com.zizaike.entity.open.alibaba.request.ValidateRQRequest;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.ctrip.BalanceType;
 import com.zizaike.entity.open.ctrip.request.DomesticCheckRoomAvailRequest;
 import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResponse;
 import com.zizaike.is.open.CtripService;
+import com.zizaike.is.open.RoomTypeMappingService;
 import com.zizaike.is.open.UserService;
 import com.zizaike.open.common.util.XstreamUtil;
 import com.zizaike.open.gateway.OrderService;
@@ -47,6 +50,8 @@ public class CtripServiceImpl implements CtripService {
     private UserService userService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private RoomTypeMappingService roomTypeMappingService;
     
     @Override
     public DomesticCheckRoomAvailResponse domesticCheckRoomAvail(
@@ -55,7 +60,13 @@ public class CtripServiceImpl implements CtripService {
        if(domesticCheckRoomAvail.getBalanceType()!=BalanceType.PP){
            throw new IllegalParamterException("BalanceType is not PP");
        }
-       
+       RoomTypeMapping roomTypeMapping= roomTypeMappingService.queryByHotelIdAndOpenRoomTypeId(domesticCheckRoomAvail.getHotel(), domesticCheckRoomAvail.getRoom());
+       ValidateRQRequest validateRQRequest = new ValidateRQRequest();
+       validateRQRequest.setHotelId(roomTypeMapping.getHotelId());
+       validateRQRequest.setRoomTypeId(roomTypeMapping.getRoomTypeId());
+       validateRQRequest.setCheckIn(domesticCheckRoomAvail.getArrival());
+       validateRQRequest.setCheckOut(domesticCheckRoomAvail.getDeparture());
+       validateRQRequest.setRoomNum(domesticCheckRoomAvail.getRoomNumber());
         return null;
     }
     @Override
