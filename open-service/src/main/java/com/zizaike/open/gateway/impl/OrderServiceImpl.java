@@ -185,11 +185,21 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalParamterException("openOrderId is null");
         }
         Map<String,String> map = new HashMap<String, String>();
-          map.put("orderId", cancelOrderRequest.getOrderId());
+          if(StringUtils.isNotEmpty(cancelOrderRequest.getOrderId())){
+              map.put("orderId", cancelOrderRequest.getOrderId());
+          }
+         
+          if(StringUtils.isNotEmpty(cancelOrderRequest.getHotelId())){
+              map.put("hotelId", cancelOrderRequest.getHotelId());
+          }
+          if(StringUtils.isNotEmpty(cancelOrderRequest.getReason())){
+              map.put("reason", cancelOrderRequest.getReason());
+          }
+          if(StringUtils.isNotEmpty(cancelOrderRequest.getHardCancel())){
+              map.put("hardCancel", cancelOrderRequest.getHardCancel());
+          }
+          
           map.put("openOrderId",  cancelOrderRequest.getOpenChannelType()+cancelOrderRequest.getOpenOrderId());
-          map.put("hotelId", cancelOrderRequest.getHotelId());
-          map.put("reason", cancelOrderRequest.getReason());
-          map.put("hardCancel", cancelOrderRequest.getHardCancel());
         JSONObject result = null;
         try {
             result = httpProxy.httpGet(alitripHost + "cancelRQ", map);
