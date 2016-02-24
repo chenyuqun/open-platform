@@ -32,12 +32,14 @@ import com.zizaike.entity.open.User;
 import com.zizaike.entity.open.alibaba.InventoryPrice;
 import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.open.alibaba.request.CancelRQRequest;
+import com.zizaike.entity.open.alibaba.request.OrderRefundRQRequest;
 import com.zizaike.entity.open.alibaba.request.QueryStatusRQRequest;
 import com.zizaike.entity.open.alibaba.request.ValidateRQRequest;
 import com.zizaike.entity.open.alibaba.response.BillInfo;
 import com.zizaike.entity.open.alibaba.response.BookRQResponse;
 import com.zizaike.entity.open.alibaba.response.CancelRQResponse;
 import com.zizaike.entity.open.alibaba.response.OrderInfo;
+import com.zizaike.entity.open.alibaba.response.OrderRefundRQResponse;
 import com.zizaike.entity.open.alibaba.response.QueryStatusRQResponse;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.alibaba.response.ValidateRQResponse;
@@ -431,6 +433,33 @@ public class TaobaoServiceImpl implements TaobaoService {
             }
        
     }
+    @Override
+    public OrderRefundRQResponse orderRefundRQ(OrderRefundRQRequest orderRefundRQRequest) throws ZZKServiceException {
+          
+        CancelOrderRequest cancelOrderRequest = new CancelOrderRequest();
+        cancelOrderRequest.setOpenChannelType(OpenChannelType.ALITRIP);
+        cancelOrderRequest.setOpenOrderId(orderRefundRQRequest.getTaoBaoOrderId()+"");
+        JSONObject result = orderService.cancelRQ(cancelOrderRequest);
+        OrderRefundRQResponse orderRefundRQResponse = new OrderRefundRQResponse();
+        ErrorCodeFields errorCodeFields;     
+        if(result.getString("resultCode").equals("200")){
+            return orderRefundRQResponse;  
+        }else{
+            switch (result.getString("resultCode")) {
+            case "205":
+                errorCodeFields = ErrorCodeFields.CANCEL_ORDER_ALREADY_CANCELLED;
+                break;
+            case "204":
+                errorCodeFields = ErrorCodeFields.CANCEL_ORDER_NOT_EXIST;
+                break;
+            default:
+                errorCodeFields = ErrorCodeFields.CANCEL_FAILURE;
+                break;
+                  
+            }
+            throw new ZZKServiceException(errorCodeFields);
+        }
+    }
 
     @Override
     public String service(String xml) throws ZZKServiceException {
@@ -457,6 +486,9 @@ public class TaobaoServiceImpl implements TaobaoService {
         case "CancelRQ":
             responseData= cancelRQ((CancelRQRequest)XstreamUtil.getXml2Bean(xml, CancelRQRequest.class));
             break;
+        case "OrderRefundRQ":
+            responseData= orderRefundRQ((OrderRefundRQRequest)XstreamUtil.getXml2Bean(xml, OrderRefundRQRequest.class));
+            break;
         default:
             break;
         }
@@ -470,6 +502,8 @@ public class TaobaoServiceImpl implements TaobaoService {
         user.setPassword(authenticationToken.element("Password").getText());
         userService.checkUser(user);
     }
+
+    
 
 
 }

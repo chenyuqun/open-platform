@@ -18,15 +18,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.RoomTypeMapping;
 import com.zizaike.entity.open.User;
-import com.zizaike.entity.open.alibaba.request.ValidateRQRequest;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.ctrip.BalanceType;
 import com.zizaike.entity.open.ctrip.request.DomesticCheckRoomAvailRequest;
 import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResponse;
+import com.zizaike.entity.order.request.ValidateOrderRequest;
 import com.zizaike.is.open.CtripService;
 import com.zizaike.is.open.RoomTypeMappingService;
 import com.zizaike.is.open.UserService;
@@ -61,12 +62,13 @@ public class CtripServiceImpl implements CtripService {
            throw new IllegalParamterException("BalanceType is not PP");
        }
        RoomTypeMapping roomTypeMapping= roomTypeMappingService.queryByHotelIdAndOpenRoomTypeId(domesticCheckRoomAvail.getHotel(), domesticCheckRoomAvail.getRoom());
-       ValidateRQRequest validateRQRequest = new ValidateRQRequest();
+       ValidateOrderRequest validateRQRequest = new ValidateOrderRequest();
        validateRQRequest.setHotelId(roomTypeMapping.getHotelId());
        validateRQRequest.setRoomTypeId(roomTypeMapping.getRoomTypeId());
        validateRQRequest.setCheckIn(domesticCheckRoomAvail.getArrival());
        validateRQRequest.setCheckOut(domesticCheckRoomAvail.getDeparture());
        validateRQRequest.setRoomNum(domesticCheckRoomAvail.getRoomNumber());
+       JSONObject result = orderService.validateRQ(validateRQRequest);
         return null;
     }
     @Override
