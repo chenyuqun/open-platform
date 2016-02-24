@@ -123,5 +123,19 @@ public class TaobaoServiceTest extends BaseTest {
                 + "</CancelRQ>";
         System.err.println(taobaoService.service(xml));
     }
+    @Test(description = "退款订单单元测试")
+    public void orderRefundRQ() throws ZZKServiceException, DocumentException {
+        String xml = "<OrderRefundRQ>"
+                + "<AuthenticationToken>"
+                + "<Username>taobao</Username>"
+                + "<Password>B75!jaJb[eO8</Password>"
+                + "<CreateToken>taobao1230123213-1387792484913</CreateToken>"
+            + "</AuthenticationToken>"
+            + "<OrderId>123456</OrderId>"
+            + "<TaoBaoOrderId>744607523450720</TaoBaoOrderId>"
+            + "<Shipped>false</Shipped>"
+        + "</OrderRefundRQ>";
+        System.err.println(taobaoService.service(xml));
+    }
     
 }
