@@ -20,7 +20,7 @@ import com.zizaike.is.open.TaobaoService;
 import com.zizaike.open.domain.event.RoomTypeApplicationEvent;
 
 /**  
- * ClassName:HotSearchStatisticsListener <br/>  
+ * ClassName:RoomTypeChangeListener <br/>  
  * Function: taobaoRoomTypechange. <br/>  
  * Date:     2015年12月8日 下午8:40:59 <br/>  
  * @author   snow.zhang  
