@@ -24,6 +24,7 @@ import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.RoomTypeMapping;
 import com.zizaike.entity.open.User;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
+import com.zizaike.entity.open.alibaba.response.ValidateRQResponse;
 import com.zizaike.entity.open.ctrip.BalanceType;
 import com.zizaike.entity.open.ctrip.request.DomesticCheckRoomAvailRequest;
 import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResponse;
@@ -69,6 +70,11 @@ public class CtripServiceImpl implements CtripService {
        validateRQRequest.setCheckOut(domesticCheckRoomAvail.getDeparture());
        validateRQRequest.setRoomNum(domesticCheckRoomAvail.getRoomNumber());
        JSONObject result = orderService.validateRQ(validateRQRequest);
+       ValidateRQResponse validateRQResponse = new ValidateRQResponse();
+       if(result.getString("resultCode").equals("200")){
+           validateRQResponse.setInventoryPrice(result.getJSONObject("info").getString("inventoryPrice"));
+           
+       }
         return null;
     }
     @Override

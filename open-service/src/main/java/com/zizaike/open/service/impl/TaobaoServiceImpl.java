@@ -9,10 +9,18 @@
   
 package com.zizaike.open.service.impl;  
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -20,16 +28,25 @@ import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
+import com.taobao.api.ApiException;
+import com.taobao.api.TaobaoClient;
+import com.taobao.api.request.XhotelRoomtypeAddRequest;
+import com.taobao.api.request.XhotelRoomtypeUpdateRequest;
+import com.taobao.api.response.XhotelRoomtypeAddResponse;
+import com.taobao.api.response.XhotelRoomtypeUpdateResponse;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.core.framework.exception.open.ErrorCodeFields;
 import com.zizaike.entity.open.OpenChannelType;
 import com.zizaike.entity.open.User;
 import com.zizaike.entity.open.alibaba.InventoryPrice;
+import com.zizaike.entity.open.alibaba.RoomType;
 import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.open.alibaba.request.CancelRQRequest;
 import com.zizaike.entity.open.alibaba.request.OrderRefundRQRequest;
@@ -69,10 +86,13 @@ public class TaobaoServiceImpl implements TaobaoService {
     private UserService userService;
     @Autowired
     private OrderService orderService;
+    @Value("${alibaba.sessionKey}")
+    private String sessionKey;
+    @Autowired
+    private TaobaoClient taobaoClient;
     
     SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat simpleDateFormatAccurate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    @Override
     public ValidateRQResponse validateRQ(ValidateRQRequest validateRQRequest) throws ZZKServiceException {  
             
            /** Map<String,String> map = new HashMap<String, String>();
@@ -132,7 +152,6 @@ public class TaobaoServiceImpl implements TaobaoService {
             }
     }
 
-    @Override
     public BookRQResponse bookRQ(BookRQRequest bookRQRequest) throws ZZKServiceException {
       
 //            Map<String,String> map = new HashMap<String,String>();
@@ -312,7 +331,6 @@ public class TaobaoServiceImpl implements TaobaoService {
             }
     }
 
-    @Override
     public QueryStatusRQResponse queryStatusRQ(QueryStatusRQRequest queryStatusRQRequest) throws ZZKServiceException{
           /**  Map<String,String> map = new HashMap<String, String>();
             map.put("orderId", queryStatusRQRequest.getOrderId());
@@ -392,7 +410,6 @@ public class TaobaoServiceImpl implements TaobaoService {
             }
     }
 
-    @Override
     public CancelRQResponse cancelRQ(CancelRQRequest cancelRQRequest) throws ZZKServiceException{                     
 //            Map<String,String> map = new HashMap<String, String>();
 //            map.put("orderId", cancelRQRequest.getOrderId());
@@ -433,7 +450,6 @@ public class TaobaoServiceImpl implements TaobaoService {
             }
        
     }
-    @Override
     public OrderRefundRQResponse orderRefundRQ(OrderRefundRQRequest orderRefundRQRequest) throws ZZKServiceException {
           
         CancelOrderRequest cancelOrderRequest = new CancelOrderRequest();
@@ -501,6 +517,180 @@ public class TaobaoServiceImpl implements TaobaoService {
         user.setUsername(authenticationToken.element("Username").getText());
         user.setPassword(authenticationToken.element("Password").getText());
         userService.checkUser(user);
+    }
+
+    @Override
+    public void updateRoomType(RoomType object) {
+          
+        LOG.debug("updateRoomType mqInfo {}", object.toString());
+        XhotelRoomtypeUpdateRequest req = new XhotelRoomtypeUpdateRequest();
+        /**
+         * 房型名称不能超过30
+         */
+        if(StringUtils.isNotEmpty(object.getName())){
+            if(object.getName().length()>30){
+                object.setName(object.getName().substring(0, 30));
+            }
+        }
+        /**
+         * 网络
+         */
+        if(StringUtils.isNotEmpty(object.getInternet())){
+            if(object.getInternet().equals("1")){
+                object.setInternet("B");
+            }else if(object.getInternet().equals("0")){
+                object.setInternet("A");
+            }else{
+                object.setInternet(null);
+            }
+        };
+        /**
+         * 面积
+         */
+        if(StringUtils.isNotEmpty(object.getArea())){
+            Pattern p =Pattern.compile("[^0-9]");
+            Matcher m=p.matcher(object.getArea());
+            object.setArea(m.replaceAll("").trim());
+        }
+        /**
+         * 服务
+         */
+        if(StringUtils.isNotEmpty(object.getService())){
+            HashMap map=JSON.parseObject(object.getService(), new TypeReference<HashMap<String,String>>(){});
+            HashMap serviceMap=new HashMap();
+            if(map.get("1")!=null&&map.get("1").equals("1")){
+                serviceMap.put("catv", "true");
+            }else{
+                serviceMap.put("catv", "false");
+            }
+            object.setService(serviceMap.toString());
+            //object.getService()object.getService()
+        };
+        /**
+         * 图片转义
+         */
+        if(StringUtils.isNotEmpty(object.getPics())){
+            HashMap<String,String> hashmap=JSON.parseObject(object.getPics(), new TypeReference<HashMap<String,String>>(){});
+            List<Map<String,String>> pics = new ArrayList<>();
+            Boolean isMain = true;
+            for (String key : hashmap.keySet()) 
+                {
+                Map map = new HashMap();
+                map.put("url", hashmap.get(key));
+                if(isMain==true){
+                    map.put("isMain", "true");
+                    isMain=false;
+                }else{
+                    map.put("isMain", "false");
+                }     
+                 pics.add(map);
+                }
+              
+            object.setPics(JSON.toJSONString(pics));
+        }
+        try {
+            BeanUtils.copyProperties(req, object); 
+            req.setHotelCode(object.getOutHid());
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            LOG.error("update copyProperties exception{}", e);
+        }
+        LOG.debug("XhotelRoomtypeUpdateResponse {}", ToStringBuilder.reflectionToString(req));
+        XhotelRoomtypeUpdateResponse response;
+        try {
+            response = taobaoClient.execute(req, sessionKey);
+            LOG.debug("XhotelRoomtypeUpdateResponse {}", ToStringBuilder.reflectionToString(response));
+        } catch (ApiException e) {
+            e.printStackTrace();  
+            LOG.error("XhotelRoomtypeUpdate exception{}",e);
+        }
+    }
+
+    @Override
+    public void addRoomType(RoomType object) {
+          
+        LOG.debug("addRoomType mqInfo {}", object.toString());
+        /**
+         * 房型名称不能超过30
+         */
+        if(StringUtils.isNotEmpty(object.getName())){
+            if(object.getName().length()>30){
+                object.setName(object.getName().substring(0, 30));
+            }
+        }
+        /**
+         * 互联网
+         */
+        if(StringUtils.isNotEmpty(object.getInternet())){
+            if(object.getInternet().equals("1")){
+                object.setInternet("B");
+            }else if(object.getInternet().equals("0")){
+                object.setInternet("A");
+            }else{
+                object.setInternet(null);
+            }
+        };
+        /**
+         * 面积
+         */
+        if(StringUtils.isNotEmpty(object.getArea())){
+            Pattern p =Pattern.compile("[^0-9]");
+            Matcher m=p.matcher(object.getArea());
+            object.setArea(m.replaceAll("").trim());
+        }
+        /**
+         * 服务
+         */
+        if(StringUtils.isNotEmpty(object.getService())){
+            HashMap map=JSON.parseObject(object.getService(), new TypeReference<HashMap<String,String>>(){});
+            HashMap serviceMap=new HashMap();
+            if(map.get("1")!=null&&map.get("1").equals("1")){
+                serviceMap.put("catv", "true");
+            }else{
+                serviceMap.put("catv", "false");
+            }
+            object.setService(serviceMap.toString());
+            //object.getService()object.getService()
+        };
+        /**
+         * 图片转义
+         */
+        if(StringUtils.isNotEmpty(object.getPics())){
+            HashMap<String,String> hashmap=JSON.parseObject(object.getPics(), new TypeReference<HashMap<String,String>>(){});
+            List<Map<String,String>> pics = new ArrayList<>();
+            Boolean isMain = true;
+            for (String key : hashmap.keySet()) 
+                {
+                Map map = new HashMap();
+                map.put("url", hashmap.get(key));
+                if(isMain==true){
+                    map.put("isMain", "true");
+                    isMain=false;
+                }else{
+                    map.put("isMain", "false");
+                }     
+                 pics.add(map);
+                }
+              
+            object.setPics(JSON.toJSONString(pics));
+        }
+        XhotelRoomtypeAddRequest req = new XhotelRoomtypeAddRequest();
+        try {
+            BeanUtils.copyProperties(req, object);     
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            LOG.error("addRoomType copyProperties exception{}", e);
+        }
+        LOG.debug("XhotelRoomtypeAddRequest {}", ToStringBuilder.reflectionToString(req));
+        XhotelRoomtypeAddResponse response;
+        try {
+            response = taobaoClient.execute(req, sessionKey);
+            LOG.debug("XhotelRoomtypeAddResponse {}", ToStringBuilder.reflectionToString(response));
+        } catch (ApiException e) {
+            e.printStackTrace();
+            LOG.error("XhotelRoomtypeAdd exception{}",e);
+        }
+        
     }
 
     
