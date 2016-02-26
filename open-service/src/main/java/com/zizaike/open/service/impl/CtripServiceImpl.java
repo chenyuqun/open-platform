@@ -27,6 +27,7 @@ import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.RoomTypeMapping;
 import com.zizaike.entity.open.User;
+import com.zizaike.entity.open.alibaba.Rates;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.alibaba.response.ValidateRQResponse;
 import com.zizaike.entity.open.ctrip.BalanceType;
@@ -136,6 +137,14 @@ public class CtripServiceImpl implements CtripService {
         user.setUsername(authenticationToken.attributeValue("UserName"));
         user.setPassword(authenticationToken.attributeValue("Password"));
         userService.checkUser(user);
+    }
+    @Override
+    public void updateRates(Rates object) {
+            // TODO 房价房态
+            object.getRateInventoryPriceMap();
+        
+        
+        
     }
     
 
