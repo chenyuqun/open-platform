@@ -25,11 +25,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
-import com.zizaike.core.framework.exception.open.ErrorCodeFields;
 import com.zizaike.entity.open.OpenChannelType;
 import com.zizaike.entity.open.RoomTypeMapping;
 import com.zizaike.entity.open.User;
-import com.zizaike.entity.open.alibaba.response.CancelRQResponse;
+import com.zizaike.entity.open.alibaba.Rates;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.ctrip.BalanceType;
 import com.zizaike.entity.open.ctrip.RoomPrice;
@@ -272,5 +271,22 @@ public class CtripServiceImpl implements CtripService {
         user.setPassword(authenticationToken.attributeValue("Password"));
         userService.checkUser(user);
     }
+    @Override
+    public void updateRates(Rates object) {
+            // TODO 房价房态
+            object.getRateInventoryPriceMap();
+        
+        
+        
+    }
+
+    @Override
+    public DomesticCheckRoomAvailResponse domesticCheckRoomAvail(
+            DomesticCheckRoomAvailRequest domesticCheckRoomAvailRequest) throws ZZKServiceException {
+          
+        // TODO Auto-generated method stub  
+        return null;
+    }
 
 }
+

@@ -1,3 +1,6 @@
+
+
+
 /**  
  * Project Name:open-api  <br/>
  * File Name:TaoBaoServiceImpl.java  <br/>
@@ -37,15 +40,28 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.taobao.api.ApiException;
 import com.taobao.api.TaobaoClient;
+import com.taobao.api.request.XhotelAddRequest;
+import com.taobao.api.request.XhotelRateplanAddRequest;
+import com.taobao.api.request.XhotelRateplanUpdateRequest;
+import com.taobao.api.request.XhotelRatesUpdateRequest;
 import com.taobao.api.request.XhotelRoomtypeAddRequest;
 import com.taobao.api.request.XhotelRoomtypeUpdateRequest;
+import com.taobao.api.request.XhotelUpdateRequest;
+import com.taobao.api.response.XhotelAddResponse;
+import com.taobao.api.response.XhotelRateplanAddResponse;
+import com.taobao.api.response.XhotelRateplanUpdateResponse;
+import com.taobao.api.response.XhotelRatesUpdateResponse;
 import com.taobao.api.response.XhotelRoomtypeAddResponse;
 import com.taobao.api.response.XhotelRoomtypeUpdateResponse;
+import com.taobao.api.response.XhotelUpdateResponse;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.core.framework.exception.open.ErrorCodeFields;
 import com.zizaike.entity.open.OpenChannelType;
 import com.zizaike.entity.open.User;
+import com.zizaike.entity.open.alibaba.Hotel;
 import com.zizaike.entity.open.alibaba.InventoryPrice;
+import com.zizaike.entity.open.alibaba.RatePlan;
+import com.zizaike.entity.open.alibaba.Rates;
 import com.zizaike.entity.open.alibaba.RoomType;
 import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.open.alibaba.request.BookRQRequest.OrderGuests;
@@ -61,8 +77,6 @@ import com.zizaike.entity.open.alibaba.response.OrderRefundRQResponse;
 import com.zizaike.entity.open.alibaba.response.QueryStatusRQResponse;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.alibaba.response.ValidateRQResponse;
-import com.zizaike.entity.open.ctrip.RoomPrice;
-import com.zizaike.entity.open.ctrip.request.GuestEntity;
 import com.zizaike.entity.order.request.BookOrderRequest;
 import com.zizaike.entity.order.request.CancelOrderRequest;
 import com.zizaike.entity.order.request.DailyInfo;
@@ -234,6 +248,7 @@ public class TaobaoServiceImpl implements TaobaoService {
                 dailyInfo.setPrice(dailyInfoRe.getPrice());
                 dailyInfos.add(dailyInfo);
             }
+            bookOrderRequest.setDailyInfos(dailyInfos);
             bookOrderRequest.setDailyInfos(dailyInfos);
             bookOrderRequest.setOrderGuests(orderGuests);
             bookOrderRequest.setPaymentType(bookRQRequest.getPaymentType());
@@ -713,6 +728,139 @@ public class TaobaoServiceImpl implements TaobaoService {
             LOG.error("XhotelRoomtypeAdd exception{}",e);
         }
         
+    }
+
+    @Override
+    public void addHotel(Hotel object) {
+          
+        LOG.debug("addHotel mqInfo {}", object.toString());
+        XhotelAddRequest req = new XhotelAddRequest();
+        if(StringUtils.isNotEmpty(object.getLatitude())){          
+            object.setLatitude(object.getLatitude().length()>10?object.getLatitude().substring(0, 10):object.getLatitude());
+        }
+        if(StringUtils.isNotEmpty(object.getLongitude())){
+            object.setLongitude(object.getLongitude().length()>10?object.getLongitude().substring(0, 10):object.getLongitude());
+        }
+        try {
+            BeanUtils.copyProperties(req, object);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            LOG.error("addHotel copyProperties exception{}", e);
+        }
+        LOG.debug("addHotel XhotelAddRequest {}", ToStringBuilder.reflectionToString(req));
+        XhotelAddResponse response;
+        try {
+            response = taobaoClient.execute(req, sessionKey);
+            LOG.debug("addHotel XhotelAddResponse {}",  ToStringBuilder.reflectionToString(response));
+        } catch (ApiException e) {
+            e.printStackTrace();
+            LOG.error("XhotelHotelAddResponse exception{}",e);
+            
+        }
+      
+        
+    }
+
+    @Override
+    public void updateHotel(Hotel object) {
+          
+        LOG.debug("updateHotel mqInfo {}", object.toString());
+        XhotelUpdateRequest req = new XhotelUpdateRequest();
+        if(StringUtils.isNotEmpty(object.getLatitude())){          
+            object.setLatitude(object.getLatitude().length()>10?object.getLatitude().substring(0, 10):object.getLatitude());
+        }
+        if(StringUtils.isNotEmpty(object.getLongitude())){
+            object.setLongitude(object.getLongitude().length()>10?object.getLongitude().substring(0, 10):object.getLongitude());
+        }
+        try {
+            BeanUtils.copyProperties(req, object);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            LOG.error("updateHotel copyProperties exception{}", e);
+        }
+        LOG.debug("updateHotel XhotelAddRequest {}", ToStringBuilder.reflectionToString(req));
+        XhotelUpdateResponse response;
+        try {
+            response = taobaoClient.execute(req, sessionKey);
+            LOG.debug("updateHotel response {}", ToStringBuilder.reflectionToString(response));
+        } catch (ApiException e) {
+            e.printStackTrace();
+            LOG.error("XhotelUpdateHotelResponse exception{}",e);
+            
+        }
+       
+        
+    }
+
+    @Override
+    public void addRatePlan(RatePlan object) {
+        LOG.debug("addRatePlan mqInfo {}", object.toString());
+        XhotelRateplanAddRequest req = new XhotelRateplanAddRequest();
+        try {
+            BeanUtils.copyProperties(req, object);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            LOG.error("addRatePlan copyProperties exception{}", e);
+        }
+        LOG.debug("addRatePlan XhotelRateplanAddRequest {}", ToStringBuilder.reflectionToString(req));
+        XhotelRateplanAddResponse response;
+        try {
+            response = taobaoClient.execute(req, sessionKey);
+            LOG.debug("addRatePlan XhotelRateplanAddResponse {}", ToStringBuilder.reflectionToString(response));
+        } catch (ApiException e) {
+            e.printStackTrace();  
+            LOG.error("XhotelRateplanAddResponse exception{}",e);
+        }
+       
+        
+    }
+
+    @Override
+    public void updateRatePlan(RatePlan object) {
+          
+        LOG.debug("updateRatePlan mqInfo {}", object.toString());
+        XhotelRateplanUpdateRequest req = new XhotelRateplanUpdateRequest();
+        try {
+            BeanUtils.copyProperties(req, object);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            LOG.error("updateRatePlan copyProperties exception{}", e);
+        }
+        LOG.debug("updateRatePlan XhotelRateplanUpdateRequest {}", ToStringBuilder.reflectionToString(req));
+        XhotelRateplanUpdateResponse response;
+        try {
+            response = taobaoClient.execute(req, sessionKey);
+            LOG.debug("updateRatePlan XhotelRateplanUpdateResponse {}", ToStringBuilder.reflectionToString(response));
+        } catch (ApiException e) { 
+            e.printStackTrace(); 
+            LOG.error("XhotelRateplanUpdateResponse exception{}",e);
+            
+        }
+        
+        
+    }
+
+    @Override
+    public void updateRates(Rates object){       
+            LOG.debug("updateRates mqInfo {}", object.toString());
+            XhotelRatesUpdateRequest req = new XhotelRatesUpdateRequest();
+            try {
+                BeanUtils.copyProperties(req, object);
+                req.setRateInventoryPriceMap(JSON.toJSONString(object.getRateInventoryPriceMap()));
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+                LOG.error("updateRates copyProperties exception{}", e);
+            }
+            LOG.debug("updateRates XhotelRatesUpdateRequest {}", ToStringBuilder.reflectionToString(req));
+            XhotelRatesUpdateResponse response;
+            try {
+                response = taobaoClient.execute(req, sessionKey);
+                LOG.debug("updateRates XhotelRatesUpdateResponse {}", ToStringBuilder.reflectionToString(response)); 
+            } catch (ApiException e) { 
+                e.printStackTrace();  
+                LOG.error("XhotelRatesUpdateResponse exception{}",e);
+            }
+               
     }
 
     
