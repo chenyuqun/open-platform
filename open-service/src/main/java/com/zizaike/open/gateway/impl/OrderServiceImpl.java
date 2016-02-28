@@ -31,6 +31,7 @@ import com.zizaike.core.framework.exception.open.ErrorCodeFields;
 import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.order.request.BookOrderRequest;
 import com.zizaike.entity.order.request.CancelOrderRequest;
+import com.zizaike.entity.order.request.OrderGuest;
 import com.zizaike.entity.order.request.ValidateOrderRequest;
 import com.zizaike.open.gateway.OrderService;
 import com.zizaike.entity.order.request.QueryStatusOrderRequest;
@@ -78,9 +79,15 @@ public class OrderServiceImpl implements OrderService {
         Map<String, String> map = new HashMap<String, String>();
         map.put("roomTypeId", validateOrderRequest.getRoomTypeId());
         map.put("openHotelId", validateOrderRequest.getOpenHotelId());
-        map.put("openRatePlanId", validateOrderRequest.getOpenRatePlanId().toString());
-        map.put("ratePlanCode", validateOrderRequest.getRatePlanCode());
-        map.put("openGid", validateOrderRequest.getOpenGid().toString());
+        if(validateOrderRequest.getOpenRatePlanId()!=null){
+            map.put("openRatePlanId", validateOrderRequest.getOpenRatePlanId().toString());
+        }
+        if(validateOrderRequest.getRatePlanCode()!=null){
+            map.put("ratePlanCode", validateOrderRequest.getRatePlanCode());
+        }
+        if(validateOrderRequest.getOpenGid()!=null){
+            map.put("openGid", validateOrderRequest.getOpenGid());
+        }
         map.put("checkIn", simpleDateFormat.format(validateOrderRequest.getCheckIn()));
         map.put("checkOut", simpleDateFormat.format(validateOrderRequest.getCheckOut()));
         map.put("roomNum", validateOrderRequest.getRoomNum().toString());
@@ -125,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
       map.put("openOrderId", bookOrderRequest.getOpenChannelType()+bookOrderRequest.getOpenOrderId());
       map.put("openHotelId",  bookOrderRequest.getOpenChannelType()+bookOrderRequest.getOpenHotelId());
       map.put("hotelId", bookOrderRequest.getHotelId());
-      map.put("openRoomTypeId", Long.toString(bookOrderRequest.getOpenRoomTypeId()));
+      map.put("openRoomTypeId", bookOrderRequest.getOpenRoomTypeId());
       map.put("roomTypeId", bookOrderRequest.getRoomTypeId());
       map.put("openRatePlanId", Long.toString(bookOrderRequest.getOpenRatePlanId()));
       map.put("ratePlanCode", bookOrderRequest.getRatePlanCode());
@@ -138,7 +145,7 @@ public class OrderServiceImpl implements OrderService {
       map.put("roomNum", Integer.toString(bookOrderRequest.getRoomNum()));
       map.put("totalPrice", Long.toString(bookOrderRequest.getTotalPrice()));
       map.put("sellerDiscount", Long.toString(bookOrderRequest.getSellerDiscount()));
-      map.put("alitripDiscount", Long.toString(bookOrderRequest.getAlitripDiscount()));
+      map.put("alitripDiscount", Long.toString(bookOrderRequest.getOpenDiscount()));
       map.put("currency", bookOrderRequest.getCurrency());
       map.put("paymentType", Integer.toString(bookOrderRequest.getPaymentType()));
       map.put("contactName", bookOrderRequest.getContactName());
@@ -150,12 +157,12 @@ public class OrderServiceImpl implements OrderService {
       map.put("memberCardNo", bookOrderRequest.getMemberCardNo());
       map.put("guaranteeType", bookOrderRequest.getGuaranteeType());
       map.put("extensions", bookOrderRequest.getExtensions());
-      map.put("openTradeNo", bookOrderRequest.getAlipayTradeNo());
+      map.put("openTradeNo", bookOrderRequest.getOpenTradeNo());
       /**
        * zizaike下单人数
        */
-      if(null!=(bookOrderRequest.getOrderGuests().getOrderGuests())){
-          List<BookRQRequest.OrderGuest> orderGuests= bookOrderRequest.getOrderGuests().getOrderGuests();
+      if(null!=(bookOrderRequest.getOrderGuests())){
+          List<OrderGuest> orderGuests= bookOrderRequest.getOrderGuests();
           map.put("guestNumber", orderGuests.size()>0?Integer.toString(orderGuests.size()):"1");
       }else{
           map.put("guestNumber","1");

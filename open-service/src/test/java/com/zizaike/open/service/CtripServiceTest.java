@@ -13,7 +13,7 @@ public class CtripServiceTest extends BaseTest {
     private CtripService ctipCtripService;
     
     @Test(description = "试单请求单元测试")
-    public void testValidateRQ() throws ZZKServiceException, DocumentException {
+    public void domesticCheckRoomAvail() throws ZZKServiceException, DocumentException {
         String xml = "<Request>"
                 + "<HeaderInfo UserID='25' RequestorId='Ctrip.com' AsyncRequest='false' TimeStamp='2012-8-6 3:54:24'>"
                 + "<Authentication UserName='zhilianjishuzhuanshu' Password='zhilianzhuanshu11!!'/>"

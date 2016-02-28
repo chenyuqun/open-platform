@@ -48,6 +48,7 @@ import com.zizaike.entity.open.User;
 import com.zizaike.entity.open.alibaba.InventoryPrice;
 import com.zizaike.entity.open.alibaba.RoomType;
 import com.zizaike.entity.open.alibaba.request.BookRQRequest;
+import com.zizaike.entity.open.alibaba.request.BookRQRequest.OrderGuests;
 import com.zizaike.entity.open.alibaba.request.CancelRQRequest;
 import com.zizaike.entity.open.alibaba.request.OrderRefundRQRequest;
 import com.zizaike.entity.open.alibaba.request.QueryStatusRQRequest;
@@ -60,8 +61,12 @@ import com.zizaike.entity.open.alibaba.response.OrderRefundRQResponse;
 import com.zizaike.entity.open.alibaba.response.QueryStatusRQResponse;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.alibaba.response.ValidateRQResponse;
+import com.zizaike.entity.open.ctrip.RoomPrice;
+import com.zizaike.entity.open.ctrip.request.GuestEntity;
 import com.zizaike.entity.order.request.BookOrderRequest;
 import com.zizaike.entity.order.request.CancelOrderRequest;
+import com.zizaike.entity.order.request.DailyInfo;
+import com.zizaike.entity.order.request.OrderGuest;
 import com.zizaike.entity.order.request.QueryStatusOrderRequest;
 import com.zizaike.entity.order.request.ValidateOrderRequest;
 import com.zizaike.entity.order.response.QueryStatusOrderResponse;
@@ -196,8 +201,8 @@ public class TaobaoServiceImpl implements TaobaoService {
 //            
 //            JSONObject result=httpProxy.httpGet(alitripHost+"bookRQ", map);
             BookOrderRequest bookOrderRequest = new BookOrderRequest();
-            bookOrderRequest.setAlipayTradeNo(bookRQRequest.getAlipayTradeNo());
-            bookOrderRequest.setAlitripDiscount(bookRQRequest.getAlitripDiscount());
+            bookOrderRequest.setOpenTradeNo(bookRQRequest.getAlipayTradeNo());
+            bookOrderRequest.setOpenDiscount(bookRQRequest.getAlitripDiscount());
             bookOrderRequest.setCheckIn(bookRQRequest.getCheckIn());
             bookOrderRequest.setCheckOut(bookRQRequest.getCheckOut());
             bookOrderRequest.setComment(bookRQRequest.getComment());
@@ -205,7 +210,6 @@ public class TaobaoServiceImpl implements TaobaoService {
             bookOrderRequest.setContactName(bookRQRequest.getContactName());
             bookOrderRequest.setContactTel(bookRQRequest.getContactTel());
             bookOrderRequest.setCurrency(bookRQRequest.getCurrency());
-            bookOrderRequest.setDailyInfos(bookRQRequest.getDailyInfos());
             bookOrderRequest.setEarliestArriveTime(bookRQRequest.getEarliestArriveTime());
             bookOrderRequest.setExtensions(bookRQRequest.getExtensions());
             bookOrderRequest.setGuaranteeType(bookRQRequest.getGuaranteeType());
@@ -213,7 +217,25 @@ public class TaobaoServiceImpl implements TaobaoService {
             bookOrderRequest.setHourRent(bookRQRequest.getHourRent());
             bookOrderRequest.setLatestArriveTime(bookRQRequest.getLatestArriveTime());
             bookOrderRequest.setMemberCardNo(bookRQRequest.getMemberCardNo());
-            bookOrderRequest.setOrderGuests(bookRQRequest.getOrderGuests());
+            List<OrderGuest> orderGuests = new ArrayList<OrderGuest>();
+            
+            OrderGuests guests =bookRQRequest.getOrderGuests();
+            for (com.zizaike.entity.open.alibaba.request.BookRQRequest.OrderGuest orderGuest : guests.getOrderGuests()) {
+                OrderGuest orderG = new OrderGuest();
+                orderG.setName(orderGuest.getName());
+                orderG.setRoomPos(orderGuest.getRoomPos());
+                orderGuests.add(orderG);
+            }
+            List<DailyInfo> dailyInfos = new ArrayList<DailyInfo>(); 
+            
+            for (com.zizaike.entity.open.alibaba.request.BookRQRequest.DailyInfo dailyInfoRe : bookRQRequest.getDailyInfos().getDailyInfos()) {
+                DailyInfo dailyInfo = new DailyInfo();
+                dailyInfo.setDay(dailyInfoRe.getDay());
+                dailyInfo.setPrice(dailyInfoRe.getPrice());
+                dailyInfos.add(dailyInfo);
+            }
+            bookOrderRequest.setDailyInfos(dailyInfos);
+            bookOrderRequest.setOrderGuests(orderGuests);
             bookOrderRequest.setPaymentType(bookRQRequest.getPaymentType());
             bookOrderRequest.setRatePlanCode(bookRQRequest.getRatePlanCode());
             bookOrderRequest.setReceiptInfo(bookRQRequest.getReceiptInfo());
@@ -224,7 +246,7 @@ public class TaobaoServiceImpl implements TaobaoService {
             bookOrderRequest.setOpenHotelId(bookRQRequest.getTaoBaoHotelId()+"");
             bookOrderRequest.setOpenOrderId(bookRQRequest.getTaoBaoOrderId()+"");
             bookOrderRequest.setOpenRatePlanId(bookRQRequest.getTaoBaoRatePlanId());
-            bookOrderRequest.setOpenRoomTypeId(bookRQRequest.getTaoBaoRoomTypeId());
+            bookOrderRequest.setOpenRoomTypeId(bookRQRequest.getTaoBaoRoomTypeId()+"");
             bookOrderRequest.setTotalPrice(bookRQRequest.getTotalPrice());
             bookOrderRequest.setOpenChannelType(OpenChannelType.ALITRIP);
          
