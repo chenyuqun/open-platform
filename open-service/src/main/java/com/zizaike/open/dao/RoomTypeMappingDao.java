@@ -37,5 +37,16 @@ public interface RoomTypeMappingDao {
      */
     @Slave
     RoomTypeMapping queryByHotelIdAndOpenRoomTypeId(String openHotelId,String openRoomTypeId) throws ZZKServiceException;
+   /**
+    * 
+    * queryByRoomTypeId. <br/>  
+    * @author alex 
+    * @param roomTypeId
+    * @return
+    * @throws ZZKServiceException  
+    * @since JDK 1.7
+    */
+    @Slave
+    RoomTypeMapping queryByRoomTypeId(String roomTypeId) throws ZZKServiceException;
 }
   
