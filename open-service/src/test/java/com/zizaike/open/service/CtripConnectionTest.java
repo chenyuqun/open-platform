@@ -9,17 +9,32 @@
 
 package com.zizaike.open.service;
 
+import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.soap.MessageFactory;
+import javax.xml.soap.MimeHeaders;
+import javax.xml.soap.SOAPBody;
+import javax.xml.soap.SOAPElement;
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPMessage;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.testng.annotations.Test;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.zizaike.core.common.util.http.SoapFastUtil;
 import com.zizaike.core.framework.exception.ZZKServiceException;
@@ -180,6 +195,153 @@ public class CtripConnectionTest extends BaseTest {
             System.err.println(System.currentTimeMillis() - start);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    @Test(description = "获得Ctrip的酒店信息")
+    public void getHotelInfo() throws ZZKServiceException, MalformedURLException {
+        String template = "GetHotelInfo.vm";
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(currentTime);
+        Map map = new HashMap();
+        map.put("userName", username);
+        map.put("password", password);
+        map.put("date", dateString);
+        map.put("userId", 204);
+        map.put("supplierID", 55);
+        try {
+            long start = System.currentTimeMillis();
+            String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
+            String xml = xmlStr.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+            System.err.println(xml);
+            Document doc = null;
+            doc = DocumentHelper.parseText(xml);
+            Element root = doc.getRootElement();
+            System.err.println(System.currentTimeMillis() - start);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Test(description = "获得Ctrip对接信息")
+    public void getMappingInfo() throws ZZKServiceException, MalformedURLException {
+        String template = "GetMappingInfo.vm";
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(currentTime);
+        Map map = new HashMap();
+        map.put("userName", username);
+        map.put("password", password);
+        map.put("date", dateString);
+        map.put("userId", 204);
+        map.put("supplierID", 55);
+        map.put("getMappingInfoType", "UnMapping");
+        Map value = new HashMap();
+        value.put("id", 2075384);
+        Map value1 = new HashMap();
+        value1.put("id", 2075300);
+        List list = new ArrayList();
+        list.add(value);
+        list.add(value1);
+        map.put("hotels", list);
+        try {
+            long start = System.currentTimeMillis();
+            String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
+            String xml = xmlStr.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+            System.err.println(xml);
+            Document doc = null;
+            doc = DocumentHelper.parseText(xml);
+            Element root = doc.getRootElement();
+            System.err.println(System.currentTimeMillis() - start);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static void main(String[] args) throws SOAPException {
+        String xml = "<?xml version='1.0' encoding='utf-8'?>"
+                +"<soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>"
+                 +"<soap:Body>"
+                   +"<AdapterRequestResponse >"
+                     +"<AdapterRequestResult>"
+                       +"<RequestResponse>"
+                         +"<RequestResult>"
+                           +"<Message>接收成功</Message>"
+                           +"<ResultCode>0</ResultCode>"
+                           +"<Response>"
+                             +"<HeaderInfo />"
+                             +"<GetHotelInfoResponse>"
+                               +"<TotalPage>27</TotalPage>"
+                               +"<CurrentPage>2</CurrentPage>"
+                               +"<TotalNum>1305</TotalNum>"
+                               +"<HotelList>"
+                                 +"<Hotel>2075278</Hotel>"
+                                 +"<HotelName>杭州北苑客房</HotelName>"
+                                 +"<CountryName>中国</CountryName>"
+                                 +"<CityName>杭州</CityName>"
+                                 +"<Address>0</Address>"
+                                 +"<Telephone>0</Telephone>"
+                               +"</HotelList>"
+                               +"<HotelList>"
+                                 +"<Hotel>2075300</Hotel>"
+                                 +"<HotelName>杭州佑圣商务酒店</HotelName>"
+                                 +"<CountryName>中国</CountryName>"
+                                 +"<CityName>杭州</CityName>"
+                                 +"<Address>0</Address>"
+                                 +"<Telephone>0</Telephone>"
+                               +"</HotelList>"
+                               +"<HotelList>"
+                                 +"<Hotel>2075384</Hotel>"
+                                 +"<HotelName>成都林凯酒店</HotelName>"
+                                 +"<CountryName>中国</CountryName>"
+                                 +"<CityName>成都</CityName>"
+                                 +"<Address>0</Address>"
+                                 +"<Telephone>0</Telephone>"
+                               +"</HotelList>"
+                             +"</GetHotelInfoResponse>"
+                           +"</Response>"
+                         +"</RequestResult>"
+                       +"</RequestResponse>"
+                     +"</AdapterRequestResult>"
+                   +"</AdapterRequestResponse>"
+                +"</soap:Body>"
+                +"</soap:Envelope>";
+        Document doc = null;
+        try {
+            doc = DocumentHelper.parseText(xml);
+        } catch (DocumentException e) {
+            e.printStackTrace();  
+        }
+        Element root = doc.getRootElement();
+        SOAPMessage msg = formatSoapString(xml);
+        SOAPBody body = msg.getSOAPBody();
+        Iterator<SOAPElement> iterator = body.getChildElements();
+         PrintBody(iterator, null);
+ 
+    }
+    
+    private static SOAPMessage formatSoapString(String soapString) {
+               MessageFactory msgFactory;
+                 try {
+                     msgFactory = MessageFactory.newInstance();
+                     SOAPMessage reqMsg = msgFactory.createMessage(new MimeHeaders(),
+                             new ByteArrayInputStream(soapString.getBytes("UTF-8")));
+                     reqMsg.saveChanges();
+                     return reqMsg;
+                 } catch (Exception e) {
+                     e.printStackTrace();
+                     return null;
+                 }
+             }
+    private static void PrintBody(Iterator<SOAPElement> iterator, String side) {
+        while (iterator.hasNext()) {
+            SOAPElement element = (SOAPElement) iterator.next();
+            System.out.println("Local Name:" + element.getLocalName());
+            System.out.println("Node Name:" + element.getNodeName());
+            System.out.println("Tag Name:" + element.getTagName());
+            System.out.println("Value:" + element.getValue());
+            if (null == element.getValue()
+                    && element.getChildElements().hasNext()) {
+                PrintBody(element.getChildElements(), side + "-----");
+            }
         }
     }
 }
