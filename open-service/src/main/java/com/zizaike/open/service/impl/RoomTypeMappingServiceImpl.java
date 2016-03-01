@@ -58,7 +58,7 @@ public class RoomTypeMappingServiceImpl implements RoomTypeMappingService {
             throw new RoomTypeNotMappingException();
         }
         return query;
-    }
+    } 
 
 }
   
