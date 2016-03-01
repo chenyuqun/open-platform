@@ -9,22 +9,15 @@
 
 package com.zizaike.open.service;
 
-import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.soap.MessageFactory;
-import javax.xml.soap.MimeHeaders;
-import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPException;
-import javax.xml.soap.SOAPMessage;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -33,15 +26,15 @@ import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.testng.annotations.Test;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import com.zizaike.core.common.util.http.SoapFastUtil;
 import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.entity.open.ctrip.GetHotelInfoResponse;
 import com.zizaike.entity.open.ctrip.PriceInfo;
 import com.zizaike.entity.open.ctrip.RoomInfoItem;
 import com.zizaike.entity.open.ctrip.SetRoomPriceItem;
 import com.zizaike.open.bastest.BaseTest;
+import com.zizaike.open.common.util.XstreamUtil;
 
 /**
  * ClassName:httpUrlConnectionTest <br/>
@@ -207,12 +200,60 @@ public class CtripConnectionTest extends BaseTest {
         map.put("userName", username);
         map.put("password", password);
         map.put("date", dateString);
-        map.put("userId", 204);
+        map.put("userId", 204); 
         map.put("supplierID", 55);
         try {
             long start = System.currentTimeMillis();
             String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
             String xml = xmlStr.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+            System.err.println(xml);
+            Document doc = null;
+            try {
+                doc = DocumentHelper.parseText(xml);
+            } catch (DocumentException e) {
+                e.printStackTrace();  
+            }
+            Element root = doc.getRootElement();
+            Element requestResult = root.element("Body").element("AdapterRequestResponse")
+            .element("AdapterRequestResult").element("RequestResponse").element("RequestResult");
+            if(requestResult.element("ResultCode").getText().equals("0")){
+                String xmlS = requestResult.element("Response").element("GetHotelInfoResponse").asXML();
+                GetHotelInfoResponse getHotelInfoResponse = (GetHotelInfoResponse) XstreamUtil.getXml2Bean(xmlS,GetHotelInfoResponse.class);
+                System.err.println(getHotelInfoResponse);
+            }    
+            System.err.println(System.currentTimeMillis() - start);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Test(description = "设置Mapping 信息")
+    public void setMappingInfo() throws ZZKServiceException, MalformedURLException {
+        String template = "SetMappingInfo.vm";
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(currentTime);
+        Map map = new HashMap();
+        map.put("userName", username);
+        map.put("password", password);
+        map.put("date", dateString);
+        map.put("userId", 204);
+        map.put("supplierID", 55);
+        //京都酒店  标准潮式雙床房
+        map.put("masterHotel", 436553);
+        map.put("masterRoom", 749540);
+        
+        map.put("ratePlanCode", "902548");
+        map.put("hotelGroupHotelCode", 328);
+        map.put("hotelGroupRoomTypeCode", 3924);
+        map.put("hotelGroupRatePlanCode", 3924);
+        map.put("hotelGroupRoomName", "三人套房-105(三小床.有窗)");
+        map.put("balanceType", "PP");
+        map.put("mappingType", 0);
+        map.put("setType", 1);
+        try {
+            long start = System.currentTimeMillis();
+            String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
+            String xml = xmlStr.replaceAll("&amp;", "&").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
             System.err.println(xml);
             Document doc = null;
             doc = DocumentHelper.parseText(xml);
@@ -236,12 +277,9 @@ public class CtripConnectionTest extends BaseTest {
         map.put("supplierID", 55);
         map.put("getMappingInfoType", "UnMapping");
         Map value = new HashMap();
-        value.put("id", 2075384);
-        Map value1 = new HashMap();
-        value1.put("id", 2075300);
+        value.put("id", 4504433);
         List list = new ArrayList();
         list.add(value);
-        list.add(value1);
         map.put("hotels", list);
         try {
             long start = System.currentTimeMillis();
@@ -311,37 +349,16 @@ public class CtripConnectionTest extends BaseTest {
             e.printStackTrace();  
         }
         Element root = doc.getRootElement();
-        SOAPMessage msg = formatSoapString(xml);
-        SOAPBody body = msg.getSOAPBody();
-        Iterator<SOAPElement> iterator = body.getChildElements();
-         PrintBody(iterator, null);
+        Element requestResult = root.element("Body").element("AdapterRequestResponse")
+        .element("AdapterRequestResult").element("RequestResponse").element("RequestResult");
+        if(requestResult.element("ResultCode").getText().equals("0")){
+            String xmlSt = requestResult.element("Response").element("GetHotelInfoResponse").asXML();
+            GetHotelInfoResponse getHotelInfoResponse = (GetHotelInfoResponse) XstreamUtil.getXml2Bean(xmlSt,GetHotelInfoResponse.class);
+            System.err.println(getHotelInfoResponse);
+        }
+        System.out.println(requestResult.element("Message"));
+        System.out.println(requestResult.asXML());
  
     }
     
-    private static SOAPMessage formatSoapString(String soapString) {
-               MessageFactory msgFactory;
-                 try {
-                     msgFactory = MessageFactory.newInstance();
-                     SOAPMessage reqMsg = msgFactory.createMessage(new MimeHeaders(),
-                             new ByteArrayInputStream(soapString.getBytes("UTF-8")));
-                     reqMsg.saveChanges();
-                     return reqMsg;
-                 } catch (Exception e) {
-                     e.printStackTrace();
-                     return null;
-                 }
-             }
-    private static void PrintBody(Iterator<SOAPElement> iterator, String side) {
-        while (iterator.hasNext()) {
-            SOAPElement element = (SOAPElement) iterator.next();
-            System.out.println("Local Name:" + element.getLocalName());
-            System.out.println("Node Name:" + element.getNodeName());
-            System.out.println("Tag Name:" + element.getTagName());
-            System.out.println("Value:" + element.getValue());
-            if (null == element.getValue()
-                    && element.getChildElements().hasNext()) {
-                PrintBody(element.getChildElements(), side + "-----");
-            }
-        }
-    }
 }
