@@ -17,4 +17,7 @@
    <dubbo:service interface="com.zizaike.is.open.TaobaoService" version="1.0.0" ref="taobaoService"  group="${dubbo.group}" />  
 	<bean id="taobaoService" class="com.zizaike.open.service.impl.TaobaoServiceImpl" />
 	
+   <dubbo:service interface="com.zizaike.is.open.CtripService" version="1.0.0" ref="ctripService"  group="${dubbo.group}" />  
+	<bean id="ctripService" class="com.zizaike.open.service.impl.CtripServiceImpl" />
+	
 </beans>

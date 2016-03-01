@@ -19,6 +19,7 @@ import java.util.Map;
 
 import javax.xml.soap.SOAPException;
 
+import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.testng.annotations.Test;
 
 import com.zizaike.core.common.util.http.SoapFastUtil;
+import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.ctrip.GetHotelInfoResponse;
 import com.zizaike.entity.open.ctrip.PriceInfo;
@@ -47,6 +49,10 @@ import com.zizaike.open.common.util.XstreamUtil;
  * @see
  */
 public class CtripConnectionTest extends BaseTest {
+    @Value("${ctrip.userId}")
+    private String userId;
+    @Value("${ctrip.supplierID}")
+    private String supplierID;
     @Value("${ctrip.url}")
     private String url;
     @Value("${ctrip.username}")
@@ -66,7 +72,7 @@ public class CtripConnectionTest extends BaseTest {
         Map map = new HashMap();
         map.put("userName", username);
         map.put("password", password);
-        map.put("userId", 204);
+        map.put("userId", userId);
         map.put("date", dateString);
         map.put("hotelGroupRoomTypeCode", 228215);
         map.put("hotelGroupHotelCode", 81687);
@@ -90,7 +96,7 @@ public class CtripConnectionTest extends BaseTest {
         Map map = new HashMap();
         map.put("userName", username);
         map.put("password", password);
-        map.put("userId", 204);
+        map.put("userId", userId);
         map.put("date", dateString);
         /*
          * params
@@ -143,7 +149,7 @@ public class CtripConnectionTest extends BaseTest {
         Map map = new HashMap();
         map.put("userName", username);
         map.put("password", password);
-        map.put("userId", 204);
+        map.put("userId", userId);
         map.put("date", dateString);
         List<RoomInfoItem> roomInfoItems = new ArrayList<RoomInfoItem>();
         roomInfoItems.add(new RoomInfoItem(1, "F", 2, 2, 1900, "G", 4, 4, "7days", 6, "T", "F", "S", 6, 36, "F",
@@ -174,7 +180,7 @@ public class CtripConnectionTest extends BaseTest {
         Map map = new HashMap();
         map.put("userName", username);
         map.put("password", password);
-        map.put("userId", 204);
+        map.put("userId", userId);
         map.put("date", dateString);
         map.put("orderID", "203766563");
         map.put("interFaceSendID", "14112314");
@@ -200,8 +206,8 @@ public class CtripConnectionTest extends BaseTest {
         map.put("userName", username);
         map.put("password", password);
         map.put("date", dateString);
-        map.put("userId", 204); 
-        map.put("supplierID", 55);
+        map.put("userId", userId); 
+        map.put("supplierID", supplierID);
         try {
             long start = System.currentTimeMillis();
             String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
@@ -236,8 +242,8 @@ public class CtripConnectionTest extends BaseTest {
         map.put("userName", username);
         map.put("password", password);
         map.put("date", dateString);
-        map.put("userId", 204);
-        map.put("supplierID", 55);
+        map.put("userId", userId);
+        map.put("supplierID", supplierID);
         //京都酒店  标准潮式雙床房
         map.put("masterHotel", 436553);
         map.put("masterRoom", 749540);
@@ -258,6 +264,11 @@ public class CtripConnectionTest extends BaseTest {
             Document doc = null;
             doc = DocumentHelper.parseText(xml);
             Element root = doc.getRootElement();
+            Element requestResult = root.element("Body").element("AdapterRequestResponse")
+                    .element("AdapterRequestResult").element("RequestResponse").element("RequestResult");
+            if(!requestResult.element("ResultCode").getText().equals("0")){
+                throw new IllegalParamterException(xmlStr);
+            }  
             System.err.println(System.currentTimeMillis() - start);
         } catch (Exception e) {
             e.printStackTrace();
@@ -273,8 +284,8 @@ public class CtripConnectionTest extends BaseTest {
         map.put("userName", username);
         map.put("password", password);
         map.put("date", dateString);
-        map.put("userId", 204);
-        map.put("supplierID", 55);
+        map.put("userId", userId);
+        map.put("supplierID", supplierID);
         map.put("getMappingInfoType", "UnMapping");
         Map value = new HashMap();
         value.put("id", 4504433);

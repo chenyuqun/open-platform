@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -95,6 +95,10 @@ public class CtripServiceImpl implements CtripService {
     @Autowired
     private RoomTypeMappingService roomTypeMappingService;
     
+    @Value("${ctrip.userId}")
+    private String userId;
+    @Value("${ctrip.supplierID}")
+    private String supplierID;
     @Value("${ctrip.url}")
     private String url;
     @Value("${ctrip.username}")
@@ -486,7 +490,7 @@ public class CtripServiceImpl implements CtripService {
         Map pricemap = new HashMap();
         pricemap.put("userName", username);
         pricemap.put("password", password);
-        pricemap.put("userId", 204);
+        pricemap.put("userId", userId);
         pricemap.put("date", dateString);
         pricemap.put("setRoomPriceItems", setRoomPriceItems);
         pricemap.put("hotelID", hotelID);
@@ -496,8 +500,8 @@ public class CtripServiceImpl implements CtripService {
         try {
             long start = System.currentTimeMillis();
             String xmlStr = soapFastUtil.post(pricemap, prefix, template, url, "");
-            System.out.println(xmlStr);
-            System.err.println(System.currentTimeMillis() - start);
+            LOG.debug(xmlStr);
+            LOG.info("setRoomPrice excute time {} ms",System.currentTimeMillis() - start);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -526,10 +530,73 @@ public class CtripServiceImpl implements CtripService {
             long start = System.currentTimeMillis();
             String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
             System.out.println(xmlStr);
-            System.err.println(System.currentTimeMillis() - start);
+            LOG.info("setMappingInfo excute time {} ms",System.currentTimeMillis() - start);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void setMappingInfo(Map<String,String> map) throws ZZKServiceException {
+          
+        if(StringUtils.isEmpty(map.get("masterHotel"))){
+            throw new IllegalParamterException("setMappingInfo masterHotel is null");
+        }
+        if(StringUtils.isEmpty(map.get("masterRoom"))){
+            throw new IllegalParamterException("setMappingInfo masterRoom is null");
+        }
+        if(StringUtils.isEmpty(map.get("ratePlanCode"))){
+            throw new IllegalParamterException("setMappingInfo ratePlanCode is null");
+        }
+        if(StringUtils.isEmpty(map.get("hotelGroupHotelCode"))){
+            throw new IllegalParamterException("setMappingInfo hotelGroupHotelCode is null");
+        }
+        if(StringUtils.isEmpty(map.get("hotelGroupRoomTypeCode"))){
+            throw new IllegalParamterException("setMappingInfo hotelGroupRoomTypeCode is null");
+        }
+        if(StringUtils.isEmpty(map.get("hotelGroupRatePlanCode"))){
+            throw new IllegalParamterException("setMappingInfo hotelGroupRatePlanCode is null");
+        }
+        if(StringUtils.isEmpty(map.get("hotelGroupRoomName"))){
+            throw new IllegalParamterException("setMappingInfo hotelGroupRoomName is null");
+        }
+        if(StringUtils.isEmpty(map.get("hotelGroupRatePlanCode"))){
+            throw new IllegalParamterException("setMappingInfo hotelGroupRatePlanCode is null");
+        }
+        if(StringUtils.isEmpty(map.get("hotelGroupRoomName"))){
+            throw new IllegalParamterException("setMappingInfo hotelGroupRoomName is null");
+        }
+        String template = "SetMappingInfo.vm";
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(currentTime);
+        map.put("userName", username);
+        map.put("password", password);
+        map.put("date", dateString);
+        map.put("userId", userId);
+        map.put("supplierID", supplierID);
+        map.put("balanceType", "PP");
+        map.put("mappingType", "0");
+        map.put("setType","1");
+        try {
+            long start = System.currentTimeMillis();
+            String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
+            String xml = xmlStr.replaceAll("&amp;", "&").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+            LOG.debug("setMappingInfo  response xml {}",xml);
+            Document doc = null;
+            doc = DocumentHelper.parseText(xml);
+            Element root = doc.getRootElement();
+            Element requestResult = root.element("Body").element("AdapterRequestResponse")
+                    .element("AdapterRequestResult").element("RequestResponse").element("RequestResult");
+            if(!requestResult.element("ResultCode").getText().equals("0")){
+                throw new IllegalParamterException(xmlStr);
+            }  
+            LOG.info("setMappingInfo excute time {} ms",System.currentTimeMillis() - start);
+        } catch (Exception e) {
+            LOG.error("setMappingInfo exception{}",e);
+            e.printStackTrace();
+        }
+        
     }
 }
 

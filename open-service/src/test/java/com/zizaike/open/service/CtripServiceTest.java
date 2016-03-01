@@ -1,5 +1,8 @@
 package com.zizaike.open.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
@@ -32,6 +35,19 @@ public class CtripServiceTest extends BaseTest {
                 + "<CNYCost>0</CNYCost>" + "<!--含早餐数-->" + "<BreakFast>0</BreakFast>"+ "</RoomPrice>" 
                 + "</RoomPrices>" + "</DomesticCheckRoomAvailRequest>" + "</Request>";
         System.err.println(ctipCtripService.service(xml));
+    }
+    @Test(description = "设置mappingInfo")
+    public void setMappingInfo() throws ZZKServiceException, DocumentException {
+        Map map = new HashMap();
+        //京都酒店  标准潮式雙床房
+        map.put("masterHotel", "436553");
+        map.put("masterRoom", "749540");
+        map.put("ratePlanCode", "902548");
+        map.put("hotelGroupHotelCode", "328");
+        map.put("hotelGroupRoomTypeCode", "3924");
+        map.put("hotelGroupRatePlanCode", "3924");
+        map.put("hotelGroupRoomName", "三人套房-105(三小床.有窗)");
+        ctipCtripService.setMappingInfo(map);
     }
     
    
