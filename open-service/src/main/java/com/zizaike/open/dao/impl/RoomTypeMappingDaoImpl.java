@@ -37,6 +37,15 @@ public class RoomTypeMappingDaoImpl extends GenericMyIbatisDao<RoomTypeMapping, 
         RoomTypeMapping result = this.getSqlSession().selectOne(NAMESPACE+"queryByHotelIdAndOpenRoomTypeId", query);
         return result;
     }
+    
+    @Override
+    public RoomTypeMapping queryByRoomTypeId(String roomTypeId)
+            throws ZZKServiceException {
+        RoomTypeMapping query = new RoomTypeMapping();
+        query.setRoomTypeId(roomTypeId);
+        RoomTypeMapping result = this.getSqlSession().selectOne(NAMESPACE+"queryByRoomTypeId", query);
+        return result;
+    }
 
 }
   
