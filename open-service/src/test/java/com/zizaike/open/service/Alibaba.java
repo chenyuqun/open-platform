@@ -25,6 +25,7 @@ import com.taobao.api.request.XhotelRateUpdateRequest;
 import com.taobao.api.request.XhotelRateplanAddRequest;
 import com.taobao.api.request.XhotelRateplanGetRequest;
 import com.taobao.api.request.XhotelRateplanUpdateRequest;
+import com.taobao.api.request.XhotelRatesIncrementRequest;
 import com.taobao.api.request.XhotelRatesUpdateRequest;
 import com.taobao.api.request.XhotelRoomsIncrementRequest;
 import com.taobao.api.request.XhotelRoomtypeAddRequest;
@@ -40,6 +41,7 @@ import com.taobao.api.response.XhotelRateUpdateResponse;
 import com.taobao.api.response.XhotelRateplanAddResponse;
 import com.taobao.api.response.XhotelRateplanGetResponse;
 import com.taobao.api.response.XhotelRateplanUpdateResponse;
+import com.taobao.api.response.XhotelRatesIncrementResponse;
 import com.taobao.api.response.XhotelRatesUpdateResponse;
 import com.taobao.api.response.XhotelRoomsIncrementResponse;
 import com.taobao.api.response.XhotelRoomtypeAddResponse;
@@ -287,6 +289,7 @@ public class Alibaba extends BaseTest{
         XhotelRateUpdateRequest req = new XhotelRateUpdateRequest();
         //req.setRpid(5118203626L);
         req.setRateplanCode("ZIZAIKE_1");
+        
         req.setGid(12568017626L);
         req.setOutRid("12345678_123");
         req.setInventoryPrice("{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-01-30,\"quota\":100,\"price\":500},{\"date\":2016-01-31,\"quota\":100,\"price\":600}]}"); 
@@ -302,6 +305,16 @@ public class Alibaba extends BaseTest{
         XhotelRatesUpdateResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }
+    
+    @Test(description = "价格推送接口（批量增量）")
+    public void xhotelRatesIncrement() throws ZZKServiceException, ApiException {
+        XhotelRatesIncrementRequest req = new XhotelRatesIncrementRequest();
+        req.setRateInventoryPriceMap("[{\"out_rid\":\"32027\",\"rateplan_code\":\"32027\",\"vendor\":\"\","
+                + "\"data\":{\"use_room_inventory\":false,\"inventory_price\":[{\"date\":2016-02-23,\"quota\":123,\"price\":2000,\"status\":1},{\"date\":2016-02-24,\"quota\":345,\"price\":4000,\"status\":0}]}}]"); 
+        XhotelRatesIncrementResponse response = client.execute(req , sessionKey);
+        System.out.println(response.getBody());       
+    }
+    
     
     //看样子是宝贝 文档有点问题
     @Test(description = "根据gid查询卖家下所有的rpId")
