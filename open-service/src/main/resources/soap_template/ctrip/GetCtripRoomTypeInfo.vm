@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Header>
+		<CtripSoapHeader xmlns="http://www.ctrip.com/">
+			<Login>${userName}</Login>
+			<Password>${password}</Password>
+			<Company>${userId}</Company>
+		</CtripSoapHeader>
+	</soap:Header>
+	<soap:Body>
+		<Request xmlns="http://www.ctrip.com/">
+			<requestXml>
+			&lt;Request&gt;
+	&lt;HeaderInfo UserID=&quot;${userId}&quot; RequestorId=&quot;Ctrip.com&quot; AsyncRequest=&quot;false&quot; TimeStamp=&quot;${date}&quot;&gt;
+		&lt;Authentication UserName=&quot;${userName}&quot; Password=&quot;${password}&quot;/&gt;
+		&lt;RequestType Name=&quot;GetCtripRoomTypeInfo&quot; Version=&quot;1.0&quot;/&gt;
+	&lt;/HeaderInfo&gt;
+	&lt;HotelGroupInterfaceRoomTypeListRequest&gt;
+		&lt;HotelGroupRoomTypeCode&gt;${hotelGroupRoomTypeCode}&lt;/HotelGroupRoomTypeCode&gt;
+		&lt;HotelGroupHotelCode&gt;${hotelGroupHotelCode}&lt;/HotelGroupHotelCode&gt;
+		&lt;HotelGroupRatePlanCode&gt;${hotelGroupRatePlanCode}&lt;/HotelGroupRatePlanCode&gt;
+	&lt;/HotelGroupInterfaceRoomTypeListRequest&gt;
+&lt;/Request&gt;
+			</requestXml>
+		</Request>
+	</soap:Body>
+</soap:Envelope>

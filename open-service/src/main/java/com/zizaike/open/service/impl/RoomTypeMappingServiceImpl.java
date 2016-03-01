@@ -48,6 +48,17 @@ public class RoomTypeMappingServiceImpl implements RoomTypeMappingService {
         }
         return query;
     }
+    @Override
+    public RoomTypeMapping queryByRoomTypeId(String roomTypeId) throws ZZKServiceException {
+        if(StringUtils.isEmpty(roomTypeId)){
+            throw new IllegalParamterException("roomTypeId is null");
+        }
+        RoomTypeMapping query = roomTypeMappingDao.queryByRoomTypeId(roomTypeId);
+        if(query == null){
+            throw new RoomTypeNotMappingException();
+        }
+        return query;
+    }
 
 }
   

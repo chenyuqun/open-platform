@@ -158,4 +158,11 @@
     AND   open_hotel_id = #{openHotelId,jdbcType=VARCHAR}
     AND   open_room_type_id = #{openRoomTypeId,jdbcType=VARCHAR}
   </select>
+  <select id="queryByRoomTypeId" resultMap="BaseResultMap" parameterType="com.zizaike.entity.open.RoomTypeMapping" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_open_room_type_mapping
+    where active=1
+    AND   room_type_id = #{roomTypeId,jdbcType=VARCHAR}
+  </select>
 </mapper>

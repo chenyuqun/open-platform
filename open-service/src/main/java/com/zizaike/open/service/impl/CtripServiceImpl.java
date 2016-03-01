@@ -9,8 +9,15 @@
 
 package com.zizaike.open.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -19,20 +26,28 @@ import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.zizaike.core.common.util.http.SoapFastUtil;
 import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.OpenChannelType;
 import com.zizaike.entity.open.RoomTypeMapping;
 import com.zizaike.entity.open.User;
+import com.zizaike.entity.open.alibaba.Data;
+import com.zizaike.entity.open.alibaba.RateInventoryPrice;
 import com.zizaike.entity.open.alibaba.Rates;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.ctrip.BalanceType;
+import com.zizaike.entity.open.ctrip.PriceInfo;
+import com.zizaike.entity.open.ctrip.RoomInfoItem;
 import com.zizaike.entity.open.ctrip.RoomPrice;
 import com.zizaike.entity.open.ctrip.RoomPrices;
+import com.zizaike.entity.open.ctrip.SetRoomInfoRequest;
+import com.zizaike.entity.open.ctrip.SetRoomPriceItem;
 import com.zizaike.entity.open.ctrip.request.DomesticCancelHotelOrderReq;
 import com.zizaike.entity.open.ctrip.request.DomesticCancelHotelOrderRequest;
 import com.zizaike.entity.open.ctrip.request.DomesticCheckRoomAvailReq;
@@ -79,6 +94,16 @@ public class CtripServiceImpl implements CtripService {
     private OrderService orderService;
     @Autowired
     private RoomTypeMappingService roomTypeMappingService;
+    
+    @Value("${ctrip.url}")
+    private String url;
+    @Value("${ctrip.username}")
+    private String username;
+    @Value("${ctrip.password}")
+    private String password;
+    private String prefix = "soap_template/ctrip";
+    @Autowired
+    private SoapFastUtil soapFastUtil;
 
     /**
      * 
@@ -271,13 +296,170 @@ public class CtripServiceImpl implements CtripService {
         user.setPassword(authenticationToken.attributeValue("Password"));
         userService.checkUser(user);
     }
+    
     @Override
-    public void updateRates(Rates object) {
+    public void updateRates(Rates object) throws ZZKServiceException{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             // TODO 房价房态
-            object.getRateInventoryPriceMap();
-        
-        
-        
+            List<RateInventoryPrice> rateInventoryPriceList=object.getRateInventoryPriceMap();
+            List<SetRoomPriceItem> setRoomPriceItems = new ArrayList<SetRoomPriceItem>();
+            String hotelID="";
+            for(int i=0;i<rateInventoryPriceList.size();i++){
+                RateInventoryPrice rateInventoryPrice=new RateInventoryPrice();
+                SetRoomPriceItem setRoomPriceItem=new SetRoomPriceItem();
+                //房态接口一次只允许更新一个房型
+                SetRoomInfoRequest setRoomInfoRequest=new SetRoomInfoRequest();
+                rateInventoryPrice=rateInventoryPriceList.get(i);
+                //房型               
+                RoomTypeMapping roomTypeMapping = roomTypeMappingService.queryByRoomTypeId(
+                        rateInventoryPrice.getOutRid());
+                setRoomPriceItem.setRoomID(Integer.parseInt(roomTypeMapping.getOpenRoomTypeId()));
+                hotelID=roomTypeMapping.getOpenHotelId();
+                
+                setRoomPriceItem.setCurrency("CNY");
+                List<PriceInfo> priceInfos = new ArrayList<PriceInfo>();
+                List<RoomInfoItem> roomInfoItems = new ArrayList<RoomInfoItem>();
+                //房态房价
+                Data data=rateInventoryPrice.getData();
+                int firstDay=1;
+                for(com.zizaike.entity.open.alibaba.InventoryPrice inventoryPrice:data.getInventoryPrice()){
+                    PriceInfo priceInfo=new PriceInfo();
+                    RoomInfoItem roomInfoItem=new RoomInfoItem();
+                    if(firstDay==1){
+                        setRoomPriceItem.setStartDate(sdf.format(inventoryPrice.getDate()));
+                        firstDay=0;
+                    }
+                    priceInfo.setAmountAfterTaxFee(inventoryPrice.getPrice());
+                    priceInfo.setAmountBeforeTaxFee(inventoryPrice.getPrice());
+                    /**
+                     * 适用于地区(适用人群) 默认111111
+                     */
+                    priceInfo.setApplicability("111111");
+                    /**
+                     * PP  预付， FG 现付，PKG包价
+                     */
+                    priceInfo.setBlanceType("PP");
+                    /**
+                     * 早餐
+                     */
+                    //priceInfo.setBreakfast(breakfast);
+                    priceInfo.setCostAmountAfterTaxFee(inventoryPrice.getPrice());
+                    priceInfo.setCostAmountBeforeTaxFee(inventoryPrice.getPrice());
+                    /**
+                     * 连住天数，暂不用，默认为1       
+                     */
+                    priceInfo.setDay(1);
+                   /**
+                    * 不需要变价审核设置： Sell， Cost，Both；需 要变价审核设 置：ACost， ASell，ABoth
+                    */
+                    priceInfo.setPriceType("Sell");
+                    /**
+                     * 连住天数，暂不用，默认为1
+                     */
+                    priceInfo.setStays(1);
+                    priceInfos.add(priceInfo);
+                    
+                    inventoryPrice.getStatus();
+                    inventoryPrice.getQuota();
+                    //现付使用
+                    //roomInfoItem.setAllNeedGuarantee(allNeedGuarantee);
+                    /**
+                     * 是否同时修改房态默认值(F-否，T-是)
+                     */
+                    roomInfoItem.setChangeDefault("F");
+                    /**
+                     * 住店控制(C-进店统计,S-住店统计)
+                     */
+                    roomInfoItem.setCheckType("S");
+                    /**
+                     * 预付房型扣款类型(C-全部扣款,F-首日扣款)
+                     */
+                    roomInfoItem.setDeductType("C");
+                    /**
+                     * 担保
+                     */
+//                    roomInfoItem.setGuarantee(guarantee);
+//                    roomInfoItem.setGuaranteeLCT(guaranteeLCT);
+                    /**
+                     * 保留时间(9999-无规定,1000-10:00,...,2330-23:30)
+                     */
+                    roomInfoItem.setHoldDeadline(9999);
+                    /**
+                     * 订单最晚预订时间，计算公式同ReserveTime
+                     */
+                    roomInfoItem.setLateReserveTime(6);
+                    /**
+                     * 备注
+                     */
+                    roomInfoItem.setNote("");
+                    /**
+                     * 预付最晚取消时间 【预付产品使用】小时数，计算公式同ReserveTime，不可 取消设置为23988
+                     */
+                    roomInfoItem.setPrepayLCT(720);
+                    /**
+                     * 国内推荐级别(5-特推,4-主推,3-可推,2-可订,1-不推,0-不可订
+                     */
+                    roomInfoItem.setRecommend(2);
+                    /**
+                     * 国外推荐级别(5-特推,4-主推,3-可推,2-可订,1-不推,0-不可订
+                     */
+                    roomInfoItem.setRecommendIntl(2);
+                    /**
+                     * 保留房用最晚预订时间，计算公式：订单入住日24点向后推算，如果
+                     * 设置为6，则当天保留房最晚预订时间为24点向后倒推6小时，为18点。 
+                     * 如果设置为36，则保留房最晚预订时间为24点向后倒推36小时，表示入住日前一 天的中午12点
+                     */
+                    roomInfoItem.setReserveTime(6);
+                    /**
+                     * 保留房可否恢复(T-可，F-不可)
+                     */
+                    roomInfoItem.setRestorable("F");
+                    /**
+                     * 房型礼品ID，默认值-2147483648
+                     */
+                    roomInfoItem.setRoomGiftID(-2147483648);
+                    /**
+                     * 临时保留房总数
+                     */
+                    roomInfoItem.setRoomsInv(2);
+                    /**
+                     * 房态(N-满房 ,G-良好)
+                     */
+                    roomInfoItem.setRoomStatus("G");
+                    /**
+                     * 连住，暂不用，默认为1
+                     */
+                    roomInfoItem.setStays(1);
+                    /**
+                     * 预订限制(2-超时担保,3-一律担保,9999-无限制)
+                     */
+                    roomInfoItem.setUserLimited(2);
+                    roomInfoItems.add(roomInfoItem);
+                }
+                Date startDay = null;
+                try {
+                    startDay = sdf.parse(setRoomPriceItem.getStartDate());
+                } catch (ParseException e) {
+                      
+                    // TODO Auto-generated catch block  
+                    e.printStackTrace();  
+                    
+                }
+                Calendar rightNow = Calendar.getInstance();
+                rightNow.setTime(startDay);
+                //有多少房态房价结束日期加多少天
+                rightNow.add(Calendar.DAY_OF_YEAR,data.getInventoryPrice().size());
+                Date endDay=rightNow.getTime();
+                setRoomPriceItem.setEndDate(sdf.format(endDay));
+                setRoomPriceItem.setPriceInfos(priceInfos);
+                setRoomPriceItems.add(setRoomPriceItem);
+                //更新房态
+                setRoomInfo(roomInfoItems, roomTypeMapping.getOpenRoomTypeId(),sdf.format(startDay),sdf.format(endDay));
+            } 
+          //更新价格
+            setRoomPrice(setRoomPriceItems,hotelID);
+           
+         
     }
 
     @Override
@@ -287,6 +469,62 @@ public class CtripServiceImpl implements CtripService {
         // TODO Auto-generated method stub  
         return null;
     }
-
+    
+    public void setRoomPrice(List<SetRoomPriceItem> setRoomPriceItems,String hotelID){
+        /**
+         * SetRoomPrice.vm
+         */
+        String template = "SetRoomPrice.vm";
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(currentTime);
+        Map pricemap = new HashMap();
+        pricemap.put("userName", username);
+        pricemap.put("password", password);
+        pricemap.put("userId", 204);
+        pricemap.put("date", dateString);
+        pricemap.put("setRoomPriceItems", setRoomPriceItems);
+        pricemap.put("hotelID", hotelID);
+        pricemap.put("title", "");
+        pricemap.put("submitor", "zizaike");
+        pricemap.put("priority", "N");
+        try {
+            long start = System.currentTimeMillis();
+            String xmlStr = soapFastUtil.post(pricemap, prefix, template, url, "");
+            System.out.println(xmlStr);
+            System.err.println(System.currentTimeMillis() - start);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void setRoomInfo(List<RoomInfoItem> roomInfoItems,String roomID,String startDate,String endDate){
+        /**
+         * SetRoomInfo.vm
+         */
+        String template = "SetRoomInfo.vm";
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(currentTime);
+        Map map = new HashMap();
+        map.put("userName", username);
+        map.put("password", password);
+        map.put("userId", 204);
+        map.put("date", dateString);
+        
+        map.put("roomInfoItems", roomInfoItems);
+        map.put("roomID", roomID);
+        map.put("startDate", startDate);
+        map.put("endDate", endDate);
+        map.put("editer", "zizaike");
+        try {
+            long start = System.currentTimeMillis();
+            String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
+            System.out.println(xmlStr);
+            System.err.println(System.currentTimeMillis() - start);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 
