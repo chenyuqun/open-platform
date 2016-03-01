@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 
+import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.alibaba.Rates;
 import com.zizaike.is.open.CtripService;
 import com.zizaike.open.domain.event.RatesApplicationEvent;
@@ -35,7 +36,13 @@ public class RatesChangeListener implements ApplicationListener<RatesApplication
     public void onApplicationEvent(RatesApplicationEvent event) {
           
         Rates rates =  (Rates) event.getSource();          
-        ctripService.updateRates(rates);        
+        try {
+            ctripService.updateRates(rates);
+        } catch (ZZKServiceException e) {  
+            
+            e.printStackTrace();  
+            
+        }        
     }
 }
   
