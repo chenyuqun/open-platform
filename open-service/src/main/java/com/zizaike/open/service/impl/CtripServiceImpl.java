@@ -425,7 +425,12 @@ public class CtripServiceImpl implements CtripService {
                     /**
                      * 房态(N-满房 ,G-良好)
                      */
-                    roomInfoItem.setRoomStatus("G");
+                    if(inventoryPrice.getQuota()>0){
+                        roomInfoItem.setRoomStatus("G");
+                    }else{
+                        roomInfoItem.setRoomStatus("N");
+                    }
+                    
                     /**
                      * 连住，暂不用，默认为1
                      */
