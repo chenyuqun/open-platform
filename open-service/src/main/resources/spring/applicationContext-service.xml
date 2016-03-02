@@ -29,6 +29,10 @@
 		<!-- 是否进行陈旧连接检查, 如果不开启, 则启动陈旧连接关闭线程 -->
 		<constructor-arg name="staleConnCheck" value="${http.staleConnCheck}"/>
 	</bean>
+	<!-- soapFastUtil -->
+	<bean id="soapFastUtil" class="com.zizaike.core.common.util.http.SoapFastUtil" >
+		<constructor-arg  ref="httpProxy"/>
+	</bean>
 	<!-- taobaoClient -->
 	<bean id="taobaoClient" class="com.taobao.api.DefaultTaobaoClient">
 		<constructor-arg name="serverUrl" value="${alibaba.serverUrl}" />

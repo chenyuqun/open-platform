@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.is.open.TaobaoService;
-import com.zizaike.open.BaseAjaxController;
+import com.zizaike.open.BaseXMLController;
 
 /**
  * 
@@ -34,7 +34,7 @@ import com.zizaike.open.BaseAjaxController;
  */
 @Controller
 @RequestMapping("/taobaoService")
-public class TaoBaoController extends BaseAjaxController {
+public class TaoBaoController extends BaseXMLController {
     protected final Logger LOG = LoggerFactory.getLogger(TaoBaoController.class);
     @Autowired
     private TaobaoService taobaoService;

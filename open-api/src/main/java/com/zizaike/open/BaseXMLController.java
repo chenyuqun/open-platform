@@ -5,16 +5,16 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
-import com.zizaike.core.bean.ResponseResult;
 import com.zizaike.core.framework.exception.IErrorCode;
 import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.entity.open.alibaba.response.ResponseData;
+import com.zizaike.entity.open.alibaba.response.ResponseExceptionData;
+import com.zizaike.open.common.util.XstreamUtil;
 
 /**
  * 
@@ -27,21 +27,18 @@ import com.zizaike.core.framework.exception.ZZKServiceException;
  * @version   
  * @since JDK 1.7
  */
-public abstract class BaseAjaxController {
+public abstract class BaseXMLController {
 
     protected  Logger log = LoggerFactory.getLogger(getClass());
 
     @ExceptionHandler
     @ResponseBody
     public  void handleException(Exception ex, HttpServletRequest request, HttpServletResponse response) {
-        String callback = request.getParameter("callback");
-
-        ResponseResult resultBean = new ResponseResult();
-
+        ResponseExceptionData resultBean = new ResponseExceptionData();
         if (ex instanceof ZZKServiceException) {
             ZZKServiceException ue = (ZZKServiceException) ex;
             IErrorCode iErrorCode = ((ZZKServiceException) ex).getErrorCode();
-            resultBean.setCode(iErrorCode.getErrorCode());
+            resultBean.setResultCode(iErrorCode.getErrorCode());
             resultBean.setMessage(iErrorCode.getErrorMsg());
             if(ue.getDescription() != null){
                 resultBean.setMessage(ue.getDescription());
@@ -52,23 +49,19 @@ public abstract class BaseAjaxController {
         } else {
             log.error("Exception:", ex);
             log.error("system error ", ex.getCause());
-            resultBean.setCode("500");
+            resultBean.setResultCode("500");
             resultBean.setMessage(ex.getMessage());
         }
 
         try {
-            response.getWriter().write(jsonpBuilder(callback, resultBean));
+            response.getWriter().write(jsonpBuilder(resultBean));
         } catch (IOException e) {
             log.error("IOException ", e);
         }
     }
 
-    public String jsonpBuilder(String callback, ResponseResult resultBean) {
-        if (StringUtils.isEmpty(callback)) {
-            return JSON.toJSONString(resultBean);
-        }
-        StringBuilder sb = new StringBuilder();
-        return sb.append(callback).append("(").append(JSON.toJSONString(resultBean)).append(")").toString();
+    public String jsonpBuilder( ResponseData resultBean) {
+            return XstreamUtil.getResponseXml(resultBean);
     }
 
 }
