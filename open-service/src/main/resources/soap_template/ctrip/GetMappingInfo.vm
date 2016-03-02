@@ -10,7 +10,7 @@
       	&lt;SupplierID&gt;${supplierID}&lt;/SupplierID&gt;
       	#foreach ($hotel in $hotels)
       		&lt;GetMappingInfoRequest&gt;
-      			&lt;Hotel&gt;$hotel.id&lt;/Hotel&gt;
+      			&lt;Hotel&gt;$hotel&lt;/Hotel&gt;
       		&lt;/GetMappingInfoRequest&gt;
       	#end
       &lt;/GetMappingInfoRequestList&gt;
