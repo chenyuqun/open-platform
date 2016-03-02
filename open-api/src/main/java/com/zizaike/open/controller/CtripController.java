@@ -86,6 +86,13 @@ public class CtripController extends BaseAjaxController {
         ResponseResult reuResult = new ResponseResult();
         return reuResult;
     }
+    @RequestMapping(value = "/getHotelInfo", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseResult setMappingInfo() throws ZZKServiceException {
+        ResponseResult resultResult = new ResponseResult();
+        resultResult.setInfo(ctripService.getHotelInfo());
+        return resultResult;
+    }
     
 }
   

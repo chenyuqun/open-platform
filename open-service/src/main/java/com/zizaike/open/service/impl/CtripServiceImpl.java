@@ -42,6 +42,7 @@ import com.zizaike.entity.open.alibaba.RateInventoryPrice;
 import com.zizaike.entity.open.alibaba.Rates;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.ctrip.BalanceType;
+import com.zizaike.entity.open.ctrip.GetHotelInfoResponse;
 import com.zizaike.entity.open.ctrip.PriceInfo;
 import com.zizaike.entity.open.ctrip.RoomInfoItem;
 import com.zizaike.entity.open.ctrip.RoomPrice;
@@ -597,6 +598,44 @@ public class CtripServiceImpl implements CtripService {
             e.printStackTrace();
         }
         
+    }
+
+    @Override
+    public GetHotelInfoResponse getHotelInfo() throws ZZKServiceException {
+        String template = "GetHotelInfo.vm";
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(currentTime);
+        Map map = new HashMap();
+        map.put("userName", username);
+        map.put("password", password);
+        map.put("date", dateString);
+        map.put("userId", userId); 
+        map.put("supplierID", supplierID);
+        GetHotelInfoResponse getHotelInfoResponse = null;
+        try {
+            long start = System.currentTimeMillis();
+            String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
+            String xml = xmlStr.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+            LOG.debug("getHotelInfo  response xml {}",xml);
+            Document doc = null;
+            try {
+                doc = DocumentHelper.parseText(xml);
+            } catch (DocumentException e) {
+                e.printStackTrace();  
+            }
+            Element root = doc.getRootElement();
+            Element requestResult = root.element("Body").element("AdapterRequestResponse")
+            .element("AdapterRequestResult").element("RequestResponse").element("RequestResult");
+            if(requestResult.element("ResultCode").getText().equals("0")){
+                String xmlS = requestResult.element("Response").element("GetHotelInfoResponse").asXML();
+                getHotelInfoResponse = (GetHotelInfoResponse) XstreamUtil.getXml2Bean(xmlS,GetHotelInfoResponse.class);
+            }    
+            LOG.info("setMappingInfo excute time {} ms",System.currentTimeMillis() - start);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return getHotelInfoResponse;
     }
 }
 
