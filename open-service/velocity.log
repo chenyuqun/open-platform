@@ -1,0 +1,877 @@
+2016-03-02 14:31:59,915 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:31:59,915 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:31:59,917 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2016-03-02 14:31:59,919 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-03-02 14:31:59,920 - Do unicode file recognition:  false
+2016-03-02 14:31:59,920 - FileResourceLoader : adding path '.'
+2016-03-02 14:31:59,928 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2016-03-02 14:31:59,929 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-03-02 14:31:59,930 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-03-02 14:31:59,931 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-03-02 14:31:59,932 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-03-02 14:31:59,933 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-03-02 14:31:59,952 - Created '20' parsers.
+2016-03-02 14:31:59,956 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-03-02 14:31:59,956 - Velocimacro : Default library not found.
+2016-03-02 14:31:59,956 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-03-02 14:31:59,956 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-03-02 14:31:59,956 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-03-02 14:31:59,956 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-03-02 14:33:00,550 - Log4JLogChute initialized using file 'velocity.log'
+2016-03-02 14:33:00,551 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2016-03-02 14:33:00,551 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2016-03-02 14:33:00,551 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-03-02 14:33:00,551 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:270)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.runtime.RuntimeSingleton.init(RuntimeSingleton.java:113)
+	at org.apache.velocity.app.Velocity.init(Velocity.java:83)
+	at com.zizaike.core.common.util.http.VelocityUtils.getSOAPRequest(VelocityUtils.java:100)
+	at com.zizaike.core.common.util.http.SoapFastUtil.post(SoapFastUtil.java:51)
+	at com.zizaike.open.service.CtripConnectionTest.getMappingInfo(CtripConnectionTest.java:274)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:200)
+	at org.springframework.test.context.testng.AbstractTestNGSpringContextTests.run(AbstractTestNGSpringContextTests.java:172)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:212)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:707)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 44 more
+2016-03-02 14:33:00,553 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:33:00,553 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:33:00,554 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2016-03-02 14:33:00,557 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-03-02 14:33:00,557 - Do unicode file recognition:  false
+2016-03-02 14:33:00,558 - FileResourceLoader : adding path '.'
+2016-03-02 14:33:00,566 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2016-03-02 14:33:00,567 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-03-02 14:33:00,568 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-03-02 14:33:00,569 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-03-02 14:33:00,570 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-03-02 14:33:00,570 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-03-02 14:33:00,591 - Created '20' parsers.
+2016-03-02 14:33:00,596 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-03-02 14:33:00,597 - Velocimacro : Default library not found.
+2016-03-02 14:33:00,597 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-03-02 14:33:00,597 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-03-02 14:33:00,597 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-03-02 14:33:00,597 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-03-02 14:34:24,975 - Log4JLogChute initialized using file 'velocity.log'
+2016-03-02 14:34:24,976 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2016-03-02 14:34:24,976 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2016-03-02 14:34:24,976 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-03-02 14:34:24,976 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:270)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.runtime.RuntimeSingleton.init(RuntimeSingleton.java:113)
+	at org.apache.velocity.app.Velocity.init(Velocity.java:83)
+	at com.zizaike.core.common.util.http.VelocityUtils.getSOAPRequest(VelocityUtils.java:100)
+	at com.zizaike.core.common.util.http.SoapFastUtil.post(SoapFastUtil.java:51)
+	at com.zizaike.open.service.CtripConnectionTest.getHotelInfo(CtripConnectionTest.java:190)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:200)
+	at org.springframework.test.context.testng.AbstractTestNGSpringContextTests.run(AbstractTestNGSpringContextTests.java:172)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:212)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:707)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 44 more
+2016-03-02 14:34:24,978 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:34:24,978 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:34:24,979 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2016-03-02 14:34:24,981 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-03-02 14:34:24,982 - Do unicode file recognition:  false
+2016-03-02 14:34:24,982 - FileResourceLoader : adding path '.'
+2016-03-02 14:34:24,990 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2016-03-02 14:34:24,991 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-03-02 14:34:24,993 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-03-02 14:34:24,994 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-03-02 14:34:24,995 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-03-02 14:34:24,996 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-03-02 14:34:25,016 - Created '20' parsers.
+2016-03-02 14:34:25,022 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-03-02 14:34:25,022 - Velocimacro : Default library not found.
+2016-03-02 14:34:25,022 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-03-02 14:34:25,022 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-03-02 14:34:25,022 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-03-02 14:34:25,022 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-03-02 14:37:31,877 - Log4JLogChute initialized using file 'velocity.log'
+2016-03-02 14:37:31,877 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2016-03-02 14:37:31,877 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2016-03-02 14:37:31,877 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-03-02 14:37:31,878 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:270)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.runtime.RuntimeSingleton.init(RuntimeSingleton.java:113)
+	at org.apache.velocity.app.Velocity.init(Velocity.java:83)
+	at com.zizaike.core.common.util.http.VelocityUtils.getSOAPRequest(VelocityUtils.java:100)
+	at com.zizaike.core.common.util.http.SoapFastUtil.post(SoapFastUtil.java:51)
+	at com.zizaike.open.service.CtripConnectionTest.getMappingInfo(CtripConnectionTest.java:274)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:200)
+	at org.springframework.test.context.testng.AbstractTestNGSpringContextTests.run(AbstractTestNGSpringContextTests.java:172)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:212)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:707)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 44 more
+2016-03-02 14:37:31,880 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:37:31,880 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:37:31,881 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2016-03-02 14:37:31,884 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-03-02 14:37:31,884 - Do unicode file recognition:  false
+2016-03-02 14:37:31,884 - FileResourceLoader : adding path '.'
+2016-03-02 14:37:31,893 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2016-03-02 14:37:31,894 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-03-02 14:37:31,895 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-03-02 14:37:31,895 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-03-02 14:37:31,896 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-03-02 14:37:31,897 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-03-02 14:37:31,915 - Created '20' parsers.
+2016-03-02 14:37:31,920 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-03-02 14:37:31,920 - Velocimacro : Default library not found.
+2016-03-02 14:37:31,920 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-03-02 14:37:31,921 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-03-02 14:37:31,921 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-03-02 14:37:31,921 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-03-02 14:38:15,811 - Log4JLogChute initialized using file 'velocity.log'
+2016-03-02 14:38:15,812 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2016-03-02 14:38:15,812 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2016-03-02 14:38:15,812 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-03-02 14:38:15,812 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:270)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.runtime.RuntimeSingleton.init(RuntimeSingleton.java:113)
+	at org.apache.velocity.app.Velocity.init(Velocity.java:83)
+	at com.zizaike.core.common.util.http.VelocityUtils.getSOAPRequest(VelocityUtils.java:100)
+	at com.zizaike.core.common.util.http.SoapFastUtil.post(SoapFastUtil.java:51)
+	at com.zizaike.open.service.CtripConnectionTest.getCtripRoomTypeInfo(CtripConnectionTest.java:301)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:200)
+	at org.springframework.test.context.testng.AbstractTestNGSpringContextTests.run(AbstractTestNGSpringContextTests.java:172)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:212)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:707)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 44 more
+2016-03-02 14:38:15,814 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:38:15,814 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:38:15,815 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2016-03-02 14:38:15,817 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-03-02 14:38:15,818 - Do unicode file recognition:  false
+2016-03-02 14:38:15,818 - FileResourceLoader : adding path '.'
+2016-03-02 14:38:15,842 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2016-03-02 14:38:15,843 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-03-02 14:38:15,844 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-03-02 14:38:15,845 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-03-02 14:38:15,846 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-03-02 14:38:15,846 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-03-02 14:38:15,863 - Created '20' parsers.
+2016-03-02 14:38:15,868 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-03-02 14:38:15,868 - Velocimacro : Default library not found.
+2016-03-02 14:38:15,868 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-03-02 14:38:15,868 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-03-02 14:38:15,868 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-03-02 14:38:15,868 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-03-02 14:40:12,879 - Log4JLogChute initialized using file 'velocity.log'
+2016-03-02 14:40:12,879 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2016-03-02 14:40:12,879 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2016-03-02 14:40:12,879 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-03-02 14:40:12,880 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:270)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.runtime.RuntimeSingleton.init(RuntimeSingleton.java:113)
+	at org.apache.velocity.app.Velocity.init(Velocity.java:83)
+	at com.zizaike.core.common.util.http.VelocityUtils.getSOAPRequest(VelocityUtils.java:100)
+	at com.zizaike.core.common.util.http.SoapFastUtil.post(SoapFastUtil.java:51)
+	at com.zizaike.open.service.CtripConnectionTest.getMappingInfo(CtripConnectionTest.java:274)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:200)
+	at org.springframework.test.context.testng.AbstractTestNGSpringContextTests.run(AbstractTestNGSpringContextTests.java:172)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:212)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:707)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 44 more
+2016-03-02 14:40:12,881 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:40:12,881 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:40:12,884 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2016-03-02 14:40:12,887 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-03-02 14:40:12,888 - Do unicode file recognition:  false
+2016-03-02 14:40:12,888 - FileResourceLoader : adding path '.'
+2016-03-02 14:40:12,898 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2016-03-02 14:40:12,900 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-03-02 14:40:12,902 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-03-02 14:40:12,902 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-03-02 14:40:12,903 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-03-02 14:40:12,904 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-03-02 14:40:12,927 - Created '20' parsers.
+2016-03-02 14:40:12,935 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-03-02 14:40:12,935 - Velocimacro : Default library not found.
+2016-03-02 14:40:12,935 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-03-02 14:40:12,936 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-03-02 14:40:12,936 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-03-02 14:40:12,936 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-03-02 14:43:07,213 - Log4JLogChute initialized using file 'velocity.log'
+2016-03-02 14:43:07,213 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2016-03-02 14:43:07,213 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2016-03-02 14:43:07,213 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-03-02 14:43:07,214 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:270)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.runtime.RuntimeSingleton.init(RuntimeSingleton.java:113)
+	at org.apache.velocity.app.Velocity.init(Velocity.java:83)
+	at com.zizaike.core.common.util.http.VelocityUtils.getSOAPRequest(VelocityUtils.java:100)
+	at com.zizaike.core.common.util.http.SoapFastUtil.post(SoapFastUtil.java:51)
+	at com.zizaike.open.service.CtripConnectionTest.getMappingInfo(CtripConnectionTest.java:274)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:200)
+	at org.springframework.test.context.testng.AbstractTestNGSpringContextTests.run(AbstractTestNGSpringContextTests.java:172)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:212)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:707)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 44 more
+2016-03-02 14:43:07,216 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:43:07,216 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:43:07,218 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2016-03-02 14:43:07,221 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-03-02 14:43:07,222 - Do unicode file recognition:  false
+2016-03-02 14:43:07,222 - FileResourceLoader : adding path '.'
+2016-03-02 14:43:07,252 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2016-03-02 14:43:07,253 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-03-02 14:43:07,254 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-03-02 14:43:07,255 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-03-02 14:43:07,256 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-03-02 14:43:07,257 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-03-02 14:43:07,280 - Created '20' parsers.
+2016-03-02 14:43:07,286 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-03-02 14:43:07,286 - Velocimacro : Default library not found.
+2016-03-02 14:43:07,286 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-03-02 14:43:07,286 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-03-02 14:43:07,286 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-03-02 14:43:07,286 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-03-02 14:43:24,450 - Log4JLogChute initialized using file 'velocity.log'
+2016-03-02 14:43:24,450 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2016-03-02 14:43:24,450 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2016-03-02 14:43:24,450 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-03-02 14:43:24,450 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:270)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.runtime.RuntimeSingleton.init(RuntimeSingleton.java:113)
+	at org.apache.velocity.app.Velocity.init(Velocity.java:83)
+	at com.zizaike.core.common.util.http.VelocityUtils.getSOAPRequest(VelocityUtils.java:100)
+	at com.zizaike.core.common.util.http.SoapFastUtil.post(SoapFastUtil.java:51)
+	at com.zizaike.open.service.CtripConnectionTest.setMappingInfo(CtripConnectionTest.java:238)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:200)
+	at org.springframework.test.context.testng.AbstractTestNGSpringContextTests.run(AbstractTestNGSpringContextTests.java:172)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:212)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:707)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 44 more
+2016-03-02 14:43:24,452 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:43:24,452 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:43:24,453 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2016-03-02 14:43:24,455 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-03-02 14:43:24,456 - Do unicode file recognition:  false
+2016-03-02 14:43:24,456 - FileResourceLoader : adding path '.'
+2016-03-02 14:43:24,464 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2016-03-02 14:43:24,465 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-03-02 14:43:24,466 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-03-02 14:43:24,467 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-03-02 14:43:24,468 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-03-02 14:43:24,468 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-03-02 14:43:24,486 - Created '20' parsers.
+2016-03-02 14:43:24,491 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-03-02 14:43:24,491 - Velocimacro : Default library not found.
+2016-03-02 14:43:24,491 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-03-02 14:43:24,491 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-03-02 14:43:24,491 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-03-02 14:43:24,491 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-03-02 14:47:02,510 - Log4JLogChute initialized using file 'velocity.log'
+2016-03-02 14:47:02,516 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2016-03-02 14:47:02,516 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2016-03-02 14:47:02,516 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-03-02 14:47:02,517 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:270)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.runtime.RuntimeSingleton.init(RuntimeSingleton.java:113)
+	at org.apache.velocity.app.Velocity.init(Velocity.java:83)
+	at com.zizaike.core.common.util.http.VelocityUtils.getSOAPRequest(VelocityUtils.java:100)
+	at com.zizaike.core.common.util.http.SoapFastUtil.post(SoapFastUtil.java:51)
+	at com.zizaike.open.service.CtripConnectionTest.getCtripRoomTypeInfo(CtripConnectionTest.java:301)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:200)
+	at org.springframework.test.context.testng.AbstractTestNGSpringContextTests.run(AbstractTestNGSpringContextTests.java:172)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:212)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:707)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 44 more
+2016-03-02 14:47:02,519 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:47:02,519 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 14:47:02,520 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2016-03-02 14:47:02,523 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-03-02 14:47:02,523 - Do unicode file recognition:  false
+2016-03-02 14:47:02,524 - FileResourceLoader : adding path '.'
+2016-03-02 14:47:02,531 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2016-03-02 14:47:02,532 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-03-02 14:47:02,533 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-03-02 14:47:02,534 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-03-02 14:47:02,534 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-03-02 14:47:02,535 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-03-02 14:47:02,552 - Created '20' parsers.
+2016-03-02 14:47:02,556 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-03-02 14:47:02,557 - Velocimacro : Default library not found.
+2016-03-02 14:47:02,557 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-03-02 14:47:02,557 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-03-02 14:47:02,557 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-03-02 14:47:02,557 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-03-02 15:04:37,804 - Log4JLogChute initialized using file 'velocity.log'
+2016-03-02 15:04:37,805 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2016-03-02 15:04:37,805 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2016-03-02 15:04:37,805 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-03-02 15:04:37,806 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:270)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.runtime.RuntimeSingleton.init(RuntimeSingleton.java:113)
+	at org.apache.velocity.app.Velocity.init(Velocity.java:83)
+	at com.zizaike.core.common.util.http.VelocityUtils.getSOAPRequest(VelocityUtils.java:100)
+	at com.zizaike.core.common.util.http.SoapFastUtil.post(SoapFastUtil.java:51)
+	at com.zizaike.open.service.CtripConnectionTest.getMappingInfo(CtripConnectionTest.java:274)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:200)
+	at org.springframework.test.context.testng.AbstractTestNGSpringContextTests.run(AbstractTestNGSpringContextTests.java:172)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:212)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:707)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 44 more
+2016-03-02 15:04:37,807 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 15:04:37,807 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 15:04:37,809 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2016-03-02 15:04:37,813 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-03-02 15:04:37,814 - Do unicode file recognition:  false
+2016-03-02 15:04:37,814 - FileResourceLoader : adding path '.'
+2016-03-02 15:04:37,829 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2016-03-02 15:04:37,830 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-03-02 15:04:37,831 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-03-02 15:04:37,857 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-03-02 15:04:37,859 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-03-02 15:04:37,859 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-03-02 15:04:37,882 - Created '20' parsers.
+2016-03-02 15:04:37,888 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-03-02 15:04:37,888 - Velocimacro : Default library not found.
+2016-03-02 15:04:37,888 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-03-02 15:04:37,888 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-03-02 15:04:37,888 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-03-02 15:04:37,888 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-03-02 15:14:17,760 - Log4JLogChute initialized using file 'velocity.log'
+2016-03-02 15:14:17,760 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2016-03-02 15:14:17,760 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2016-03-02 15:14:17,760 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-03-02 15:14:17,761 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:270)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.runtime.RuntimeSingleton.init(RuntimeSingleton.java:113)
+	at org.apache.velocity.app.Velocity.init(Velocity.java:83)
+	at com.zizaike.core.common.util.http.VelocityUtils.getSOAPRequest(VelocityUtils.java:100)
+	at com.zizaike.core.common.util.http.SoapFastUtil.post(SoapFastUtil.java:51)
+	at com.zizaike.open.service.CtripConnectionTest.getMappingInfo(CtripConnectionTest.java:275)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:200)
+	at org.springframework.test.context.testng.AbstractTestNGSpringContextTests.run(AbstractTestNGSpringContextTests.java:172)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:212)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:707)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 44 more
+2016-03-02 15:14:17,762 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 15:14:17,762 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 15:14:17,764 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2016-03-02 15:14:17,783 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-03-02 15:14:17,783 - Do unicode file recognition:  false
+2016-03-02 15:14:17,783 - FileResourceLoader : adding path '.'
+2016-03-02 15:14:17,796 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2016-03-02 15:14:17,797 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-03-02 15:14:17,798 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-03-02 15:14:17,799 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-03-02 15:14:17,800 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-03-02 15:14:17,801 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-03-02 15:14:17,824 - Created '20' parsers.
+2016-03-02 15:14:17,830 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-03-02 15:14:17,830 - Velocimacro : Default library not found.
+2016-03-02 15:14:17,830 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-03-02 15:14:17,830 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-03-02 15:14:17,830 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-03-02 15:14:17,830 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-03-02 17:11:51,481 - Log4JLogChute initialized using file 'velocity.log'
+2016-03-02 17:11:51,481 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2016-03-02 17:11:51,481 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2016-03-02 17:11:51,481 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-03-02 17:11:51,482 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:270)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.runtime.RuntimeSingleton.init(RuntimeSingleton.java:113)
+	at org.apache.velocity.app.Velocity.init(Velocity.java:83)
+	at com.zizaike.core.common.util.http.VelocityUtils.getSOAPRequest(VelocityUtils.java:100)
+	at com.zizaike.core.common.util.http.SoapFastUtil.post(SoapFastUtil.java:51)
+	at com.zizaike.open.service.CtripConnectionTest.getCtripRoomTypeInfo(CtripConnectionTest.java:305)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:200)
+	at org.springframework.test.context.testng.AbstractTestNGSpringContextTests.run(AbstractTestNGSpringContextTests.java:172)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.testng.internal.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:212)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:707)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 44 more
+2016-03-02 17:11:51,484 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 17:11:51,484 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-03-02 17:11:51,486 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2016-03-02 17:11:51,490 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-03-02 17:11:51,490 - Do unicode file recognition:  false
+2016-03-02 17:11:51,491 - FileResourceLoader : adding path '.'
+2016-03-02 17:11:51,506 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2016-03-02 17:11:51,507 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-03-02 17:11:51,508 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-03-02 17:11:51,509 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-03-02 17:11:51,510 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-03-02 17:11:51,511 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-03-02 17:11:51,536 - Created '20' parsers.
+2016-03-02 17:11:51,541 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-03-02 17:11:51,542 - Velocimacro : Default library not found.
+2016-03-02 17:11:51,542 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-03-02 17:11:51,542 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-03-02 17:11:51,542 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-03-02 17:11:51,542 - Velocimacro : autoload off : VM system will not automatically reload global library macros

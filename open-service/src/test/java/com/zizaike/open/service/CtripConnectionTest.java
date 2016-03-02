@@ -19,7 +19,6 @@ import java.util.Map;
 
 import javax.xml.soap.SOAPException;
 
-import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -32,9 +31,13 @@ import com.zizaike.core.common.util.http.SoapFastUtil;
 import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.ctrip.GetHotelInfoResponse;
+import com.zizaike.entity.open.ctrip.GetMappingInfoType;
+import com.zizaike.entity.open.ctrip.HotelGroupInterfaceRoomTypeEntity;
+import com.zizaike.entity.open.ctrip.MappingType;
 import com.zizaike.entity.open.ctrip.PriceInfo;
 import com.zizaike.entity.open.ctrip.RoomInfoItem;
 import com.zizaike.entity.open.ctrip.SetRoomPriceItem;
+import com.zizaike.entity.open.ctrip.SetType;
 import com.zizaike.open.bastest.BaseTest;
 import com.zizaike.open.common.util.XstreamUtil;
 
@@ -63,30 +66,7 @@ public class CtripConnectionTest extends BaseTest {
     @Autowired
     private SoapFastUtil soapFastUtil;
 
-    @Test(description = "获得房型对照")
-    public void getCtripRoomTypeInfo() throws ZZKServiceException, MalformedURLException {
-        String template = "GetCtripRoomTypeInfo.vm";
-        Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateString = formatter.format(currentTime);
-        Map map = new HashMap();
-        map.put("userName", username);
-        map.put("password", password);
-        map.put("userId", userId);
-        map.put("date", dateString);
-        map.put("hotelGroupRoomTypeCode", 228215);
-        map.put("hotelGroupHotelCode", 81687);
-        map.put("hotelGroupRatePlanCode", "");
-        try {
-            long start = System.currentTimeMillis();
-            String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
-            System.out.println(xmlStr);
-            System.err.println(System.currentTimeMillis() - start);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+   
     @Test(description = "设置房型价格")
     public void setRoomPrice() throws ZZKServiceException, MalformedURLException {
         String template = "SetRoomPrice.vm";
@@ -246,16 +226,16 @@ public class CtripConnectionTest extends BaseTest {
         map.put("supplierID", supplierID);
         //京都酒店  标准潮式雙床房
         map.put("masterHotel", 436553);
-        map.put("masterRoom", 749540);
+        map.put("masterRoom", 1249250);
         
         map.put("ratePlanCode", "902548");
-        map.put("hotelGroupHotelCode", 328);
-        map.put("hotelGroupRoomTypeCode", 3924);
-        map.put("hotelGroupRatePlanCode", 3924);
-        map.put("hotelGroupRoomName", "三人套房-105(三小床.有窗)");
+        map.put("hotelGroupHotelCode", 328111);
+        map.put("hotelGroupRoomTypeCode", 3924111);
+        map.put("hotelGroupRatePlanCode", 3924111);
+        map.put("hotelGroupRoomName", "三人套房-105(三小床.有窗)testing1");
         map.put("balanceType", "PP");
-        map.put("mappingType", 0);
-        map.put("setType", 1);
+        map.put("mappingType", MappingType.MUTUAL_MAPPING.getValue());
+        map.put("setType", SetType.ADD.getValue());
         try {
             long start = System.currentTimeMillis();
             String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
@@ -286,7 +266,8 @@ public class CtripConnectionTest extends BaseTest {
         map.put("date", dateString);
         map.put("userId", userId);
         map.put("supplierID", supplierID);
-        map.put("getMappingInfoType", "UnMapping");
+        //获取信息类型：UnMapping表示  获取未对接的信息， Appoint表示获取指定信息
+        map.put("getMappingInfoType", GetMappingInfoType.Appoint);
         Map value = new HashMap();
         value.put("id", 4504433);
         List list = new ArrayList();
@@ -305,6 +286,45 @@ public class CtripConnectionTest extends BaseTest {
             e.printStackTrace();
         }
     }
+    @Test(description = "获得房型对照")
+    public void getCtripRoomTypeInfo() throws ZZKServiceException, MalformedURLException {
+        String template = "GetCtripRoomTypeInfo.vm";
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(currentTime);
+        Map map = new HashMap();
+        map.put("userName", username);
+        map.put("password", password);
+        map.put("userId", userId);
+        map.put("date", dateString);
+        map.put("hotelGroupRoomTypeCode", 392411);
+        map.put("hotelGroupHotelCode", 32811);
+        map.put("hotelGroupRatePlanCode", 392411);
+        try {
+            long start = System.currentTimeMillis();
+            String xml = soapFastUtil.post(map, prefix, template, url, "");
+            System.out.println(xml);
+            
+            Document doc = null;
+            try {
+                doc = DocumentHelper.parseText(xml);
+            } catch (DocumentException e) {
+                e.printStackTrace();  
+            }
+            Element root = doc.getRootElement();
+            Element requestResult = root.element("Body").element("RequestResponse").element("RequestResult");
+            if(requestResult.element("ResultCode").getText().equals("0")){
+                String xmlS = requestResult.element("Response").element("HotelGroupInterfaceRoomTypeListResponse").element("HotelGroupInterfaceRoomTypeList").element("HotelGroupInterfaceRoomTypeEntity").asXML();
+                HotelGroupInterfaceRoomTypeEntity hotelGroupInterfaceRoomTypeEntity = (HotelGroupInterfaceRoomTypeEntity) XstreamUtil.getXml2Bean(xmlS,HotelGroupInterfaceRoomTypeEntity.class);
+                System.err.println(hotelGroupInterfaceRoomTypeEntity);
+            }    
+            System.err.println(System.currentTimeMillis() - start);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    
     public static void main(String[] args) throws SOAPException {
         String xml = "<?xml version='1.0' encoding='utf-8'?>"
                 +"<soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>"
