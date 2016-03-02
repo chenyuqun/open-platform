@@ -504,6 +504,7 @@ public class CtripServiceImpl implements CtripService {
             LOG.debug(xmlStr);
             LOG.info("setRoomPrice excute time {} ms",System.currentTimeMillis() - start);
         } catch (Exception e) {
+            LOG.error("setRoomPrice exception{}",e);
             e.printStackTrace();
         }
     }
@@ -531,9 +532,11 @@ public class CtripServiceImpl implements CtripService {
             long start = System.currentTimeMillis();
             String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
             System.out.println(xmlStr);
-            LOG.info("setMappingInfo excute time {} ms",System.currentTimeMillis() - start);
+            LOG.info("setRoomInfo excute time {} ms",System.currentTimeMillis() - start);
         } catch (Exception e) {
+            LOG.error("setRoomInfo exception{}",e);
             e.printStackTrace();
+            
         }
     }
 

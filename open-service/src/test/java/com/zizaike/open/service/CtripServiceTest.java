@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.entity.open.ctrip.GetHotelInfoResponse;
 import com.zizaike.is.open.CtripService;
 import com.zizaike.open.bastest.BaseTest;
 
@@ -36,6 +37,103 @@ public class CtripServiceTest extends BaseTest {
                 + "</RoomPrices>" + "</DomesticCheckRoomAvailRequest>" + "</Request>";
         System.err.println(ctipCtripService.service(xml));
     }
+    
+    
+    @Test(description = "下单请求单元测试")
+    public void domesticSubmitNewHotelOrder() throws ZZKServiceException, DocumentException {
+        String xml = "<Request>"
+                +"<HeaderInfo UserID='25' RequestorId='Ctrip.com' AsyncRequest='false' TimeStamp='2012-8-6 3:54:24'>"
+                +"<Authentication UserName='zhilianjishuzhuanshu' Password='zhilianzhuanshu11!!'/>"
+                +"<RequestType Name='DomesticSubmitNewHotelOrderRequest' Version='1.0'/>"
+              +"</HeaderInfo>"
+              +"<DomesticSubmitNewHotelOrderRequest>"
+                +"<OrderID>244512466</OrderID>"
+                +"<InterFaceSendID>14112314</InterFaceSendID>"
+                +"<Hotel>548892</Hotel>"
+                +"<HotelName>桔子酒店精选(苏州金鸡湖店)</HotelName>"
+                +"<Arrival>2014-07-03T00:00:00</Arrival>"
+                +"<Departure>2014-07-05T00:00:00</Departure>"
+                +"<EarlyArrivalTime>2014-07-03T18:37:07</EarlyArrivalTime>"
+                +"<LastArrivalTime>2014-07-03T23:59:00</LastArrivalTime>"
+                +"<Person>2</Person>"
+                +"<Notice/>"
+                +"<Guests>"
+                  +"<GuestEntity>"
+                    +"<FirstName>kobe</FirstName>"
+                    +"<LastName>bryant</LastName>"
+                    +"<ChinesName/>"
+                  +"</GuestEntity>"
+                  +"<GuestEntity>"
+                    +"<FirstName>Robert</FirstName>"
+                    +"<LastName>Jiang</LastName>"
+                    +"<ChinesName/>"
+                  +"</GuestEntity>"
+                +"</Guests>"
+                +"<MobilePhone>10106666</MobilePhone>"
+                +"<Currency>RMB</Currency>"
+                +"<Amount>788</Amount>"
+                +"<CNYAmount>788</CNYAmount>"
+                +"<GuaranteeType>OVER</GuaranteeType>"
+                +"<BalanceType>FG</BalanceType>"
+                +"<Room>3031716</Room>"
+                +"<RoomPerson>2</RoomPerson>"
+                +"<RoomName>榻榻米大床房</RoomName>"
+                +"<Quantity>1</Quantity>"
+                +"<CostAmount>684</CostAmount>"
+                +"<CNYCostAmount>684</CNYCostAmount>"
+                +"<RoomPrices>"
+                  +"<RoomPrice>"
+                    +"<EffectDate>2014-07-03T00:00:00</EffectDate>"
+                    +"<Price>389</Price>"
+                    +"<CNYPrice>0</CNYPrice>"
+                    +"<Cost>342</Cost>"
+                    +"<CNYCost>0</CNYCost>"
+                    +"<BreakFast>0</BreakFast>"
+                  +"</RoomPrice>"
+                  +"<RoomPrice>"
+                    +"<EffectDate>2014-07-04T00:00:00</EffectDate>"
+                    +"<Price>389</Price>"
+                    +"<CNYPrice>0</CNYPrice>"
+                    +"<Cost>342</Cost>"
+                    +"<CNYCost>0</CNYCost>"
+                    +"<BreakFast>0</BreakFast>"
+                  +"</RoomPrice>"
+                +"</RoomPrices>"
+                +"<RemarkInfo>{HoldTime:2014-07-03T23:59:00,NeedGua:true,LateCxlTime:20 14-07-03T18:00:00,CxlPenaltyAmount:389,Currency:RMB}</RemarkInfo>"
+              +"</DomesticSubmitNewHotelOrderRequest>"
+            +"</Request>";
+        System.err.println(ctipCtripService.service(xml));
+    }
+    
+    @Test(description = "取消订单请求单元测试")
+    public void domesticCancelHotelOrder() throws ZZKServiceException, DocumentException {
+        String xml = "<Request>"
+                      + "<HeaderInfo UserID='25' RequestorId='Ctrip.com' AsyncRequest='false' TimeStamp='2012-8-6 3:54:24'>"
+                        + "<Authentication UserName='zhilianjishuzhuanshu' Password='zhilianzhuanshu11!!'/>" 
+                        + "<RequestType Name='DomesticCancelHotelOrderRequest' Version='1.0'/>"
+                      + "</HeaderInfo>" 
+                      + "<DomesticCancelHotelOrderRequest>"
+                        + "<OrderID>242822293</OrderID>" 
+                        + "<OldOrderID>0</OldOrderID>" 
+                        + "<Ori_OrderID>0</Ori_OrderID>" 
+                        + "<InterFaceSendID>14112314</InterFaceSendID>" 
+                        + "<InterFaceConfirmNO>1829595</InterFaceConfirmNO>" 
+                        + "<Hotel>548892</Hotel>" 
+                        + "<HotelName>桔子酒店精选(苏州金鸡湖店)</HotelName>" 
+                        + "<Arrival>2014-07-05T00:00:00</Arrival>" 
+                        + "<Departure>2014-07-06T00:00:00</Departure>"
+                        + "<Person>1</Person>"
+                        + "<Notice/>"
+                        + "<ClientName>李星星</ClientName>"
+                        + "<Room>4240140</Room>"
+                        + "<RoomName>大床房(限量促销)</RoomName>"
+                        + "<Quantity>1</Quantity>"
+                        + "<GuaranteeType/>"
+                      + "</DomesticCancelHotelOrderRequest>"
+                    + "</Request>";
+        System.err.println(ctipCtripService.service(xml));
+    }
+    
     @Test(description = "设置mappingInfo")
     public void setMappingInfo() throws ZZKServiceException, DocumentException {
         Map map = new HashMap();
@@ -50,6 +148,9 @@ public class CtripServiceTest extends BaseTest {
         ctipCtripService.setMappingInfo(map);
     }
     
-   
+    @Test(description = "getHotelInfo")
+    public void getHotelInfo() throws ZZKServiceException, DocumentException {
+        System.err.println(ctipCtripService.getHotelInfo());
+    }
     
 }
