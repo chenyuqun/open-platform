@@ -1,5 +1,5 @@
 /**  
- * Project Name:open-api  <br/>
+* Project Name:open-api  <br/>
  * File Name:httpUrlConnectionTest.java  <br/>
  * Package Name:com.zizaike.open.service  <br/>
  * Date:2016年1月7日下午5:29:35  <br/>
@@ -34,6 +34,7 @@ import com.zizaike.entity.open.ctrip.GetHotelInfoResponse;
 import com.zizaike.entity.open.ctrip.GetMappingInfoType;
 import com.zizaike.entity.open.ctrip.HotelGroupInterfaceRoomTypeEntity;
 import com.zizaike.entity.open.ctrip.MappingType;
+import com.zizaike.entity.open.ctrip.GetMappingInfoResponseList;
 import com.zizaike.entity.open.ctrip.PriceInfo;
 import com.zizaike.entity.open.ctrip.RoomInfoItem;
 import com.zizaike.entity.open.ctrip.SetRoomPriceItem;
@@ -281,6 +282,13 @@ public class CtripConnectionTest extends BaseTest {
             Document doc = null;
             doc = DocumentHelper.parseText(xml);
             Element root = doc.getRootElement();
+            Element requestResult = root.element("Body").element("AdapterRequestResponse")
+                    .element("AdapterRequestResult").element("RequestResponse").element("RequestResult");
+                    if(requestResult.element("ResultCode").getText().equals("0")){
+                        String xmlS = requestResult.element("Response").element("GetMappingInfoResponseList").asXML();
+                        GetMappingInfoResponseList getMappingInfoResponseList = (GetMappingInfoResponseList) XstreamUtil.getXml2Bean(xmlS,GetMappingInfoResponseList.class);
+                        System.err.println(getMappingInfoResponseList);
+                    }    
             System.err.println(System.currentTimeMillis() - start);
         } catch (Exception e) {
             e.printStackTrace();
@@ -328,51 +336,153 @@ public class CtripConnectionTest extends BaseTest {
     public static void main(String[] args) throws SOAPException {
         String xml = "<?xml version='1.0' encoding='utf-8'?>"
                 +"<soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>"
-                 +"<soap:Body>"
-                   +"<AdapterRequestResponse >"
-                     +"<AdapterRequestResult>"
-                       +"<RequestResponse>"
-                         +"<RequestResult>"
-                           +"<Message>接收成功</Message>"
-                           +"<ResultCode>0</ResultCode>"
-                           +"<Response>"
-                             +"<HeaderInfo />"
-                             +"<GetHotelInfoResponse>"
-                               +"<TotalPage>27</TotalPage>"
-                               +"<CurrentPage>2</CurrentPage>"
-                               +"<TotalNum>1305</TotalNum>"
-                               +"<HotelList>"
-                                 +"<Hotel>2075278</Hotel>"
-                                 +"<HotelName>杭州北苑客房</HotelName>"
-                                 +"<CountryName>中国</CountryName>"
-                                 +"<CityName>杭州</CityName>"
-                                 +"<Address>0</Address>"
-                                 +"<Telephone>0</Telephone>"
-                               +"</HotelList>"
-                               +"<HotelList>"
-                                 +"<Hotel>2075300</Hotel>"
-                                 +"<HotelName>杭州佑圣商务酒店</HotelName>"
-                                 +"<CountryName>中国</CountryName>"
-                                 +"<CityName>杭州</CityName>"
-                                 +"<Address>0</Address>"
-                                 +"<Telephone>0</Telephone>"
-                               +"</HotelList>"
-                               +"<HotelList>"
-                                 +"<Hotel>2075384</Hotel>"
-                                 +"<HotelName>成都林凯酒店</HotelName>"
-                                 +"<CountryName>中国</CountryName>"
-                                 +"<CityName>成都</CityName>"
-                                 +"<Address>0</Address>"
-                                 +"<Telephone>0</Telephone>"
-                               +"</HotelList>"
-                             +"</GetHotelInfoResponse>"
-                           +"</Response>"
-                         +"</RequestResult>"
-                       +"</RequestResponse>"
-                     +"</AdapterRequestResult>"
-                   +"</AdapterRequestResponse>"
+                +"<soap:Body>"
+                  +"<AdapterRequestResponse xmlns='http://www.ctrip.com/'>"
+                    +"<AdapterRequestResult>"
+                      +"<RequestResponse>"
+                        +"<RequestResult>"
+                          +"<Message>接收成功</Message>"
+                          +"<ResultCode>0</ResultCode>"
+                          +"<Response>"
+                            +"<HeaderInfo Timestamp='2016-3-2 15:14:18' ResultCode='Success'/>"
+                            +"<GetMappingInfoResponseList>"
+                              +"<SupplierID>55</SupplierID>"
+                              +"<SupplierName>GVY</SupplierName>"
+                              +"<HotelResponseItem>"
+                                +"<MasterHotel>"
+                                  +"<Hotel>36553</Hotel>"
+                                  +"<HotelName>京都酒店(Metropole Hotel Macau)</HotelName>"
+                                  +"<City>59</City>"
+                                  +"<CityName>澳门</CityName>"
+                                  +"<RoomResponseItem>"
+                                    +"<MasterRoom>749539</MasterRoom>"
+                                    +"<RoomName>标准双人房</RoomName>"
+                                  +"</RoomResponseItem>"
+                                  +"<RoomResponseItem>"
+                                    +"<MasterRoom>749540</MasterRoom>"
+                                    +"<RoomName>高级房</RoomName>"
+                                  +"</RoomResponseItem>"
+                                  +"<RoomResponseItem>"
+                                    +"<MasterRoom>1249247</MasterRoom>"
+                                    +"<RoomName>标准潮式双床房</RoomName>"
+                                  +"</RoomResponseItem>"
+                                  +"<RoomResponseItem>"
+                                    +"<MasterRoom>1249249</MasterRoom>"
+                                    +"<RoomName>高級中式房</RoomName>"
+                                  +"</RoomResponseItem>"
+                                  +"<RoomResponseItem>"
+                                    +"<MasterRoom>1249250</MasterRoom>"
+                                    +"<RoomName>豪华欧式房</RoomName>"
+                                  +"</RoomResponseItem>"
+                                  +"<RoomResponseItem>"
+                                    +"<MasterRoom>1249251</MasterRoom>"
+                                    +"<RoomName>套房</RoomName>"
+                                  +"</RoomResponseItem>"
+                                  +"<RoomResponseItem>"
+                                    +"<MasterRoom>1297673</MasterRoom>"
+                                    +"<RoomName>标准房</RoomName>"
+                                  +"</RoomResponseItem>"
+                                  +"<RoomResponseItem>"
+                                    +"<MasterRoom>12879651</MasterRoom>"
+                                    +"<RoomName>高级家庭客房</RoomName>"
+                                  +"</RoomResponseItem>"
+                                  +"<ChildHotel>"
+                                    +"<Hotel>4504433</Hotel>"
+                                    +"<RoomResponseItem>"
+                                      +"<MasterRoom>749540</MasterRoom>"
+                                      +"<Room>24657826</Room>"
+                                      +"<RoomName>高级房(EDM 特惠)[单早]</RoomName>"
+                                      +"<Breakfast>0</Breakfast>"
+                                      +"<TwinBed>T</TwinBed>"
+                                      +"<KingSize>T</KingSize>"
+                                      +"<Person>0</Person>"
+                                      +"<RatePlanCode/>"
+                                      +"<HotelGroupHotelCode>CTRIP</HotelGroupHotelCode>"
+                                      +"<HotelGroupRoomTypeCode>CTRIP</HotelGroupRoomTypeCode>"
+                                      +"<HotelGroupRoomName>????-105(???.??)</HotelGroupRoomName>"
+                                      +"<HotelGroupRatePlanCode/>"
+                                    +"</RoomResponseItem>"
+                                    +"<RoomResponseItem>"
+                                      +"<MasterRoom>749539</MasterRoom>"
+                                      +"<Room>24657827</Room>"
+                                      +"<RoomName>标准双人房</RoomName>"
+                                      +"<Breakfast>0</Breakfast>"
+                                      +"<TwinBed>T</TwinBed>"
+                                      +"<KingSize>F</KingSize>"
+                                      +"<Person>0</Person>"
+                                      +"<RatePlanCode/>"
+                                      +"<HotelGroupHotelCode>CTRIP</HotelGroupHotelCode>"
+                                      +"<HotelGroupRoomTypeCode>CTRIP</HotelGroupRoomTypeCode>"
+                                      +"<HotelGroupRoomName>????????????-105(?????????.??????)</HotelGroupRoomName>"
+                                      +"<HotelGroupRatePlanCode/>"
+                                    +"</RoomResponseItem>"
+                                    +"<RoomResponseItem>"
+                                      +"<MasterRoom>749539</MasterRoom>"
+                                      +"<Room>24657828</Room>"
+                                      +"<RoomName>标准双人房[单早]</RoomName>"
+                                      +"<Breakfast>0</Breakfast>"
+                                      +"<TwinBed>T</TwinBed>"
+                                      +"<KingSize>F</KingSize>"
+                                      +"<Person>0</Person>"
+                                      +"<RatePlanCode/>"
+                                      +"<HotelGroupHotelCode>CTRIP</HotelGroupHotelCode>"
+                                      +"<HotelGroupRoomTypeCode>CTRIP</HotelGroupRoomTypeCode>"
+                                      +"<HotelGroupRoomName>????????????-105(?????????.??????)</HotelGroupRoomName>"
+                                      +"<HotelGroupRatePlanCode/>"
+                                    +"</RoomResponseItem>"
+                                    +"<RoomResponseItem>"
+                                      +"<MasterRoom>1249247</MasterRoom>"
+                                      +"<Room>24658266</Room>"
+                                      +"<RoomName>标准潮式双床房(EDM 特惠)[单早]</RoomName>"
+                                      +"<Breakfast>0</Breakfast>"
+                                      +"<TwinBed>T</TwinBed>"
+                                      +"<KingSize>F</KingSize>"
+                                      +"<Person>0</Person>"
+                                      +"<RatePlanCode/>"
+                                      +"<HotelGroupHotelCode>CTRIP</HotelGroupHotelCode>"
+                                      +"<HotelGroupRoomTypeCode>CTRIP</HotelGroupRoomTypeCode>"
+                                      +"<HotelGroupRoomName>????-105(???.??)</HotelGroupRoomName>"
+                                      +"<HotelGroupRatePlanCode/>"
+                                    +"</RoomResponseItem>"
+                                    +"<RoomResponseItem>"
+                                      +"<MasterRoom>1249249</MasterRoom>"
+                                      +"<Room>24658291</Room>"
+                                      +"<RoomName>高級中式房(EDM 特惠)[单早]</RoomName>"
+                                      +"<Breakfast>0</Breakfast>"
+                                      +"<TwinBed>T</TwinBed>"
+                                      +"<KingSize>T</KingSize>"
+                                      +"<Person>0</Person>"
+                                      +"<RatePlanCode>392411</RatePlanCode>"
+                                      +"<HotelGroupHotelCode>32811</HotelGroupHotelCode>"
+                                      +"<HotelGroupRoomTypeCode>392411</HotelGroupRoomTypeCode>"
+                                      +"<HotelGroupRoomName>????-105(???.??)testing</HotelGroupRoomName>"
+                                      +"<HotelGroupRatePlanCode>392411</HotelGroupRatePlanCode>"
+                                    +"</RoomResponseItem>"
+                                    +"<RoomResponseItem>"
+                                      +"<MasterRoom>1249250</MasterRoom>"
+                                      +"<Room>24658292</Room>"
+                                      +"<RoomName>豪华欧式房(EDM 特惠)[单早]</RoomName>"
+                                      +"<Breakfast>0</Breakfast>"
+                                      +"<TwinBed>T</TwinBed>"
+                                      +"<KingSize>T</KingSize>"
+                                      +"<Person>0</Person>"
+                                      +"<RatePlanCode>3924111</RatePlanCode>"
+                                      +"<HotelGroupHotelCode>328111</HotelGroupHotelCode>"
+                                      +"<HotelGroupRoomTypeCode>3924111</HotelGroupRoomTypeCode>"
+                                      +"<HotelGroupRoomName>????-105(???.??)testing1</HotelGroupRoomName>"
+                                      +"<HotelGroupRatePlanCode>3924111</HotelGroupRatePlanCode>"
+                                    +"</RoomResponseItem>"
+                                  +"</ChildHotel>"
+                                +"</MasterHotel>"
+                              +"</HotelResponseItem>"
+                            +"</GetMappingInfoResponseList>"
+                          +"</Response>"
+                        +"</RequestResult>"
+                      +"</RequestResponse>"
+                    +"</AdapterRequestResult>"
+                  +"</AdapterRequestResponse>"
                 +"</soap:Body>"
-                +"</soap:Envelope>";
+              +"</soap:Envelope>";
         Document doc = null;
         try {
             doc = DocumentHelper.parseText(xml);
@@ -383,9 +493,9 @@ public class CtripConnectionTest extends BaseTest {
         Element requestResult = root.element("Body").element("AdapterRequestResponse")
         .element("AdapterRequestResult").element("RequestResponse").element("RequestResult");
         if(requestResult.element("ResultCode").getText().equals("0")){
-            String xmlSt = requestResult.element("Response").element("GetHotelInfoResponse").asXML();
-            GetHotelInfoResponse getHotelInfoResponse = (GetHotelInfoResponse) XstreamUtil.getXml2Bean(xmlSt,GetHotelInfoResponse.class);
-            System.err.println(getHotelInfoResponse);
+            String xmlSt = requestResult.element("Response").element("GetMappingInfoResponseList").asXML();
+            GetMappingInfoResponseList getMappingInfoResponseList = (GetMappingInfoResponseList) XstreamUtil.getXml2Bean(xmlSt,GetMappingInfoResponseList.class);
+            System.err.println(getMappingInfoResponseList);
         }
         System.out.println(requestResult.element("Message"));
         System.out.println(requestResult.asXML());
