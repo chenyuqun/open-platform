@@ -10,7 +10,9 @@
 package com.zizaike.open.dao;  
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.core.framework.springext.database.Master;
 import com.zizaike.core.framework.springext.database.Slave;
+import com.zizaike.entity.open.OpenChannelType;
 import com.zizaike.entity.open.RoomTypeMapping;
 
 /**
@@ -36,7 +38,7 @@ public interface RoomTypeMappingDao {
      * @since JDK 1.7
      */
     @Slave
-    RoomTypeMapping queryByHotelIdAndOpenRoomTypeId(String openHotelId,String openRoomTypeId) throws ZZKServiceException;
+    RoomTypeMapping queryByOpenHotelIdAndOpenRoomTypeId(String openHotelId,String openRoomTypeId,OpenChannelType openChannelType) throws ZZKServiceException;
    /**
     * 
     * queryByRoomTypeId. <br/>  
@@ -48,5 +50,31 @@ public interface RoomTypeMappingDao {
     */
     @Slave
     RoomTypeMapping queryByRoomTypeId(String roomTypeId) throws ZZKServiceException;
+    /**
+     * 
+     * update:更新相关信息. <br/>  
+     *  
+     * @author snow.zhang  
+     * @param roomTypeMapping
+     * @throws ZZKServiceException  
+     * @since JDK 1.7
+     */
+    @Master
+    void updateByHotelIdAndRoomTypeID(RoomTypeMapping roomTypeMapping) throws ZZKServiceException;
+    /**
+     * 
+     * insert:增加. <br/>  
+     *  
+     * @author snow.zhang  
+     * @param roomTypeMapping
+     * @return 
+     * @throws ZZKServiceException  
+     * @since JDK 1.7
+     */
+    @Master
+    void add(RoomTypeMapping roomTypeMapping) throws ZZKServiceException;
+    
+    @Slave
+    RoomTypeMapping queryByHotelIdAndRoomTypeId(String hotelId,String roomTypeId,OpenChannelType openChannelType) throws ZZKServiceException;
 }
   

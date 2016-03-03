@@ -8,13 +8,14 @@
     <result column="hotel_id" property="hotelId" jdbcType="VARCHAR" />
     <result column="room_type_id" property="roomTypeId" jdbcType="VARCHAR" />
     <result column="room_name" property="roomName" jdbcType="VARCHAR" />
-    <result column="channel" property="channel" jdbcType="INTEGER" />
+    <result column="open_room_name" property="openRoomName" jdbcType="VARCHAR" />
+    <result column="channel" property="channel" typeHandler="com.zizaike.open.dao.handler.OpenChannelTypeHandler" />
     <result column="active" property="active" jdbcType="INTEGER" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, open_hotel_id, open_room_type_id, hotel_id, room_type_id, room_name, channel, 
+    id, open_hotel_id, open_room_type_id, hotel_id, room_type_id, room_name,open_room_name, channel, 
     active, create_at, update_at
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -29,12 +30,14 @@
   </delete>
   <insert id="insert" parameterType="com.zizaike.entity.open.RoomTypeMapping" >
     insert into t_open_room_type_mapping (id, open_hotel_id, open_room_type_id, 
-      hotel_id, room_type_id, room_name, 
+      hotel_id, room_type_id, room_name, open_room_name,
       channel, active, create_at, 
       update_at)
     values (#{id,jdbcType=INTEGER}, #{openHotelId,jdbcType=VARCHAR}, #{openRoomTypeId,jdbcType=VARCHAR}, 
-      #{hotelId,jdbcType=VARCHAR}, #{roomTypeId,jdbcType=VARCHAR}, #{roomName,jdbcType=VARCHAR}, 
-      #{channel,jdbcType=INTEGER}, #{active,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{hotelId,jdbcType=VARCHAR}, #{roomTypeId,jdbcType=VARCHAR}, 
+      #{roomName,jdbcType=VARCHAR}, 
+      #{openRoomName,jdbcType=VARCHAR}, 
+      #{channel,typeHandler=com.zizaike.open.dao.handler.OpenChannelTypeHandler ,javaType=com.zizaike.entity.open.OpenChannelType}, #{active,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, 
       #{updateAt,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.zizaike.entity.open.RoomTypeMapping" >
@@ -57,6 +60,9 @@
       </if>
       <if test="roomName != null" >
         room_name,
+      </if>
+      <if test="openRoomName != null" >
+       open_room_name,
       </if>
       <if test="channel != null" >
         channel,
@@ -90,8 +96,11 @@
       <if test="roomName != null" >
         #{roomName,jdbcType=VARCHAR},
       </if>
+      <if test="openRoomName != null" >
+       #{openRoomName,jdbcType=VARCHAR}, 
+      </if>
       <if test="channel != null" >
-        #{channel,jdbcType=INTEGER},
+         #{channel,typeHandler=com.zizaike.open.dao.handler.OpenChannelTypeHandler ,javaType=com.zizaike.entity.open.OpenChannelType},
       </if>
       <if test="active != null" >
         #{active,jdbcType=INTEGER},
@@ -122,8 +131,11 @@
       <if test="roomName != null" >
         room_name = #{roomName,jdbcType=VARCHAR},
       </if>
+       <if test="openRoomName != null" >
+       #{openRoomName,jdbcType=VARCHAR}, 
+      </if>
       <if test="channel != null" >
-        channel = #{channel,jdbcType=INTEGER},
+        channel =  #{channel,typeHandler=com.zizaike.open.dao.handler.OpenChannelTypeHandler ,javaType=com.zizaike.entity.open.OpenChannelType},
       </if>
       <if test="active != null" >
         active = #{active,jdbcType=INTEGER},
@@ -144,19 +156,30 @@
       hotel_id = #{hotelId,jdbcType=VARCHAR},
       room_type_id = #{roomTypeId,jdbcType=VARCHAR},
       room_name = #{roomName,jdbcType=VARCHAR},
-      channel = #{channel,jdbcType=INTEGER},
+      open_room_name = #{openRoomName,jdbcType=VARCHAR},
+      channel =  #{channel,typeHandler=com.zizaike.open.dao.handler.OpenChannelTypeHandler ,javaType=com.zizaike.entity.open.OpenChannelType},
       active = #{active,jdbcType=INTEGER},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-   <select id="queryByHotelIdAndOpenRoomTypeId" resultMap="BaseResultMap" parameterType="com.zizaike.entity.open.RoomTypeMapping" >
+   <select id="queryByOpenHotelIdAndOpenRoomTypeId" resultMap="BaseResultMap" parameterType="com.zizaike.entity.open.RoomTypeMapping" >
     select 
     <include refid="Base_Column_List" />
     from t_open_room_type_mapping
     where active=1
     AND   open_hotel_id = #{openHotelId,jdbcType=VARCHAR}
     AND   open_room_type_id = #{openRoomTypeId,jdbcType=VARCHAR}
+    AND  channel =  #{channel,typeHandler=com.zizaike.open.dao.handler.OpenChannelTypeHandler ,javaType=com.zizaike.entity.open.OpenChannelType}
+  </select>
+   <select id="queryByHotelIdAndRoomTypeId" resultMap="BaseResultMap" parameterType="com.zizaike.entity.open.RoomTypeMapping" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_open_room_type_mapping
+    where active=1
+    AND   hotel_id = #{hotelId,jdbcType=VARCHAR}
+    AND   room_type_id = #{roomTypeId,jdbcType=VARCHAR}
+    AND   channel =  #{channel,typeHandler=com.zizaike.open.dao.handler.OpenChannelTypeHandler ,javaType=com.zizaike.entity.open.OpenChannelType}
   </select>
   <select id="queryByRoomTypeId" resultMap="BaseResultMap" parameterType="com.zizaike.entity.open.RoomTypeMapping" >
     select 
@@ -165,4 +188,28 @@
     where active=1
     AND   room_type_id = #{roomTypeId,jdbcType=VARCHAR}
   </select>
+ 
+ <update id="updateByHotelIdAndRoomTypeID" parameterType="com.zizaike.entity.open.RoomTypeMapping" >
+    update t_open_room_type_mapping
+    <set >
+      <if test="openHotelId != null" >
+        open_hotel_id = #{openHotelId,jdbcType=VARCHAR},
+      </if>
+      <if test="openRoomTypeId != null" >
+        open_room_type_id = #{openRoomTypeId,jdbcType=VARCHAR},
+      </if>
+       <if test="roomName != null" >
+        room_name = #{roomName,jdbcType=VARCHAR},
+      </if>
+        <if test="openRoomName != null" >
+       	open_room_name =#{openRoomName,jdbcType=VARCHAR}, 
+      	</if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where hotel_id = #{hotelId,jdbcType=VARCHAR}
+    and room_type_id = #{roomTypeId,jdbcType=VARCHAR}
+    and channel =  #{channel,typeHandler=com.zizaike.open.dao.handler.OpenChannelTypeHandler ,javaType=com.zizaike.entity.open.OpenChannelType}
+  </update>
 </mapper>

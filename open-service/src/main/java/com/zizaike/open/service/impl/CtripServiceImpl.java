@@ -132,7 +132,7 @@ public class CtripServiceImpl implements CtripService {
             throw new IllegalParamterException("BalanceType is not PP");
         }
         RoomTypeMapping roomTypeMapping = roomTypeMappingService.queryByHotelIdAndOpenRoomTypeId(
-                domesticCheckRoomAvailRequest.getHotel(), domesticCheckRoomAvailRequest.getRoom());
+                domesticCheckRoomAvailRequest.getHotel(), domesticCheckRoomAvailRequest.getRoom(),OpenChannelType.CTRIP);
         ValidateOrderRequest validateRQRequest = new ValidateOrderRequest();
         validateRQRequest.setHotelId(roomTypeMapping.getHotelId());
         validateRQRequest.setRoomTypeId(roomTypeMapping.getRoomTypeId());
@@ -191,7 +191,7 @@ public class CtripServiceImpl implements CtripService {
         RoomTypeMapping roomTypeMapping = null;
         try {
             roomTypeMapping = roomTypeMappingService.queryByHotelIdAndOpenRoomTypeId(
-                    domesticSubmitNewHotelOrderReqeust.getHotel(), domesticSubmitNewHotelOrderReqeust.getRoom());
+                    domesticSubmitNewHotelOrderReqeust.getHotel(), domesticSubmitNewHotelOrderReqeust.getRoom(),OpenChannelType.CTRIP);
         } catch (ZZKServiceException e) {
             LOG.error("domesticSubmitNewHotelOrder queryByHotelIdAndOpenRoomTypeId Exception{}", e);
             e.printStackTrace();
@@ -739,6 +739,15 @@ public class CtripServiceImpl implements CtripService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        RoomTypeMapping roomTypeMapping = new RoomTypeMapping();
+        roomTypeMapping.setChannel(OpenChannelType.CTRIP);
+        roomTypeMapping.setHotelId(hotelGroupInterfaceRoomTypeEntity.getHotelGroupHotelCode()+"");
+        roomTypeMapping.setRoomTypeId(hotelGroupInterfaceRoomTypeEntity.getHotelGroupRoomTypeCode()+"");
+        roomTypeMapping.setRoomName(hotelGroupInterfaceRoomTypeEntity.getHotelGroupRoomName());
+        roomTypeMapping.setOpenRoomName(hotelGroupInterfaceRoomTypeEntity.getRoomName());
+        roomTypeMapping.setOpenHotelId(hotelGroupInterfaceRoomTypeEntity.getHotel()+"");
+        roomTypeMapping.setOpenRoomTypeId(hotelGroupInterfaceRoomTypeEntity.getRoom()+"");
+        roomTypeMappingService.addOrUpdate(roomTypeMapping);
         return hotelGroupInterfaceRoomTypeEntity;
         
     }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.core.framework.mybatis.impl.GenericMyIbatisDao;
+import com.zizaike.entity.open.OpenChannelType;
 import com.zizaike.entity.open.RoomTypeMapping;
 import com.zizaike.open.dao.RoomTypeMappingDao;
 
@@ -29,12 +30,13 @@ import com.zizaike.open.dao.RoomTypeMappingDao;
 public class RoomTypeMappingDaoImpl extends GenericMyIbatisDao<RoomTypeMapping, Integer> implements RoomTypeMappingDao {
     private static final String NAMESPACE = "com.zizaike.open.dao.RoomTypeMappingMapper." ;
     @Override
-    public RoomTypeMapping queryByHotelIdAndOpenRoomTypeId(String openHotelId, String openRoomTypeId)
+    public RoomTypeMapping queryByOpenHotelIdAndOpenRoomTypeId(String openHotelId, String openRoomTypeId,OpenChannelType openChannelType)
             throws ZZKServiceException {
         RoomTypeMapping query = new RoomTypeMapping();
         query.setOpenHotelId(openHotelId);
         query.setOpenRoomTypeId(openRoomTypeId);
-        RoomTypeMapping result = this.getSqlSession().selectOne(NAMESPACE+"queryByHotelIdAndOpenRoomTypeId", query);
+        query.setChannel(openChannelType);
+        RoomTypeMapping result = this.getSqlSession().selectOne(NAMESPACE+"queryByOpenHotelIdAndOpenRoomTypeId", query);
         return result;
     }
     
@@ -47,5 +49,25 @@ public class RoomTypeMappingDaoImpl extends GenericMyIbatisDao<RoomTypeMapping, 
         return result;
     }
 
+    @Override
+    public void updateByHotelIdAndRoomTypeID(RoomTypeMapping roomTypeMapping) throws ZZKServiceException {
+       this.getSqlSession().update(NAMESPACE+"updateByHotelIdAndRoomTypeID", roomTypeMapping);   
+    }
+
+    @Override
+    public void add(RoomTypeMapping roomTypeMapping) throws ZZKServiceException {
+        this.getSqlSession().insert(NAMESPACE+"insertSelective", roomTypeMapping);   
+    }
+
+    @Override
+    public RoomTypeMapping queryByHotelIdAndRoomTypeId(String hotelId, String roomTypeId,OpenChannelType openChannelType) throws ZZKServiceException {
+        RoomTypeMapping query = new RoomTypeMapping();
+        query.setHotelId(hotelId);
+        query.setRoomTypeId(roomTypeId);
+        query.setChannel(openChannelType);
+        RoomTypeMapping result = this.getSqlSession().selectOne(NAMESPACE+"queryByHotelIdAndRoomTypeId", query);
+        return result;
+    }
+    
 }
   
