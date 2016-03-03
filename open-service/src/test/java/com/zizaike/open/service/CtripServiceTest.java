@@ -9,11 +9,11 @@ import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
+import com.alibaba.fastjson.JSON;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.ctrip.GetHotelInfoResponse;
 import com.zizaike.entity.open.ctrip.SetMappingOperateType;
 import com.zizaike.entity.open.ctrip.vo.SetMappingInfoVo;
-
 import com.zizaike.entity.open.ctrip.GetMappingInfoType;
 import com.zizaike.entity.open.ctrip.vo.HotelGroupInterfaceRoomTypeVo;
 import com.zizaike.entity.open.ctrip.vo.MappingInfoVo;
@@ -152,10 +152,10 @@ public class CtripServiceTest extends BaseTest {
         setMappingInfoVo.setHotelGroupRoomTypeCode("3924");
         setMappingInfoVo.setHotelGroupRatePlanCode("3924");
         setMappingInfoVo.setHotelGroupRoomName("三人套房-105(三小床.有窗)");
-        setMappingInfoVo.setSetMappingOperateType(SetMappingOperateType.UN_MAPPING_ROOM_ID_DO_NOT_DELETE_PRICE);
+        setMappingInfoVo.setSetMappingOperateType(SetMappingOperateType.MAP_EXISTING_HOTEL_AND_ROOM_ID);
         ctipCtripService.setMappingInfo(setMappingInfoVo);
     }
-    @Test(description = "不存的子酒店与子房型的关联 REQUEST_A_NEW_CTRIP_HOTEL")
+    @Test(description = "mapping 不存的子酒店与子房型的关联 REQUEST_A_NEW_CTRIP_HOTEL")
     public void setMappingInfo_REQUEST_A_NEW_CTRIP_HOTEL() throws ZZKServiceException, DocumentException {
         SetMappingInfoVo setMappingInfoVo = new SetMappingInfoVo();
         setMappingInfoVo.setMasterHotel("436553");
@@ -164,7 +164,7 @@ public class CtripServiceTest extends BaseTest {
         setMappingInfoVo.setHotelGroupHotelCode("328111");
         setMappingInfoVo.setHotelGroupRoomTypeCode("3924111");
         setMappingInfoVo.setHotelGroupRatePlanCode("3924111");
-        setMappingInfoVo.setHotelGroupRoomName("testing testing...");
+        setMappingInfoVo.setHotelGroupRoomName("testing 测试 testing...");
         setMappingInfoVo.setSetMappingOperateType(SetMappingOperateType.REQUEST_A_NEW_CTRIP_HOTEL);
         ctipCtripService.setMappingInfo(setMappingInfoVo);
     }
@@ -173,12 +173,12 @@ public class CtripServiceTest extends BaseTest {
 
         SetMappingInfoVo setMappingInfoVo = new SetMappingInfoVo();
         setMappingInfoVo.setHotel("4504433");
-        setMappingInfoVo.setRoom("24658292");
+        setMappingInfoVo.setRoom("24658619");
         setMappingInfoVo.setRatePlanCode("3924111");
         setMappingInfoVo.setHotelGroupHotelCode("328111");
         setMappingInfoVo.setHotelGroupRoomTypeCode("3924111");
         setMappingInfoVo.setHotelGroupRatePlanCode("3924111");
-        setMappingInfoVo.setHotelGroupRoomName("????-105(???.??)testing1");
+        setMappingInfoVo.setHotelGroupRoomName("testing testing...");
         setMappingInfoVo.setSetMappingOperateType(SetMappingOperateType.UN_MAPPING_ROOM_ID_DO_NOT_DELETE_PRICE);
         ctipCtripService.setMappingInfo(setMappingInfoVo);
     }
@@ -206,5 +206,4 @@ public class CtripServiceTest extends BaseTest {
         hotelGroupInterfaceRoomTypeVo.setHotelGroupRoomTypeCode(2282151);
         System.err.println(ctipCtripService.getCtripRoomTypeInfo(hotelGroupInterfaceRoomTypeVo));
     }
-    
 }
