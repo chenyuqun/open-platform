@@ -741,6 +741,7 @@ public class CtripServiceImpl implements CtripService {
         roomTypeMapping.setHotelId(hotelGroupInterfaceRoomTypeEntity.getHotelGroupHotelCode()+"");
         roomTypeMapping.setRoomTypeId(hotelGroupInterfaceRoomTypeEntity.getHotelGroupRoomTypeCode()+"");
         roomTypeMapping.setRoomName(hotelGroupInterfaceRoomTypeEntity.getHotelGroupRoomName());
+        roomTypeMapping.setOpenRoomName(hotelGroupInterfaceRoomTypeEntity.getRoomName());
         roomTypeMapping.setOpenHotelId(hotelGroupInterfaceRoomTypeEntity.getHotel()+"");
         roomTypeMapping.setOpenRoomTypeId(hotelGroupInterfaceRoomTypeEntity.getRoom()+"");
         roomTypeMappingService.addOrUpdate(roomTypeMapping);
