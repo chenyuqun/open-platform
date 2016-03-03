@@ -1,6 +1,8 @@
 package com.zizaike.open.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.dom4j.DocumentException;
@@ -9,6 +11,9 @@ import org.testng.annotations.Test;
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.ctrip.GetHotelInfoResponse;
+import com.zizaike.entity.open.ctrip.GetMappingInfoType;
+import com.zizaike.entity.open.ctrip.vo.HotelGroupInterfaceRoomTypeVo;
+import com.zizaike.entity.open.ctrip.vo.MappingInfoVo;
 import com.zizaike.is.open.CtripService;
 import com.zizaike.open.bastest.BaseTest;
 
@@ -136,7 +141,7 @@ public class CtripServiceTest extends BaseTest {
     
     @Test(description = "设置mappingInfo")
     public void setMappingInfo() throws ZZKServiceException, DocumentException {
-        Map map = new HashMap();
+        Map<String, String> map = new HashMap();
         //京都酒店  标准潮式雙床房
         map.put("masterHotel", "436553");
         map.put("masterRoom", "749540");
@@ -151,6 +156,25 @@ public class CtripServiceTest extends BaseTest {
     @Test(description = "getHotelInfo")
     public void getHotelInfo() throws ZZKServiceException, DocumentException {
         System.err.println(ctipCtripService.getHotelInfo());
+    }
+    
+    @Test(description = "getMappingInfo")
+    public void getMappingInfo() throws ZZKServiceException, DocumentException {
+        MappingInfoVo mappingInfoEntity=new MappingInfoVo();
+        mappingInfoEntity.setGetMappingInfoType(GetMappingInfoType.Appoint);
+        List<Integer> hotels=new ArrayList<Integer>();
+        hotels.add(816871);
+        mappingInfoEntity.setHotels(hotels);
+        System.err.println(ctipCtripService.getMappingInfo(mappingInfoEntity));
+    }
+    
+    @Test(description = "getCtripRoomTypeInfo")
+    public void getCtripRoomTypeInfo() throws ZZKServiceException, DocumentException {
+        HotelGroupInterfaceRoomTypeVo hotelGroupInterfaceRoomTypeVo=new HotelGroupInterfaceRoomTypeVo();
+        hotelGroupInterfaceRoomTypeVo.setHotelGroupHotelCode(816871);
+        hotelGroupInterfaceRoomTypeVo.setHotelGroupRatePlanCode(816871);
+        hotelGroupInterfaceRoomTypeVo.setHotelGroupRoomTypeCode(2282151);
+        System.err.println(ctipCtripService.getCtripRoomTypeInfo(hotelGroupInterfaceRoomTypeVo));
     }
     
 }
