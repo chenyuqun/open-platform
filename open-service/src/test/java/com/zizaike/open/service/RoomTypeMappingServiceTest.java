@@ -14,6 +14,8 @@ import org.testng.annotations.Test;
 
 import com.taobao.api.ApiException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.entity.open.OpenChannelType;
+import com.zizaike.entity.open.RoomTypeMapping;
 import com.zizaike.is.open.RoomTypeMappingService;
 import com.zizaike.open.bastest.BaseTest;
 
@@ -31,12 +33,21 @@ public class RoomTypeMappingServiceTest extends BaseTest{
     private RoomTypeMappingService roomTypeMappingService;
     @Test(description = "queryByHotelIdAndOpenRoomTypeId")
     public void queryByHotelIdAndOpenRoomTypeId() throws ZZKServiceException, ApiException {
-        roomTypeMappingService.queryByHotelIdAndOpenRoomTypeId("47602", "127011");
+        roomTypeMappingService.queryByHotelIdAndOpenRoomTypeId("47602", "127011",OpenChannelType.CTRIP);
         
     }
-    
-   
-    
+    @Test(description = "addOrUpdate")
+    public void addOrUpdate() throws ZZKServiceException, ApiException {
+        RoomTypeMapping roomTypeMapping = new RoomTypeMapping();
+        roomTypeMapping.setHotelId("816871");
+        roomTypeMapping.setRoomTypeId("2282151");
+        roomTypeMapping.setOpenHotelId("476021");
+        roomTypeMapping.setOpenRoomTypeId("1270111");
+        roomTypeMapping.setOpenRoomName("测试");
+        roomTypeMapping.setRoomName("测试");
+        roomTypeMapping.setChannel(OpenChannelType.CTRIP);
+        roomTypeMappingService.addOrUpdate(roomTypeMapping);
+    }
 
 }
   
