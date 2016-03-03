@@ -501,7 +501,7 @@ public class CtripServiceImpl implements CtripService {
         try {
             long start = System.currentTimeMillis();
             String xmlStr = soapFastUtil.post(pricemap, prefix, template, url, "");
-            LOG.debug(xmlStr);
+            LOG.info(xmlStr);
             LOG.info("setRoomPrice excute time {} ms",System.currentTimeMillis() - start);
         } catch (Exception e) {
             LOG.error("setRoomPrice exception{}",e);
@@ -650,7 +650,7 @@ public class CtripServiceImpl implements CtripService {
             String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
             String xml = xmlStr.replaceAll("&amp;", "&").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
             System.err.println(xml);
-            LOG.debug("setMappingInfo  response xml {}",xml);
+            LOG.info("setMappingInfo  response xml {}",xml);
             Document doc = null;
             doc = DocumentHelper.parseText(xml);
             Element root = doc.getRootElement();
@@ -684,7 +684,7 @@ public class CtripServiceImpl implements CtripService {
             long start = System.currentTimeMillis();
             String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
             String xml = xmlStr.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
-            LOG.debug("getHotelInfo  response xml {}",xml);
+            LOG.info("getHotelInfo  response xml {}",xml);
             Document doc = null;
             try {
                 doc = DocumentHelper.parseText(xml);
@@ -735,7 +735,7 @@ public class CtripServiceImpl implements CtripService {
             long start = System.currentTimeMillis();
             String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
             String xml = xmlStr.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
-            LOG.debug("getMappingInfo  response xml {}",xml);
+            LOG.info("getMappingInfo  response xml {}",xml);
             Document doc = null;
             doc = DocumentHelper.parseText(xml);
             Element root = doc.getRootElement();
@@ -781,7 +781,7 @@ public class CtripServiceImpl implements CtripService {
         try {
             long start = System.currentTimeMillis();
             String xml = soapFastUtil.post(map, prefix, template, url, "");
-            LOG.debug("getCtripRoomTypeInfo  response xml {}",xml);
+            LOG.info("getCtripRoomTypeInfo  response xml {}",xml);
             
             Document doc = null;
             try {
