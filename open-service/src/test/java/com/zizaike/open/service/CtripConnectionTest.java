@@ -228,9 +228,9 @@ public class CtripConnectionTest extends BaseTest {
         map.put("masterRoom", 1249250);
         
         map.put("ratePlanCode", "902548");
-        map.put("hotelGroupHotelCode", 328111);
-        map.put("hotelGroupRoomTypeCode", 3924111);
-        map.put("hotelGroupRatePlanCode", 3924111);
+        map.put("hotelGroupHotelCode", 3281112);
+        map.put("hotelGroupRoomTypeCode", 39241112);
+        map.put("hotelGroupRatePlanCode", 39241112);
         map.put("hotelGroupRoomName", "三人套房-105(三小床.有窗)testing1");
         map.put("balanceType", "PP");
         map.put("mappingType", MappingType.MUTUAL_MAPPING.getValue());

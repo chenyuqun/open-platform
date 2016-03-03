@@ -9,6 +9,8 @@ import org.testng.annotations.Test;
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.ctrip.GetHotelInfoResponse;
+import com.zizaike.entity.open.ctrip.SetMappingOperateType;
+import com.zizaike.entity.open.ctrip.vo.SetMappingInfoVo;
 import com.zizaike.is.open.CtripService;
 import com.zizaike.open.bastest.BaseTest;
 
@@ -134,18 +136,45 @@ public class CtripServiceTest extends BaseTest {
         System.err.println(ctipCtripService.service(xml));
     }
     
-    @Test(description = "设置mappingInfo")
-    public void setMappingInfo() throws ZZKServiceException, DocumentException {
-        Map map = new HashMap();
-        //京都酒店  标准潮式雙床房
-        map.put("masterHotel", "436553");
-        map.put("masterRoom", "749540");
-        map.put("ratePlanCode", "902548");
-        map.put("hotelGroupHotelCode", "328");
-        map.put("hotelGroupRoomTypeCode", "3924");
-        map.put("hotelGroupRatePlanCode", "3924");
-        map.put("hotelGroupRoomName", "三人套房-105(三小床.有窗)");
-        ctipCtripService.setMappingInfo(map);
+    @Test(description = "已经存的hotel and room建立mapping MAP_EXISTING_HOTEL_AND_ROOM_ID")
+    public void setMappingInfo_MAP_EXISTING_HOTEL_AND_ROOM_ID() throws ZZKServiceException, DocumentException {
+        SetMappingInfoVo setMappingInfoVo = new SetMappingInfoVo();
+        setMappingInfoVo.setHotel("436553");
+        setMappingInfoVo.setRoom("749540");
+        setMappingInfoVo.setRatePlanCode("902548");
+        setMappingInfoVo.setHotelGroupHotelCode("328");
+        setMappingInfoVo.setHotelGroupRoomTypeCode("3924");
+        setMappingInfoVo.setHotelGroupRatePlanCode("3924");
+        setMappingInfoVo.setHotelGroupRoomName("三人套房-105(三小床.有窗)");
+        setMappingInfoVo.setSetMappingOperateType(SetMappingOperateType.UN_MAPPING_ROOM_ID_DO_NOT_DELETE_PRICE);
+        ctipCtripService.setMappingInfo(setMappingInfoVo);
+    }
+    @Test(description = "不存的子酒店与子房型的关联 REQUEST_A_NEW_CTRIP_HOTEL")
+    public void setMappingInfo_REQUEST_A_NEW_CTRIP_HOTEL() throws ZZKServiceException, DocumentException {
+        SetMappingInfoVo setMappingInfoVo = new SetMappingInfoVo();
+        setMappingInfoVo.setMasterHotel("436553");
+        setMappingInfoVo.setMasterRoom("749540");
+        setMappingInfoVo.setRatePlanCode("4");
+        setMappingInfoVo.setHotelGroupHotelCode("328111");
+        setMappingInfoVo.setHotelGroupRoomTypeCode("3924111");
+        setMappingInfoVo.setHotelGroupRatePlanCode("3924111");
+        setMappingInfoVo.setHotelGroupRoomName("testing testing...");
+        setMappingInfoVo.setSetMappingOperateType(SetMappingOperateType.REQUEST_A_NEW_CTRIP_HOTEL);
+        ctipCtripService.setMappingInfo(setMappingInfoVo);
+    }
+    @Test(description = "删除 UN_MAPPING_ROOM_ID_DO_NOT_DELETE_PRICE")
+    public void setMappingInfo_UN_MAPPING_ROOM_ID_DO_NOT_DELETE_PRICE() throws ZZKServiceException, DocumentException {
+
+        SetMappingInfoVo setMappingInfoVo = new SetMappingInfoVo();
+        setMappingInfoVo.setHotel("4504433");
+        setMappingInfoVo.setRoom("24658292");
+        setMappingInfoVo.setRatePlanCode("3924111");
+        setMappingInfoVo.setHotelGroupHotelCode("328111");
+        setMappingInfoVo.setHotelGroupRoomTypeCode("3924111");
+        setMappingInfoVo.setHotelGroupRatePlanCode("3924111");
+        setMappingInfoVo.setHotelGroupRoomName("????-105(???.??)testing1");
+        setMappingInfoVo.setSetMappingOperateType(SetMappingOperateType.UN_MAPPING_ROOM_ID_DO_NOT_DELETE_PRICE);
+        ctipCtripService.setMappingInfo(setMappingInfoVo);
     }
     
     @Test(description = "getHotelInfo")

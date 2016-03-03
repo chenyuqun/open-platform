@@ -9,9 +9,6 @@
   
 package com.zizaike.open.controller;  
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +16,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zizaike.core.bean.ResponseResult;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.ctrip.vo.HotelGroupInterfaceRoomTypeVo;
 import com.zizaike.entity.open.ctrip.vo.MappingInfoVo;
+import com.zizaike.entity.open.ctrip.vo.SetMappingInfoVo;
 import com.zizaike.is.open.CtripService;
 import com.zizaike.open.BaseAjaxController;
 
@@ -63,22 +60,8 @@ public class CtripOperateController extends BaseAjaxController {
      */
     @RequestMapping(value = "/setMappingInfo", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseResult setMappingInfo(@RequestParam("masterHotel") String masterHotel,
-            @RequestParam("masterRoom") String masterRoom,
-            @RequestParam("ratePlanCode") String ratePlanCode,
-            @RequestParam("hotelGroupHotelCode") String hotelGroupHotelCode,
-            @RequestParam("hotelGroupRoomTypeCode") String hotelGroupRoomTypeCode,
-            @RequestParam("hotelGroupRatePlanCode") String hotelGroupRatePlanCode,
-            @RequestParam("hotelGroupRoomName") String hotelGroupRoomName) throws ZZKServiceException {
-         Map<String,String> map = new HashMap<String,String>();
-         map.put("masterHotel", masterHotel);
-         map.put("masterRoom", masterRoom);
-         map.put("ratePlanCode", ratePlanCode);
-         map.put("hotelGroupHotelCode", hotelGroupHotelCode);
-         map.put("hotelGroupRoomTypeCode", hotelGroupRoomTypeCode);
-         map.put("hotelGroupRatePlanCode", hotelGroupRatePlanCode);
-         map.put("hotelGroupRoomName", hotelGroupRoomName);
-        ctripService.setMappingInfo(map);
+    public ResponseResult setMappingInfo(@RequestBody SetMappingInfoVo  setMappingInfoVo) throws ZZKServiceException {
+        ctripService.setMappingInfo(setMappingInfoVo);
         ResponseResult reuResult = new ResponseResult();
         return reuResult;
     }
@@ -93,7 +76,7 @@ public class CtripOperateController extends BaseAjaxController {
      */
     @RequestMapping(value = "/getHotelInfo", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseResult setMappingInfo() throws ZZKServiceException {
+    public ResponseResult getHotelInfo() throws ZZKServiceException {
         ResponseResult resultResult = new ResponseResult();
         resultResult.setInfo(ctripService.getHotelInfo());
         return resultResult;

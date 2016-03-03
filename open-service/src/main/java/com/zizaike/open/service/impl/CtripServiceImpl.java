@@ -45,10 +45,12 @@ import com.zizaike.entity.open.ctrip.BalanceType;
 import com.zizaike.entity.open.ctrip.GetHotelInfoResponse;
 import com.zizaike.entity.open.ctrip.GetMappingInfoResponseList;
 import com.zizaike.entity.open.ctrip.HotelGroupInterfaceRoomTypeEntity;
+import com.zizaike.entity.open.ctrip.MappingType;
 import com.zizaike.entity.open.ctrip.PriceInfo;
 import com.zizaike.entity.open.ctrip.RoomInfoItem;
 import com.zizaike.entity.open.ctrip.RoomPrice;
 import com.zizaike.entity.open.ctrip.RoomPrices;
+import com.zizaike.entity.open.ctrip.SetMappingOperateType;
 import com.zizaike.entity.open.ctrip.SetRoomInfoRequest;
 import com.zizaike.entity.open.ctrip.SetRoomPriceItem;
 import com.zizaike.entity.open.ctrip.request.DomesticCancelHotelOrderReq;
@@ -66,6 +68,7 @@ import com.zizaike.entity.open.ctrip.response.DomesticSubmitNewHotelOrderResp;
 import com.zizaike.entity.open.ctrip.response.DomesticSubmitNewHotelOrderResponse;
 import com.zizaike.entity.open.ctrip.vo.HotelGroupInterfaceRoomTypeVo;
 import com.zizaike.entity.open.ctrip.vo.MappingInfoVo;
+import com.zizaike.entity.open.ctrip.vo.SetMappingInfoVo;
 import com.zizaike.entity.order.request.BookOrderRequest;
 import com.zizaike.entity.order.request.CancelOrderRequest;
 import com.zizaike.entity.order.request.DailyInfo;
@@ -476,13 +479,6 @@ public class CtripServiceImpl implements CtripService {
          
     }
 
-    @Override
-    public DomesticCheckRoomAvailResponse domesticCheckRoomAvail(
-            DomesticCheckRoomAvailRequest domesticCheckRoomAvailRequest) throws ZZKServiceException {
-          
-        // TODO Auto-generated method stub  
-        return null;
-    }
     
     public void setRoomPrice(List<SetRoomPriceItem> setRoomPriceItems,String hotelID){
         /**
@@ -545,34 +541,96 @@ public class CtripServiceImpl implements CtripService {
     }
 
     @Override
-    public void setMappingInfo(Map<String,String> map) throws ZZKServiceException {
-          
-        if(StringUtils.isEmpty(map.get("masterHotel"))){
-            throw new IllegalParamterException("setMappingInfo masterHotel is null");
+    public void setMappingInfo(SetMappingInfoVo setMappingInfoVo) throws ZZKServiceException {
+        if(setMappingInfoVo==null){
+            throw new IllegalParamterException("setMappingInfoVo is not  null");
         }
-        if(StringUtils.isEmpty(map.get("masterRoom"))){
-            throw new IllegalParamterException("setMappingInfo masterRoom is null");
+        if(setMappingInfoVo.getSetMappingOperateType()==null){
+            throw new IllegalParamterException("setMappingInfoVo  getSetMappingOperateType is not  null");
         }
-        if(StringUtils.isEmpty(map.get("ratePlanCode"))){
-            throw new IllegalParamterException("setMappingInfo ratePlanCode is null");
-        }
-        if(StringUtils.isEmpty(map.get("hotelGroupHotelCode"))){
-            throw new IllegalParamterException("setMappingInfo hotelGroupHotelCode is null");
-        }
-        if(StringUtils.isEmpty(map.get("hotelGroupRoomTypeCode"))){
-            throw new IllegalParamterException("setMappingInfo hotelGroupRoomTypeCode is null");
-        }
-        if(StringUtils.isEmpty(map.get("hotelGroupRatePlanCode"))){
-            throw new IllegalParamterException("setMappingInfo hotelGroupRatePlanCode is null");
-        }
-        if(StringUtils.isEmpty(map.get("hotelGroupRoomName"))){
-            throw new IllegalParamterException("setMappingInfo hotelGroupRoomName is null");
-        }
-        if(StringUtils.isEmpty(map.get("hotelGroupRatePlanCode"))){
-            throw new IllegalParamterException("setMappingInfo hotelGroupRatePlanCode is null");
-        }
-        if(StringUtils.isEmpty(map.get("hotelGroupRoomName"))){
-            throw new IllegalParamterException("setMappingInfo hotelGroupRoomName is null");
+        Map map = new HashMap();
+        if(setMappingInfoVo.getSetMappingOperateType()==SetMappingOperateType.MAP_EXISTING_HOTEL_AND_ROOM_ID){
+           if(StringUtils.isEmpty(setMappingInfoVo.getHotel())){
+               throw new IllegalParamterException("setMappingInfoVo  getHotel is not  null");
+           }
+           if(StringUtils.isEmpty(setMappingInfoVo.getRoom())){
+               throw new IllegalParamterException("setMappingInfoVo  getRoom is not  null");
+           }
+           if(StringUtils.isEmpty(setMappingInfoVo.getHotelGroupRoomTypeCode())){
+               throw new IllegalParamterException("setMappingInfoVo  getHotelGroupRoomTypeCode is not  null");
+           }
+           if(StringUtils.isEmpty(setMappingInfoVo.getHotelGroupHotelCode())){
+               throw new IllegalParamterException("setMappingInfoVo  getHotelGroupHotelCode is not  null");
+           }
+           if(StringUtils.isEmpty(setMappingInfoVo.getHotelGroupRatePlanCode())){
+               throw new IllegalParamterException("setMappingInfoVo  getHotelGroupRatePlanCode is not  null");
+           }
+           if(StringUtils.isEmpty(setMappingInfoVo.getHotelGroupRoomName())){
+               throw new IllegalParamterException("setMappingInfoVo  getHotelGroupRoomName is not  null");
+           }
+           map.put("setType",1);
+           map.put("hotel", setMappingInfoVo.getHotel());
+           map.put("room", setMappingInfoVo.getRoom());
+           map.put("hotelGroupRoomTypeCode", setMappingInfoVo.getHotelGroupRoomTypeCode());
+           map.put("hotelGroupHotelCode", setMappingInfoVo.getHotelGroupHotelCode());
+           map.put("hotelGroupRatePlanCode", setMappingInfoVo.getHotelGroupRatePlanCode());
+           map.put("hotelGroupRoomName", setMappingInfoVo.getHotelGroupRoomName());
+        }else if(setMappingInfoVo.getSetMappingOperateType()==SetMappingOperateType.REQUEST_A_NEW_CTRIP_HOTEL){
+            if(StringUtils.isEmpty(setMappingInfoVo.getMasterHotel())){
+                throw new IllegalParamterException("setMappingInfoVo  getMasterHotel is not  null");
+            }
+            if(StringUtils.isEmpty(setMappingInfoVo.getMasterRoom())){
+                throw new IllegalParamterException("setMappingInfoVo  getMasterRoom is not  null");
+            }
+            if(StringUtils.isEmpty(setMappingInfoVo.getRatePlanCode())){
+                throw new IllegalParamterException("setMappingInfoVo  getRatePlanCode is not  null");
+            }
+            if(StringUtils.isEmpty(setMappingInfoVo.getHotelGroupRoomTypeCode())){
+                throw new IllegalParamterException("setMappingInfoVo  getHotelGroupRoomTypeCode is not  null");
+            }
+            if(StringUtils.isEmpty(setMappingInfoVo.getHotelGroupHotelCode())){
+                throw new IllegalParamterException("setMappingInfoVo  getHotelGroupHotelCode is not  null");
+            }
+            if(StringUtils.isEmpty(setMappingInfoVo.getHotelGroupRatePlanCode())){
+                throw new IllegalParamterException("setMappingInfoVo  getHotelGroupRatePlanCode is not  null");
+            }
+            if(StringUtils.isEmpty(setMappingInfoVo.getHotelGroupRoomName())){
+                throw new IllegalParamterException("setMappingInfoVo  getHotelGroupRoomName is not  null");
+            }
+            map.put("setType",1);
+            map.put("masterHotel", setMappingInfoVo.getMasterHotel());
+            map.put("masterRoom", setMappingInfoVo.getMasterRoom());
+            map.put("ratePlanCode", setMappingInfoVo.getRatePlanCode());
+            map.put("hotelGroupRoomTypeCode", setMappingInfoVo.getHotelGroupRoomTypeCode());
+            map.put("hotelGroupHotelCode", setMappingInfoVo.getHotelGroupHotelCode());
+            map.put("hotelGroupRatePlanCode", setMappingInfoVo.getHotelGroupRatePlanCode());
+            map.put("hotelGroupRoomName", setMappingInfoVo.getHotelGroupRoomName());
+        }else if(setMappingInfoVo.getSetMappingOperateType()==SetMappingOperateType.UN_MAPPING_ROOM_ID_DO_NOT_DELETE_PRICE){
+            if(StringUtils.isEmpty(setMappingInfoVo.getHotel())){
+                throw new IllegalParamterException("setMappingInfoVo  getHotel is not  null");
+            }
+            if(StringUtils.isEmpty(setMappingInfoVo.getRoom())){
+                throw new IllegalParamterException("setMappingInfoVo  getRoom is not  null");
+            }
+            if(StringUtils.isEmpty(setMappingInfoVo.getHotelGroupRoomTypeCode())){
+                throw new IllegalParamterException("setMappingInfoVo  getHotelGroupRoomTypeCode is not  null");
+            }
+            if(StringUtils.isEmpty(setMappingInfoVo.getHotelGroupHotelCode())){
+                throw new IllegalParamterException("setMappingInfoVo  getHotelGroupHotelCode is not  null");
+            }
+            if(StringUtils.isEmpty(setMappingInfoVo.getHotelGroupRatePlanCode())){
+                throw new IllegalParamterException("setMappingInfoVo  getHotelGroupRatePlanCode is not  null");
+            }
+            if(StringUtils.isEmpty(setMappingInfoVo.getHotelGroupRoomName())){
+                throw new IllegalParamterException("setMappingInfoVo  getHotelGroupRoomName is not  null");
+            }
+            map.put("setType",-1);
+            map.put("hotel", setMappingInfoVo.getHotel());
+            map.put("room", setMappingInfoVo.getRoom());
+            map.put("hotelGroupRoomTypeCode", setMappingInfoVo.getHotelGroupRoomTypeCode());
+            map.put("hotelGroupHotelCode", setMappingInfoVo.getHotelGroupHotelCode());
+            map.put("hotelGroupRatePlanCode", setMappingInfoVo.getHotelGroupRatePlanCode());
+            map.put("hotelGroupRoomName", setMappingInfoVo.getHotelGroupRoomName());
         }
         String template = "SetMappingInfo.vm";
         Date currentTime = new Date();
@@ -583,13 +641,15 @@ public class CtripServiceImpl implements CtripService {
         map.put("date", dateString);
         map.put("userId", userId);
         map.put("supplierID", supplierID);
-        map.put("balanceType", "PP");
-        map.put("mappingType", "0");
-        map.put("setType","1");
+        map.put("balanceType", BalanceType.PP);
+        //相互mapping
+        map.put("mappingType", MappingType.MUTUAL_MAPPING.getValue());
+        map.put("setMappingOperateType", setMappingInfoVo.getSetMappingOperateType());
         try {
             long start = System.currentTimeMillis();
             String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
             String xml = xmlStr.replaceAll("&amp;", "&").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+            System.err.println(xml);
             LOG.debug("setMappingInfo  response xml {}",xml);
             Document doc = null;
             doc = DocumentHelper.parseText(xml);
