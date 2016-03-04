@@ -7,7 +7,7 @@
  *  
 */  
   
-package com.zizaike.open.listener.taobao;  
+package com.zizaike.open.listener.alitrip;  
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
