@@ -34,6 +34,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.zizaike.core.common.util.http.SoapFastUtil;
 import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.core.framework.exception.open.OpenReturnException;
 import com.zizaike.entity.open.OpenChannelType;
 import com.zizaike.entity.open.RoomTypeMapping;
 import com.zizaike.entity.open.User;
@@ -258,6 +259,7 @@ public class CtripServiceImpl implements CtripService {
             doc = DocumentHelper.parseText(xml);
         } catch (DocumentException e) {
             e.printStackTrace();
+            LOG.error("service DocumentHelper exception{}",e);
         }
         Element root = doc.getRootElement();
         checkUser(root);
@@ -645,25 +647,27 @@ public class CtripServiceImpl implements CtripService {
         //相互mapping
         map.put("mappingType", MappingType.MUTUAL_MAPPING.getValue());
         map.put("setMappingOperateType", setMappingInfoVo.getSetMappingOperateType());
-        try {
             long start = System.currentTimeMillis();
-            String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
-            String xml = xmlStr.replaceAll("&amp;", "&").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
-            System.err.println(xml);
-            LOG.info("setMappingInfo  response xml {}",xml);
             Document doc = null;
-            doc = DocumentHelper.parseText(xml);
+            String xml = null;
+            try{
+                String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
+                 xml = xmlStr.replaceAll("&amp;", "&").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+                LOG.info("setMappingInfo  response xml {}",xml);
+                doc = DocumentHelper.parseText(xml);
+            } catch (Exception e) {
+                LOG.error("setMappingInfo exception{}",e);
+                e.printStackTrace();
+            }
+           
             Element root = doc.getRootElement();
             Element requestResult = root.element("Body").element("AdapterRequestResponse")
                     .element("AdapterRequestResult").element("RequestResponse").element("RequestResult");
             if(!requestResult.element("ResultCode").getText().equals("0")){
-                throw new IllegalParamterException(xmlStr);
+                throw new OpenReturnException(xml);
             }  
             LOG.info("setMappingInfo excute time {} ms",System.currentTimeMillis() - start);
-        } catch (Exception e) {
-            LOG.error("setMappingInfo exception{}",e);
-            e.printStackTrace();
-        }
+       
         
     }
 
@@ -689,16 +693,20 @@ public class CtripServiceImpl implements CtripService {
             try {
                 doc = DocumentHelper.parseText(xml);
             } catch (DocumentException e) {
+                LOG.error("getHotelInfo exception{}",e);
                 e.printStackTrace();  
             }
             Element root = doc.getRootElement();
             Element requestResult = root.element("Body").element("AdapterRequestResponse")
             .element("AdapterRequestResult").element("RequestResponse").element("RequestResult");
+            if(!requestResult.element("ResultCode").getText().equals("0")){
+                throw new OpenReturnException(xml);
+            } 
             if(requestResult.element("ResultCode").getText().equals("0")){
                 String xmlS = requestResult.element("Response").element("GetHotelInfoResponse").asXML();
                 getHotelInfoResponse = (GetHotelInfoResponse) XstreamUtil.getXml2Bean(xmlS,GetHotelInfoResponse.class);
             }    
-            LOG.info("setMappingInfo excute time {} ms",System.currentTimeMillis() - start);
+            LOG.info("getHotelInfo excute time {} ms",System.currentTimeMillis() - start);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -731,24 +739,31 @@ public class CtripServiceImpl implements CtripService {
         map.put("getMappingInfoType", mappingInfoEntity.getGetMappingInfoType());
         map.put("hotels", mappingInfoEntity.getHotels());
         GetMappingInfoResponseList getMappingInfoResponseList = null;
-        try {
             long start = System.currentTimeMillis();
+            Document doc = null; 
+            String xml =null;
+            try{
             String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
-            String xml = xmlStr.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+            xml = xmlStr.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
             LOG.info("getMappingInfo  response xml {}",xml);
-            Document doc = null;
             doc = DocumentHelper.parseText(xml);
+            
+            } catch (Exception e) {
+                LOG.error("getMappingInfo exception{}",e);
+                e.printStackTrace();
+            }
             Element root = doc.getRootElement();
             Element requestResult = root.element("Body").element("AdapterRequestResponse")
                     .element("AdapterRequestResult").element("RequestResponse").element("RequestResult");
+            if(!requestResult.element("ResultCode").getText().equals("0")){
+                throw new OpenReturnException(xml);
+            } 
                     if(requestResult.element("ResultCode").getText().equals("0")){
                         String xmlS = requestResult.element("Response").element("GetMappingInfoResponseList").asXML();
                         getMappingInfoResponseList = (GetMappingInfoResponseList) XstreamUtil.getXml2Bean(xmlS,GetMappingInfoResponseList.class);
                     }    
                     LOG.info("getMappingInfo excute time {} ms",System.currentTimeMillis() - start);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+       
         return getMappingInfoResponseList;
     }
     @Override
@@ -778,27 +793,32 @@ public class CtripServiceImpl implements CtripService {
         map.put("hotelGroupHotelCode", hotelGroupInterfaceRoomTypeVo.getHotelGroupHotelCode());
         map.put("hotelGroupRatePlanCode", hotelGroupInterfaceRoomTypeVo.getHotelGroupRatePlanCode());
         HotelGroupInterfaceRoomTypeEntity hotelGroupInterfaceRoomTypeEntity = null;
-        try {
             long start = System.currentTimeMillis();
-            String xml = soapFastUtil.post(map, prefix, template, url, "");
-            LOG.info("getCtripRoomTypeInfo  response xml {}",xml);
-            
+            String xml = null;
             Document doc = null;
-            try {
+            try{
+                xml = soapFastUtil.post(map, prefix, template, url, "");
+                LOG.info("getCtripRoomTypeInfo  response xml {}",xml);
                 doc = DocumentHelper.parseText(xml);
-            } catch (DocumentException e) {
-                e.printStackTrace();  
+            } catch (Exception e) {
+                LOG.error("getCtripRoomTypeInfo exception{}",e);
+                e.printStackTrace();
             }
+               
             Element root = doc.getRootElement();
             Element requestResult = root.element("Body").element("RequestResponse").element("RequestResult");
+            if(!requestResult.element("ResultCode").getText().equals("0")){
+                throw new OpenReturnException(xml);
+            } 
             if(requestResult.element("ResultCode").getText().equals("0")){
+                if(requestResult.element("Response").element("HotelGroupInterfaceRoomTypeListResponse").element("HotelGroupInterfaceRoomTypeList").element("HotelGroupInterfaceRoomTypeEntity")==null){
+                    return null;
+                }
                 String xmlS = requestResult.element("Response").element("HotelGroupInterfaceRoomTypeListResponse").element("HotelGroupInterfaceRoomTypeList").element("HotelGroupInterfaceRoomTypeEntity").asXML();
                 hotelGroupInterfaceRoomTypeEntity = (HotelGroupInterfaceRoomTypeEntity) XstreamUtil.getXml2Bean(xmlS,HotelGroupInterfaceRoomTypeEntity.class);
             }    
             LOG.info("getCtripRoomTypeInfo excute time {} ms",System.currentTimeMillis() - start);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+       
         RoomTypeMapping roomTypeMapping = new RoomTypeMapping();
         roomTypeMapping.setChannel(OpenChannelType.CTRIP);
         roomTypeMapping.setHotelId(hotelGroupInterfaceRoomTypeEntity.getHotelGroupHotelCode()+"");
