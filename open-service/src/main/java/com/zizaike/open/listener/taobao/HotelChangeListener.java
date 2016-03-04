@@ -12,6 +12,7 @@ package com.zizaike.open.listener.taobao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 
 import com.zizaike.entity.open.alibaba.Action;
 import com.zizaike.entity.open.alibaba.Hotel;
@@ -28,6 +29,7 @@ import com.zizaike.open.domain.event.HotelApplicationEvent;
  * @since    JDK 1.7  
  * @see        
  */
+@Component
 public class HotelChangeListener implements ApplicationListener<HotelApplicationEvent> {
     @Autowired
     private TaobaoService taobaoService;

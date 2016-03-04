@@ -12,6 +12,7 @@ package com.zizaike.open.listener.ctrip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.alibaba.Rates;
@@ -28,6 +29,7 @@ import com.zizaike.open.domain.event.RatesApplicationEvent;
  * @since    JDK 1.7  
  * @see        
  */
+@Component
 public class RatesChangeListener implements ApplicationListener<RatesApplicationEvent>{
     @Autowired
     private CtripService ctripService;

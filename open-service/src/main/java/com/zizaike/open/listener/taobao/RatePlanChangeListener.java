@@ -12,6 +12,7 @@ package com.zizaike.open.listener.taobao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 
 import com.zizaike.entity.open.alibaba.Action;
 import com.zizaike.entity.open.alibaba.RatePlan;
@@ -29,6 +30,7 @@ import com.zizaike.open.domain.event.RatePlanApplicationEvent;
  * @since    JDK 1.7  
  * @see        
  */
+@Component
 public class RatePlanChangeListener implements ApplicationListener<RatePlanApplicationEvent> {
     @Autowired
     private TaobaoService taobaoService;
