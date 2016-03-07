@@ -40,4 +40,3 @@ public class AlitripRatesChangeListener implements ApplicationListener<RatesAppl
         taobaoService.updateRates(rates);        
     }
 }
-  

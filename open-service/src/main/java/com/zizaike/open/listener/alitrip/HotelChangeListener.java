@@ -45,4 +45,3 @@ public class HotelChangeListener implements ApplicationListener<HotelApplication
             }
     }
 }
-  

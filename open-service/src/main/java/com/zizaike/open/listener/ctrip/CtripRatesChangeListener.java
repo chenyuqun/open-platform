@@ -1,3 +1,4 @@
+
 /**  
  * Project Name:open-service  <br/>
  * File Name:RatesChangeListener.java  <br/>
@@ -47,4 +48,4 @@ public class CtripRatesChangeListener implements ApplicationListener<RatesApplic
         }        
     }
 }
-  
+
