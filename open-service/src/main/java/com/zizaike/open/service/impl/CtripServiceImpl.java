@@ -61,6 +61,8 @@ import com.zizaike.entity.open.ctrip.request.DomesticCheckRoomAvailRequest;
 import com.zizaike.entity.open.ctrip.request.DomesticSubmitNewHotelOrderReq;
 import com.zizaike.entity.open.ctrip.request.DomesticSubmitNewHotelOrderRequest;
 import com.zizaike.entity.open.ctrip.request.GuestEntity;
+import com.zizaike.entity.open.ctrip.response.AvailRoomQuantity;
+import com.zizaike.entity.open.ctrip.response.AvailRoomQuantitys;
 import com.zizaike.entity.open.ctrip.response.DomesticCancelHotelOrderResp;
 import com.zizaike.entity.open.ctrip.response.DomesticCancelHotelOrderResponse;
 import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResp;
@@ -150,28 +152,52 @@ public class CtripServiceImpl implements CtripService {
         Integer isBookable = 1;// 可订
         RoomPrices roomPrices = new RoomPrices();
         List<RoomPrice> roomPriceList = new ArrayList<RoomPrice>();
+        AvailRoomQuantitys availRoomQuantitys = new AvailRoomQuantitys();
+        List<AvailRoomQuantity> availRoomQuantityList = new ArrayList<AvailRoomQuantity>();
         Float countPrice = (float) 0;
         if (result.getString("resultCode").equals("200")) {
             List<InventoryPrice> inventoryPriceList = JSON.parseArray(
                     result.getJSONObject("info").getString("inventoryPrice"), InventoryPrice.class);
             for (int i = 0; i < inventoryPriceList.size(); i++) {
-                RoomPrice roomPrice = new RoomPrice();
                 InventoryPrice inventory = inventoryPriceList.get(i);
                 if (inventory.getQuota() < validateRQRequest.getRoomNum()) {
                     isBookable = 0;// 不可订
                 }
-                ;
+                RoomPrice roomPrice = new RoomPrice();
                 roomPrice.setBreakFast(inventory.getBreakFast() ? inventory.getMaxPerson() : 0);
                 roomPrice.setCost(Float.valueOf(inventory.getPrice() + "") / 100);
                 countPrice += Float.valueOf(inventory.getPrice() + "") / 100;
-                roomPrice.setEffectDate(inventory.getDate());
+                roomPrice.setEffectDate(new Date(inventory.getDate().getTime()));
                 roomPriceList.add(roomPrice);
+                
+                AvailRoomQuantity availRoomQuantity = new AvailRoomQuantity();
+                availRoomQuantity.setAvailQuantity(inventory.getQuota());
+                availRoomQuantity.setEffectDate(new Date(inventory.getDate().getTime()));
+                availRoomQuantityList.add(availRoomQuantity);
+                
             }
+            availRoomQuantitys.setAvailRoomQuantitys(availRoomQuantityList);
+            domesticCheckRoomAvailResponse.setAvailRoomQuantitys(availRoomQuantitys);
             roomPrices.setRoomPrices(roomPriceList);
             domesticCheckRoomAvailResponse.setRoomPrices(roomPrices);
             domesticCheckRoomAvailResponse.setInterFaceAmount(countPrice);
         } else {
             isBookable = 0;
+
+            switch (result.getString("resultCode")) {
+            case "408":
+                domesticCheckRoomAvailResp.setMessage("酒店满房/房量不足");
+                domesticCheckRoomAvailResp.setResultCode("101");
+                break;
+            case "206":
+                domesticCheckRoomAvailResp.setMessage("其他");
+                domesticCheckRoomAvailResp.setResultCode("9999");
+                break;
+            default:
+                domesticCheckRoomAvailResp.setMessage("其他");
+                domesticCheckRoomAvailResp.setResultCode("9999");
+                break;
+            }
         }
         domesticCheckRoomAvailResponse.setRoom(domesticCheckRoomAvailRequest.getRoom());
         domesticCheckRoomAvailResponse.setIsBookable(isBookable);
@@ -246,6 +272,47 @@ public class CtripServiceImpl implements CtripService {
         if(result.getString("resultCode").equals("200")||result.getString("resultCode").equals("201")){           
             domesticSubmitNewHotelOrderResponse.setHotelConfirmNo(result.getJSONObject("info").getString("orderId"));
             domesticSubmitNewHotelOrderResponse.setOrderStatus(OrderStatus.HOTEL_CONFIRM_SUCCESS);
+        }else{
+            switch (result.getString("resultCode")) {
+            case "400":
+                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setResultCode("9999");
+                break;
+            case "401":
+                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setResultCode("9999");
+                break;
+            case "402":
+                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setResultCode("9999");
+                break;
+            case "403":
+                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setResultCode("9999");
+                break;
+            case "404":
+                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setResultCode("9999");
+                break;
+            case "406":
+                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setResultCode("9999");
+                break;                    
+            case "407":
+                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setResultCode("9999");
+                break;
+            case "408":
+                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setResultCode("9999");
+                break;
+            /**
+             * 价格校验失败
+             */
+            case "207":
+                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setResultCode("9999");  
+        }
         }
         domesticSubmitNewHotelOrderResp.setDomesticSubmitNewHotelOrderResponse(domesticSubmitNewHotelOrderResponse);
         return domesticSubmitNewHotelOrderResp;
@@ -280,7 +347,7 @@ public class CtripServiceImpl implements CtripService {
         default:
             break;
         }
-        return XstreamUtil.getResponseXml(responseData);
+        return XstreamUtil.getCtripResponseXml(responseData);
     }
 
     private DomesticCancelHotelOrderResp domesticCancelHotelOrder(DomesticCancelHotelOrderReq domesticCancelHotelOrderReq)throws ZZKServiceException {
@@ -291,14 +358,30 @@ public class CtripServiceImpl implements CtripService {
         cancelOrderRequest.setHotelId(domesticCancelHotelOrderRequest.getHotel());
         JSONObject result = orderService.cancelRQ(cancelOrderRequest);
         DomesticCancelHotelOrderResponse domesticCancelHotelOrderResponse = new DomesticCancelHotelOrderResponse();
+        DomesticCancelHotelOrderResp domesticCancelHotelOrderResp = new DomesticCancelHotelOrderResp();
         if(result.getString("resultCode").equals("200")){
             domesticCancelHotelOrderResponse.setOrderID(result.getJSONObject("info").getString("orderId"));
             domesticCancelHotelOrderResponse.setInterFaceConfirmNO(domesticCancelHotelOrderRequest.getInterFaceConfirmNO());
             domesticCancelHotelOrderResponse.setOrderStatus(OrderStatus.HOTEL_CONFIRM_SUCCESS);
             domesticCancelHotelOrderResponse.setReturnCode("0");
             domesticCancelHotelOrderResponse.setReturnDescript("取消成功");
+        }else{
+            switch (result.getString("resultCode")) {
+            case "205":
+                domesticCancelHotelOrderResp.setResultCode("9999");
+                domesticCancelHotelOrderResp.setMessage("其他");
+                break;
+            case "204":
+                domesticCancelHotelOrderResp.setResultCode("9999");
+                domesticCancelHotelOrderResp.setMessage("其他");
+                break;
+            default:
+                domesticCancelHotelOrderResp.setResultCode("9999");
+                domesticCancelHotelOrderResp.setMessage("其他");
+                break;
+                  
+            }
         }
-        DomesticCancelHotelOrderResp domesticCancelHotelOrderResp = new DomesticCancelHotelOrderResp();
         domesticCancelHotelOrderResp.setDomesticCancelHotelOrderResponse(domesticCancelHotelOrderResponse);
         return domesticCancelHotelOrderResp;
     }

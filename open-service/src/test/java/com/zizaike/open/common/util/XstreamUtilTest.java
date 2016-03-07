@@ -1,5 +1,9 @@
 package com.zizaike.open.common.util;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -11,7 +15,15 @@ import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.open.alibaba.request.CancelRQRequest;
 import com.zizaike.entity.open.alibaba.request.QueryStatusRQRequest;
 import com.zizaike.entity.open.alibaba.request.ValidateRQRequest;
+import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.alibaba.response.ValidateRQResponse;
+import com.zizaike.entity.open.ctrip.RoomPrice;
+import com.zizaike.entity.open.ctrip.RoomPrices;
+import com.zizaike.entity.open.ctrip.SetRoomPriceItem;
+import com.zizaike.entity.open.ctrip.response.AvailRoomQuantity;
+import com.zizaike.entity.open.ctrip.response.AvailRoomQuantitys;
+import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResp;
+import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResponse;
 import com.zizaike.open.bastest.BaseTest;
 
 public class XstreamUtilTest extends BaseTest {
@@ -129,6 +141,36 @@ public class XstreamUtilTest extends BaseTest {
                 + "</QueryStatusRQ>";
         QueryStatusRQRequest queryStatusRQ = (QueryStatusRQRequest) XstreamUtil.getXml2Bean(xml, QueryStatusRQRequest.class);
         System.out.println(queryStatusRQ.toString());
+    }
+    @Test
+    public void DomesticCheckRoomAvailResp() throws ZZKServiceException {     
+        DomesticCheckRoomAvailResp test = new DomesticCheckRoomAvailResp();
+        DomesticCheckRoomAvailResponse respose = new DomesticCheckRoomAvailResponse();
+        AvailRoomQuantity availRoomQuantity = new AvailRoomQuantity();
+        availRoomQuantity.setEffectDate(new Date());
+        availRoomQuantity.setAvailQuantity(100);
+        AvailRoomQuantity availRoomQuantity1 = new AvailRoomQuantity();
+        availRoomQuantity1.setEffectDate(new Date());
+        availRoomQuantity1.setAvailQuantity(100);
+        AvailRoomQuantitys availRoomQuantitys = new AvailRoomQuantitys();
+        List<AvailRoomQuantity> list = new ArrayList<AvailRoomQuantity>();
+        list.add(availRoomQuantity);
+        list.add(availRoomQuantity1);
+        availRoomQuantitys.setAvailRoomQuantitys(list);
+        respose.setAvailRoomQuantitys(availRoomQuantitys);
+        RoomPrice roomPrice = new RoomPrice();
+        roomPrice.setEffectDate(new Date());
+        RoomPrice roomPrice1 = new RoomPrice();
+        roomPrice1.setEffectDate(new Date());
+        RoomPrices roomPrices = new RoomPrices();
+        List<RoomPrice> roomPricesList = new ArrayList<RoomPrice>();
+        roomPricesList.add(roomPrice);
+        roomPricesList.add(roomPrice1);
+        roomPrices.setRoomPrices(roomPricesList);
+        respose.setRoomPrices(roomPrices);
+        test.setDomesticCheckRoomAvailResponse(respose);
+        ResponseData responseData = test;
+        System.out.println( XstreamUtil.getCtripResponseXml(responseData));
     }
     
     @Test

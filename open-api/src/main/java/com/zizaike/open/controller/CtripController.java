@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.is.open.CtripService;
-import com.zizaike.open.BaseXMLController;
+import com.zizaike.open.BaseCtripXMLController;
 
 /**
  * 
@@ -34,11 +34,11 @@ import com.zizaike.open.BaseXMLController;
  */
 @Controller
 @RequestMapping("/ctrip")
-public class CtripController extends BaseXMLController {
+public class CtripController extends BaseCtripXMLController {
     protected final Logger LOG = LoggerFactory.getLogger(CtripController.class);
     @Autowired
     private CtripService ctripService;
-    @RequestMapping(value = "", method = RequestMethod.POST,produces={"application/xml"},consumes={"application/xml"})
+    @RequestMapping(value = "", method = RequestMethod.POST,produces={"text/xml"},consumes={"text/xml"})
     @ResponseBody
     public String getSearchResult(@RequestBody String xml ) throws ZZKServiceException {
         LOG.info("ctripService xml:{}",xml);
