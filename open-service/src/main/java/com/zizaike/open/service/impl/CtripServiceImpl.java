@@ -30,12 +30,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zizaike.core.common.util.http.SoapFastUtil;
 import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.core.framework.exception.open.OpenReturnException;
 import com.zizaike.entity.open.OpenChannelType;
+import com.zizaike.entity.open.RoomInfoDto;
 import com.zizaike.entity.open.RoomTypeMapping;
 import com.zizaike.entity.open.User;
 import com.zizaike.entity.open.alibaba.Data;
@@ -77,6 +79,7 @@ import com.zizaike.entity.order.request.OrderGuest;
 import com.zizaike.entity.order.request.ValidateOrderRequest;
 import com.zizaike.entity.order.response.InventoryPrice;
 import com.zizaike.entity.order.response.OrderStatus;
+import com.zizaike.is.open.BaseInfoService;
 import com.zizaike.is.open.CtripService;
 import com.zizaike.is.open.RoomTypeMappingService;
 import com.zizaike.is.open.UserService;
@@ -103,6 +106,8 @@ public class CtripServiceImpl implements CtripService {
     private OrderService orderService;
     @Autowired
     private RoomTypeMappingService roomTypeMappingService;
+    @Autowired
+    private BaseInfoService baseInfoService;
     
     @Value("${ctrip.userId}")
     private String userId;
@@ -327,6 +332,8 @@ public class CtripServiceImpl implements CtripService {
                 //房型               
                 RoomTypeMapping roomTypeMapping = roomTypeMappingService.queryByRoomTypeId(
                         rateInventoryPrice.getOutRid());
+                //根据房间号获得额外信息 目前有退款政策，早餐信息，最大入住人数
+                RoomInfoDto roomInfoDto=baseInfoService.getRefundAndBreakfast(Integer.parseInt(rateInventoryPrice.getOutRid()));
                 setRoomPriceItem.setRoomID(Integer.parseInt(roomTypeMapping.getOpenRoomTypeId()));
                 hotelID=roomTypeMapping.getOpenHotelId();
                 
@@ -356,7 +363,17 @@ public class CtripServiceImpl implements CtripService {
                     /**
                      * 早餐
                      */
-                    //priceInfo.setBreakfast(breakfast);
+                    if(roomInfoDto.getValue()==1){
+                        //有早餐 取人数
+                        if(roomInfoDto.getName().equals("10+")){
+                            priceInfo.setBreakfast(10);
+                        }else{
+                            priceInfo.setBreakfast(Integer.parseInt(roomInfoDto.getName()));
+                        }
+                    }else{
+                        priceInfo.setBreakfast(0);
+                    }
+                    
                     priceInfo.setCostAmountAfterTaxFee(inventoryPrice.getPrice());
                     priceInfo.setCostAmountBeforeTaxFee(inventoryPrice.getPrice());
                     /**
@@ -366,7 +383,7 @@ public class CtripServiceImpl implements CtripService {
                    /**
                     * 不需要变价审核设置： Sell， Cost，Both；需 要变价审核设 置：ACost， ASell，ABoth
                     */
-                    priceInfo.setPriceType("Sell");
+                    priceInfo.setPriceType("Cost");
                     /**
                      * 连住天数，暂不用，默认为1
                      */
@@ -409,7 +426,21 @@ public class CtripServiceImpl implements CtripService {
                     /**
                      * 预付最晚取消时间 【预付产品使用】小时数，计算公式同ReserveTime，不可 取消设置为23988
                      */
-                    roomInfoItem.setPrepayLCT(720);
+                    /**
+                     * refundRule来判断 {"type":0,"refund_list":{"1":{"day":"20"},"2":{"per":"20","day":"9"}}}
+                     */
+                    if(StringUtils.isEmpty(roomInfoDto.getRefundRule())){
+                        roomInfoItem.setPrepayLCT(720);
+                    }else{
+                        JSONObject refundRule=JSON.parseObject(roomInfoDto.getRefundRule());
+                        if(refundRule.get("type").equals(0)){
+                            JSONObject refundList=(JSONObject) refundRule.get("refund_list");
+                            JSONObject firstrefund=(JSONObject) refundList.get("1");
+                            roomInfoItem.setPrepayLCT(firstrefund.getIntValue("day")*24);
+                        }else{
+                            roomInfoItem.setPrepayLCT(23988);
+                        }
+                    }
                     /**
                      * 国内推荐级别(5-特推,4-主推,3-可推,2-可订,1-不推,0-不可订
                      */
