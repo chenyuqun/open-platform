@@ -164,7 +164,7 @@ public class CtripServiceTest extends BaseTest {
         setMappingInfoVo.setHotelGroupHotelCode("328111");
         setMappingInfoVo.setHotelGroupRoomTypeCode("3924111");
         setMappingInfoVo.setHotelGroupRatePlanCode("3924111");
-        setMappingInfoVo.setHotelGroupRoomName("testing 测试 testing...");
+        setMappingInfoVo.setHotelGroupRoomName("测试测试测试");
         setMappingInfoVo.setSetMappingOperateType(SetMappingOperateType.REQUEST_A_NEW_CTRIP_HOTEL);
         ctipCtripService.setMappingInfo(setMappingInfoVo);
     }

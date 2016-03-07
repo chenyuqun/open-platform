@@ -35,6 +35,7 @@ import com.zizaike.entity.open.ctrip.HotelGroupInterfaceRoomTypeEntity;
 import com.zizaike.entity.open.ctrip.MappingType;
 import com.zizaike.entity.open.ctrip.PriceInfo;
 import com.zizaike.entity.open.ctrip.RoomInfoItem;
+import com.zizaike.entity.open.ctrip.SetMappingOperateType;
 import com.zizaike.entity.open.ctrip.SetRoomPriceItem;
 import com.zizaike.entity.open.ctrip.SetType;
 import com.zizaike.open.bastest.BaseTest;
@@ -235,6 +236,7 @@ public class CtripConnectionTest extends BaseTest {
         map.put("balanceType", "PP");
         map.put("mappingType", MappingType.MUTUAL_MAPPING.getValue());
         map.put("setType", SetType.ADD.getValue());
+        map.put("setMappingOperateType", SetMappingOperateType.REQUEST_A_NEW_CTRIP_HOTEL);
         try {
             long start = System.currentTimeMillis();
             String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
