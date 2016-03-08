@@ -30,7 +30,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zizaike.core.common.util.http.SoapFastUtil;
 import com.zizaike.core.framework.exception.IllegalParamterException;
@@ -170,7 +169,7 @@ public class CtripServiceImpl implements CtripService {
                 }
                 RoomPrice roomPrice = new RoomPrice();
                 roomPrice.setBreakFast(inventory.getBreakFast() ? inventory.getMaxPerson() : 0);
-                roomPrice.setCost(Float.valueOf(inventory.getPrice() + "") / 100);
+                roomPrice.setCost(inventory.getPrice() / 100);
                 countPrice += Float.valueOf(inventory.getPrice() + "") / 100;
                 roomPrice.setEffectDate(new Date(inventory.getDate().getTime()));
                 roomPriceList.add(roomPrice);
@@ -247,24 +246,27 @@ public class CtripServiceImpl implements CtripService {
         bookOrderRequest.setLatestArriveTime(domesticSubmitNewHotelOrderReqeust.getLastArrivalTime());
         bookOrderRequest.setRoomNum(Integer.parseInt(domesticSubmitNewHotelOrderReqeust.getQuantity()));
         //价格
-        bookOrderRequest.setTotalPrice(Long.parseLong(domesticSubmitNewHotelOrderReqeust.getCNYCostAmount()*100+""));//元转成分
+        bookOrderRequest.setTotalPrice((Long)(domesticSubmitNewHotelOrderReqeust.getCNYCostAmount()*100));//元转成分
         bookOrderRequest.setCurrency("CNY");//只支持人民币
         bookOrderRequest.setPaymentType(1);
         bookOrderRequest.setContactTel(domesticSubmitNewHotelOrderReqeust.getMobilePhone());
         List<OrderGuest> orderGuests = new ArrayList<OrderGuest>();
        
         List<GuestEntity> guests = domesticSubmitNewHotelOrderReqeust.getGuests().getGuests();
+        StringBuffer contactName = new StringBuffer();
         for (GuestEntity guestEntity : guests) {
             OrderGuest orderGuest = new OrderGuest();
+            contactName.append("/"+guestEntity.getFirstName()+" "+guestEntity.getLastName());
             orderGuest.setName(guestEntity.getFirstName()+" "+guestEntity.getLastName());
             orderGuests.add(orderGuest);
         }
+        bookOrderRequest.setContactName(contactName.toString().replaceFirst("/", ""));
         bookOrderRequest.setOrderGuests(orderGuests);
         List<DailyInfo> dailyInfos = new ArrayList<DailyInfo>(); 
         for (RoomPrice roomPrice : domesticSubmitNewHotelOrderReqeust.getRoomPrices().getRoomPrices()) {
             DailyInfo dailyInfo = new DailyInfo();
             dailyInfo.setDay(roomPrice.getEffectDate());
-            dailyInfo.setPrice(Long.parseLong(roomPrice.getCNYCost()*100+""));
+            dailyInfo.setPrice((long) (roomPrice.getCNYCost()*100));
             dailyInfos.add(dailyInfo);
         }
         bookOrderRequest.setDailyInfos(dailyInfos);
@@ -277,6 +279,8 @@ public class CtripServiceImpl implements CtripService {
         if(result.getString("resultCode").equals("200")||result.getString("resultCode").equals("201")){           
             domesticSubmitNewHotelOrderResponse.setHotelConfirmNo(result.getJSONObject("info").getString("orderId"));
             domesticSubmitNewHotelOrderResponse.setOrderStatus(OrderStatus.HOTEL_CONFIRM_SUCCESS);
+            domesticSubmitNewHotelOrderResponse.setInterFaceConfirmNO(result.getJSONObject("info").getString("orderId"));
+            domesticSubmitNewHotelOrderResponse.setInterFaceAmount(domesticSubmitNewHotelOrderReqeust.getCNYCostAmount()+"");
         }else{
             switch (result.getString("resultCode")) {
             case "400":

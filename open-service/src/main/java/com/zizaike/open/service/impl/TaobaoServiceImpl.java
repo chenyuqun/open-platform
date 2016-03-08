@@ -1,6 +1,3 @@
-
-
-
 /**  
  * Project Name:open-api  <br/>
  * File Name:TaoBaoServiceImpl.java  <br/>
@@ -102,7 +99,7 @@ import com.zizaike.open.gateway.OrderService;
 public class TaobaoServiceImpl implements TaobaoService {
     protected final Logger LOG = LoggerFactory.getLogger(TaobaoServiceImpl.class);
     @Autowired
-    private UserService userService;
+    private UserService userService;     
     @Autowired
     private OrderService orderService;
     @Value("${alibaba.sessionKey}")
@@ -559,7 +556,7 @@ public class TaobaoServiceImpl implements TaobaoService {
     @Override
     public void updateRoomType(RoomType object) {
           
-        LOG.debug("updateRoomType mqInfo {}", object.toString());
+        LOG.info("updateRoomType mqInfo {}", object.toString());
         XhotelRoomtypeUpdateRequest req = new XhotelRoomtypeUpdateRequest();
         /**
          * 房型名称不能超过30
@@ -637,11 +634,11 @@ public class TaobaoServiceImpl implements TaobaoService {
             e.printStackTrace();
             LOG.error("update copyProperties exception{}", e);
         }
-        LOG.debug("XhotelRoomtypeUpdateResponse {}", ToStringBuilder.reflectionToString(req));
+        LOG.info("XhotelRoomtypeUpdateResponse {}", ToStringBuilder.reflectionToString(req));
         XhotelRoomtypeUpdateResponse response;
         try {
             response = taobaoClient.execute(req, sessionKey);
-            LOG.debug("XhotelRoomtypeUpdateResponse {}", ToStringBuilder.reflectionToString(response));
+            LOG.info("XhotelRoomtypeUpdateResponse {}", ToStringBuilder.reflectionToString(response));
         } catch (ApiException e) {
             e.printStackTrace();  
             LOG.error("XhotelRoomtypeUpdate exception{}",e);
@@ -651,7 +648,7 @@ public class TaobaoServiceImpl implements TaobaoService {
     @Override
     public void addRoomType(RoomType object) {
           
-        LOG.debug("addRoomType mqInfo {}", object.toString());
+        LOG.info("addRoomType mqInfo {}", object.toString());
         /**
          * 房型名称不能超过30
          */
@@ -728,11 +725,11 @@ public class TaobaoServiceImpl implements TaobaoService {
             e.printStackTrace();
             LOG.error("addRoomType copyProperties exception{}", e);
         }
-        LOG.debug("XhotelRoomtypeAddRequest {}", ToStringBuilder.reflectionToString(req));
+        LOG.info("XhotelRoomtypeAddRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelRoomtypeAddResponse response;
         try {
             response = taobaoClient.execute(req, sessionKey);
-            LOG.debug("XhotelRoomtypeAddResponse {}", ToStringBuilder.reflectionToString(response));
+            LOG.info("XhotelRoomtypeAddResponse {}", ToStringBuilder.reflectionToString(response));
         } catch (ApiException e) {
             e.printStackTrace();
             LOG.error("XhotelRoomtypeAdd exception{}",e);
@@ -743,7 +740,7 @@ public class TaobaoServiceImpl implements TaobaoService {
     @Override
     public void addHotel(Hotel object) {
           
-        LOG.debug("addHotel mqInfo {}", object.toString());
+        LOG.info("addHotel mqInfo {}", object.toString());
         XhotelAddRequest req = new XhotelAddRequest();
         if(StringUtils.isNotEmpty(object.getLatitude())){          
             object.setLatitude(object.getLatitude().length()>10?object.getLatitude().substring(0, 10):object.getLatitude());
@@ -757,11 +754,11 @@ public class TaobaoServiceImpl implements TaobaoService {
             e.printStackTrace();
             LOG.error("addHotel copyProperties exception{}", e);
         }
-        LOG.debug("addHotel XhotelAddRequest {}", ToStringBuilder.reflectionToString(req));
+        LOG.info("addHotel XhotelAddRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelAddResponse response;
         try {
             response = taobaoClient.execute(req, sessionKey);
-            LOG.debug("addHotel XhotelAddResponse {}",  ToStringBuilder.reflectionToString(response));
+            LOG.info("addHotel XhotelAddResponse {}",  ToStringBuilder.reflectionToString(response));
         } catch (ApiException e) {
             e.printStackTrace();
             LOG.error("XhotelHotelAddResponse exception{}",e);
@@ -774,7 +771,7 @@ public class TaobaoServiceImpl implements TaobaoService {
     @Override
     public void updateHotel(Hotel object) {
           
-        LOG.debug("updateHotel mqInfo {}", object.toString());
+        LOG.info("updateHotel mqInfo {}", object.toString());
         XhotelUpdateRequest req = new XhotelUpdateRequest();
         if(StringUtils.isNotEmpty(object.getLatitude())){          
             object.setLatitude(object.getLatitude().length()>10?object.getLatitude().substring(0, 10):object.getLatitude());
@@ -788,11 +785,11 @@ public class TaobaoServiceImpl implements TaobaoService {
             e.printStackTrace();
             LOG.error("updateHotel copyProperties exception{}", e);
         }
-        LOG.debug("updateHotel XhotelAddRequest {}", ToStringBuilder.reflectionToString(req));
+        LOG.info("updateHotel XhotelAddRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelUpdateResponse response;
         try {
             response = taobaoClient.execute(req, sessionKey);
-            LOG.debug("updateHotel response {}", ToStringBuilder.reflectionToString(response));
+            LOG.info("updateHotel response {}", ToStringBuilder.reflectionToString(response));
         } catch (ApiException e) {
             e.printStackTrace();
             LOG.error("XhotelUpdateHotelResponse exception{}",e);
@@ -804,7 +801,7 @@ public class TaobaoServiceImpl implements TaobaoService {
 
     @Override
     public void addRatePlan(RatePlan object) {
-        LOG.debug("addRatePlan mqInfo {}", object.toString());
+        LOG.info("addRatePlan mqInfo {}", object.toString());
         XhotelRateplanAddRequest req = new XhotelRateplanAddRequest();
         try {
             BeanUtils.copyProperties(req, object);
@@ -812,11 +809,11 @@ public class TaobaoServiceImpl implements TaobaoService {
             e.printStackTrace();
             LOG.error("addRatePlan copyProperties exception{}", e);
         }
-        LOG.debug("addRatePlan XhotelRateplanAddRequest {}", ToStringBuilder.reflectionToString(req));
+        LOG.info("addRatePlan XhotelRateplanAddRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelRateplanAddResponse response;
         try {
             response = taobaoClient.execute(req, sessionKey);
-            LOG.debug("addRatePlan XhotelRateplanAddResponse {}", ToStringBuilder.reflectionToString(response));
+            LOG.info("addRatePlan XhotelRateplanAddResponse {}", ToStringBuilder.reflectionToString(response));
         } catch (ApiException e) {
             e.printStackTrace();  
             LOG.error("XhotelRateplanAddResponse exception{}",e);
@@ -828,7 +825,7 @@ public class TaobaoServiceImpl implements TaobaoService {
     @Override
     public void updateRatePlan(RatePlan object) {
           
-        LOG.debug("updateRatePlan mqInfo {}", object.toString());
+        LOG.info("updateRatePlan mqInfo {}", object.toString());
         XhotelRateplanUpdateRequest req = new XhotelRateplanUpdateRequest();
         try {
             BeanUtils.copyProperties(req, object);
@@ -836,11 +833,11 @@ public class TaobaoServiceImpl implements TaobaoService {
             e.printStackTrace();
             LOG.error("updateRatePlan copyProperties exception{}", e);
         }
-        LOG.debug("updateRatePlan XhotelRateplanUpdateRequest {}", ToStringBuilder.reflectionToString(req));
+        LOG.info("updateRatePlan XhotelRateplanUpdateRequest {}", ToStringBuilder.reflectionToString(req));
         XhotelRateplanUpdateResponse response;
         try {
             response = taobaoClient.execute(req, sessionKey);
-            LOG.debug("updateRatePlan XhotelRateplanUpdateResponse {}", ToStringBuilder.reflectionToString(response));
+            LOG.info("updateRatePlan XhotelRateplanUpdateResponse {}", ToStringBuilder.reflectionToString(response));
         } catch (ApiException e) { 
             e.printStackTrace(); 
             LOG.error("XhotelRateplanUpdateResponse exception{}",e);
@@ -852,7 +849,7 @@ public class TaobaoServiceImpl implements TaobaoService {
 
     @Override
     public void updateRates(Rates object){       
-            LOG.debug("updateRates mqInfo {}", object.toString());
+            LOG.info("updateRates mqInfo {}", object.toString());
             XhotelRatesUpdateRequest req = new XhotelRatesUpdateRequest();
             try {
                 BeanUtils.copyProperties(req, object);
@@ -861,19 +858,16 @@ public class TaobaoServiceImpl implements TaobaoService {
                 e.printStackTrace();
                 LOG.error("updateRates copyProperties exception{}", e);
             }
-            LOG.debug("updateRates XhotelRatesUpdateRequest {}", ToStringBuilder.reflectionToString(req));
+            LOG.info("updateRates XhotelRatesUpdateRequest {}", ToStringBuilder.reflectionToString(req));
             XhotelRatesUpdateResponse response;
             try {
                 response = taobaoClient.execute(req, sessionKey);
-                LOG.debug("updateRates XhotelRatesUpdateResponse {}", ToStringBuilder.reflectionToString(response)); 
+                LOG.info("updateRates XhotelRatesUpdateResponse {}", ToStringBuilder.reflectionToString(response)); 
             } catch (ApiException e) { 
                 e.printStackTrace();  
                 LOG.error("XhotelRatesUpdateResponse exception{}",e);
             }
                
     }
-
     
-
-
 }
