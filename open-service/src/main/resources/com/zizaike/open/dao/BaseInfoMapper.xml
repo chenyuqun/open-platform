@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zizaike.open.dao.BaseInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.zizaike.entity.open.RoomInfoDto" >
+    <id column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="value" property="value" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="refund_rule" property="refundRule" jdbcType="VARCHAR" />
+  </resultMap>
+   <select id="getRefundAndBreakfast" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+   select d.refund_rule as refund_rule,e.name as name,f.value as value,c.uid as uid from one_db.drupal_node c 
+	LEFT JOIN one_db.drupal_users d
+	ON c.uid=d.uid  
+	Right JOIN (select * from one_db.drupal_field_data_field_room_beds a 
+	left join one_db.drupal_taxonomy_term_data b on a.field_room_beds_tid = b.tid 
+	where a.entity_type = 'node' and a.entity_id = #{roomId,jdbcType=INTEGER}) as e  
+	ON c.nid=e.entity_id
+	LEFT JOIN LKYou.t_zaocan f
+	ON d.uid=f.uid
+  </select>
+ 
+ 
+
+</mapper>
