@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -218,7 +217,7 @@ public class TaobaoServiceImpl implements TaobaoService {
             bookOrderRequest.setCheckOut(bookRQRequest.getCheckOut());
             bookOrderRequest.setComment(bookRQRequest.getComment());
             bookOrderRequest.setContactEmail(bookRQRequest.getContactEmail());
-            bookOrderRequest.setContactName(bookRQRequest.getContactName());
+            bookOrderRequest.setContactName(StringUtils.isNotEmpty(bookRQRequest.getContactName())?bookRQRequest.getContactName().replaceAll("@", " "):bookRQRequest.getContactName());
             bookOrderRequest.setContactTel(bookRQRequest.getContactTel());
             bookOrderRequest.setCurrency(bookRQRequest.getCurrency());
             bookOrderRequest.setEarliestArriveTime(bookRQRequest.getEarliestArriveTime());
@@ -644,6 +643,7 @@ public class TaobaoServiceImpl implements TaobaoService {
             LOG.error("XhotelRoomtypeUpdate exception{}",e);
         }
     }
+    
 
     @Override
     public void addRoomType(RoomType object) {
