@@ -610,6 +610,7 @@ public class TaobaoServiceImpl implements TaobaoService {
             HashMap<String,String> hashmap=JSON.parseObject(object.getPics(), new TypeReference<HashMap<String,String>>(){});
             List<Map<String,String>> pics = new ArrayList<>();
             Boolean isMain = true;
+            int picNum=0;
             for (String key : hashmap.keySet()) 
                 {
                 Map map = new HashMap();
@@ -621,6 +622,10 @@ public class TaobaoServiceImpl implements TaobaoService {
                     map.put("isMain", "false");
                 }     
                  pics.add(map);
+                 picNum++;
+                 if(picNum>=15){
+                     break;
+                 }
                 }
               
             object.setPics(JSON.toJSONString(pics));
@@ -696,6 +701,7 @@ public class TaobaoServiceImpl implements TaobaoService {
             HashMap<String,String> hashmap=JSON.parseObject(object.getPics(), new TypeReference<HashMap<String,String>>(){});
             List<Map<String,String>> pics = new ArrayList<>();
             Boolean isMain = true;
+            int picNum=0;
             for (String key : hashmap.keySet()) 
                 {
                 Map map = new HashMap();
@@ -707,6 +713,10 @@ public class TaobaoServiceImpl implements TaobaoService {
                     map.put("isMain", "false");
                 }     
                  pics.add(map);
+                 picNum++;
+                 if(picNum>=15){
+                     break;
+                 }
                 }
               
             object.setPics(JSON.toJSONString(pics));
