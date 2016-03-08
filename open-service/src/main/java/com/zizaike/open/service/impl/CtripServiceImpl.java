@@ -770,6 +770,7 @@ public class CtripServiceImpl implements CtripService {
             String xml = null;
             try{
                 String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
+                LOG.info("setMappingInfo not replaceAll  response xml {}",xmlStr);
                  xml = xmlStr.replaceAll("&amp;", "&").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
                 LOG.info("setMappingInfo  response xml {}",xml);
                 doc = DocumentHelper.parseText(xml);
