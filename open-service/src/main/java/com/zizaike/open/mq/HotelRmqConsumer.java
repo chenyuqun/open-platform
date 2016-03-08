@@ -19,6 +19,7 @@ import com.taobao.api.ApiException;
 import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.alibaba.Hotel;
+import com.zizaike.is.open.AreaService;
 import com.zizaike.open.domain.event.HotelApplicationEvent;
 
 /**
@@ -36,12 +37,18 @@ public class HotelRmqConsumer {
     protected final Logger LOG = LoggerFactory.getLogger(HotelRmqConsumer.class);
     @Autowired
     ApplicationContext applicationContext;
+    @Autowired
+    private AreaService areaService;
+    
     public void reveiveHotelMessage(Hotel hotel) throws ApiException, ZZKServiceException {
         if (hotel == null) {
             throw new IllegalParamterException("hotel is null");
         }
         if (hotel.getAction() == null) {
             throw new IllegalParamterException("hotel.action is null");
+        }
+        if(hotel.getCity()!=null){
+            hotel.setCity(Long.valueOf(areaService.getAreaCodeTypeCode(""+hotel.getCity())));
         }
         applicationContext.publishEvent(new HotelApplicationEvent(hotel));
     }
