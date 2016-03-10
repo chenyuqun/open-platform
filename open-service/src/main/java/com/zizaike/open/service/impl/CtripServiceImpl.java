@@ -338,15 +338,15 @@ public class CtripServiceImpl implements CtripService {
         String request = root.element("HeaderInfo").element("RequestType").attributeValue("Name");
         switch (request) {
         case "DomesticCheckRoomAvail":
-            responseData = domesticCheckRoomAvail((DomesticCheckRoomAvailRequest) XstreamUtil.getXml2Bean(xml,
+            responseData = domesticCheckRoomAvail((DomesticCheckRoomAvailRequest) XstreamUtil.getXml2Bean(root.element("DomesticCheckRoomAvailRequest").asXML(),
                     DomesticCheckRoomAvailRequest.class));
             break;
         case "DomesticSubmitNewHotelOrder":
-            responseData = domesticSubmitNewHotelOrder((DomesticSubmitNewHotelOrderRequest) XstreamUtil.getXml2Bean(xml,
+            responseData = domesticSubmitNewHotelOrder((DomesticSubmitNewHotelOrderRequest) XstreamUtil.getXml2Bean(root.element("DomesticSubmitNewHotelOrderRequest").asXML(),
                     DomesticSubmitNewHotelOrderRequest.class));
             break;
         case "DomesticCancelHotelOrder":
-            responseData = domesticCancelHotelOrder((DomesticCancelHotelOrderRequest) XstreamUtil.getXml2Bean(xml,
+            responseData = domesticCancelHotelOrder((DomesticCancelHotelOrderRequest) XstreamUtil.getXml2Bean(root.element("DomesticCancelHotelOrderRequest").asXML(),
                     DomesticCancelHotelOrderRequest.class));
             break;
         default:
