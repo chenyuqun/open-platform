@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xmlns:simple="http://cxf.apache.org/simple"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://cxf.apache.org/jaxws
+       http://cxf.apache.org/schemas/jaxws.xsd
+       http://cxf.apache.org/simple
+       http://cxf.apache.org/schemas/simple.xsd">
+       <!-- Initiliaing Client Webservices -->
+	<import resource="classpath:META-INF/cxf/cxf.xml" /> 
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+    <!--第一种-->
+   <!-- <jaxws:server id="helloService" address="/soap/hello">
+        <jaxws:serviceBean>
+            <ref bean="helloServiceImpl"/>
+        </jaxws:serviceBean>
+    </jaxws:server>-->
+ 	<bean id="ctripSOAPServiceImpl" class="com.zizaike.open.service.impl.CtripSOAPServiceImpl"></bean>
+    <!--第二种 -->
+    <jaxws:endpoint id="ctripSOAPServiceWS"  implementor="#ctripSOAPServiceImpl" implementorClass="com.zizaike.open.service.impl.CtripSOAPServiceImpl" address="/soap/ctrip"/>
+ 
+    <!--第三种-->
+    <!--<simple:server id="helloService" serviceClass="#helloService" address="/soap/hello">
+        <simple:serviceBean>
+            <ref bean="#helloServiceImpl"/>
+        </simple:serviceBean>
+    </simple:server>-->
+</beans>

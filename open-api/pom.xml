@@ -16,6 +16,7 @@
     <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
     <excludePropertyFiles></excludePropertyFiles>
     <project.build.finalname>open-api</project.build.finalname>
+  	<cxf.version>3.0.0</cxf.version>
   </properties>
   <build>
     <finalName>${project.build.finalname}</finalName>
@@ -283,5 +284,16 @@
       <groupId>org.apache.velocity</groupId>
       <artifactId>velocity-tools</artifactId>
     </dependency>
+     <!-- CXF -->
+        <dependency>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-rt-frontend-jaxws</artifactId>
+          <version>${cxf.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-rt-transports-http</artifactId>
+          <version>${cxf.version}</version>
+        </dependency>
   </dependencies>
 </project>
