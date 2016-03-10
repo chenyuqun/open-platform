@@ -38,7 +38,7 @@ public class CtripController extends BaseCtripXMLController {
     protected final Logger LOG = LoggerFactory.getLogger(CtripController.class);
     @Autowired
     private CtripService ctripService;
-    @RequestMapping(value = "", method = RequestMethod.POST,produces={"text/xml"},consumes={"text/xml"})
+    @RequestMapping(value = "", method = RequestMethod.GET,produces={"text/xml"},consumes={"text/xml"})
     @ResponseBody
     public String getSearchResult(@RequestBody String xml ) throws ZZKServiceException {
         LOG.info("ctripService xml:{}",xml);
