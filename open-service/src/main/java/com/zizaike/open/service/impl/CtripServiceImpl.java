@@ -325,6 +325,8 @@ public class CtripServiceImpl implements CtripService {
 
     @Override
     public String service(String xml) throws ZZKServiceException {
+        xml = xml.replaceAll("&amp;", "&").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+        LOG.info("CTRIP xml replace info {}",xml);
         Document doc = null;
         ResponseData responseData = null;
         try {
