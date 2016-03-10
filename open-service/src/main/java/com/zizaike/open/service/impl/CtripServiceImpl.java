@@ -134,10 +134,8 @@ public class CtripServiceImpl implements CtripService {
      * @throws ZZKServiceException
      * @since JDK 1.7
      */
-    private DomesticCheckRoomAvailResp domesticCheckRoomAvail(DomesticCheckRoomAvailReq domesticCheckRoomAvailReq)
+    private DomesticCheckRoomAvailResp domesticCheckRoomAvail(DomesticCheckRoomAvailRequest domesticCheckRoomAvailRequest)
             throws ZZKServiceException {
-        DomesticCheckRoomAvailRequest domesticCheckRoomAvailRequest = domesticCheckRoomAvailReq
-                .getDomesticCheckRoomAvail();
         if (domesticCheckRoomAvailRequest.getBalanceType() != BalanceType.PP) {
             throw new IllegalParamterException("BalanceType is not PP");
         }
@@ -219,9 +217,7 @@ public class CtripServiceImpl implements CtripService {
      * @since JDK 1.7
      */
     private DomesticSubmitNewHotelOrderResp domesticSubmitNewHotelOrder(
-            DomesticSubmitNewHotelOrderReq domesticSubmitNewHotelOrderReq) throws ZZKServiceException{
-        DomesticSubmitNewHotelOrderRequest domesticSubmitNewHotelOrderReqeust = domesticSubmitNewHotelOrderReq
-                .getDomesticSubmitNewHotelOrderReqeust();
+            DomesticSubmitNewHotelOrderRequest domesticSubmitNewHotelOrderReqeust) throws ZZKServiceException{
         RoomTypeMapping roomTypeMapping = null;
         try {
             roomTypeMapping = roomTypeMappingService.queryByHotelIdAndOpenRoomTypeId(
@@ -342,16 +338,16 @@ public class CtripServiceImpl implements CtripService {
         String request = root.element("HeaderInfo").element("RequestType").attributeValue("Name");
         switch (request) {
         case "DomesticCheckRoomAvail":
-            responseData = domesticCheckRoomAvail((DomesticCheckRoomAvailReq) XstreamUtil.getXml2Bean(xml,
-                    DomesticCheckRoomAvailReq.class));
+            responseData = domesticCheckRoomAvail((DomesticCheckRoomAvailRequest) XstreamUtil.getXml2Bean(xml,
+                    DomesticCheckRoomAvailRequest.class));
             break;
         case "DomesticSubmitNewHotelOrder":
-            responseData = domesticSubmitNewHotelOrder((DomesticSubmitNewHotelOrderReq) XstreamUtil.getXml2Bean(xml,
-                    DomesticSubmitNewHotelOrderReq.class));
+            responseData = domesticSubmitNewHotelOrder((DomesticSubmitNewHotelOrderRequest) XstreamUtil.getXml2Bean(xml,
+                    DomesticSubmitNewHotelOrderRequest.class));
             break;
         case "DomesticCancelHotelOrder":
-            responseData = domesticCancelHotelOrder((DomesticCancelHotelOrderReq) XstreamUtil.getXml2Bean(xml,
-                    DomesticCancelHotelOrderReq.class));
+            responseData = domesticCancelHotelOrder((DomesticCancelHotelOrderRequest) XstreamUtil.getXml2Bean(xml,
+                    DomesticCancelHotelOrderRequest.class));
             break;
         default:
             break;
@@ -359,8 +355,7 @@ public class CtripServiceImpl implements CtripService {
         return XstreamUtil.getCtripResponseXml(responseData);
     }
 
-    private DomesticCancelHotelOrderResp domesticCancelHotelOrder(DomesticCancelHotelOrderReq domesticCancelHotelOrderReq)throws ZZKServiceException {
-        DomesticCancelHotelOrderRequest domesticCancelHotelOrderRequest = domesticCancelHotelOrderReq.getDomesticCancelHotelOrderRequest();
+    private DomesticCancelHotelOrderResp domesticCancelHotelOrder(DomesticCancelHotelOrderRequest domesticCancelHotelOrderRequest)throws ZZKServiceException {
         CancelOrderRequest cancelOrderRequest = new CancelOrderRequest();
         cancelOrderRequest.setOpenChannelType(OpenChannelType.CTRIP);
         cancelOrderRequest.setOpenOrderId(domesticCancelHotelOrderRequest.getOrderID());
