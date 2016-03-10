@@ -335,7 +335,7 @@ public class CtripServiceImpl implements CtripService {
             e.printStackTrace();
             LOG.error("service DocumentHelper exception{}",e);
         }
-        Element root = doc.getRootElement().element("ArrayOfAnyType").element("anyType").element("Request");
+        Element root = doc.getRootElement();
         checkUser(root);
         String request = root.element("HeaderInfo").element("RequestType").attributeValue("Name");
         switch (request) {
