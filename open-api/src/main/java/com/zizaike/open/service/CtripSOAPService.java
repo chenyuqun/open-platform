@@ -9,7 +9,10 @@
   
 package com.zizaike.open.service;  
 
+import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.jws.soap.SOAPBinding.Style;
 
 
 /**  
@@ -21,8 +24,9 @@ import javax.jws.WebService;
  * @since    JDK 1.7  
  * @see        
  */
-@WebService
+//@SOAPBinding(style=Style.RPC)
+//@WebService()
 public interface CtripSOAPService {
-    String invoke(String xml,String invoketype);
+    String invoke(@WebParam(name = "xml") String xml,@WebParam(name = "Invoketype") String invoketype);
 }
   

@@ -9,8 +9,14 @@
   
 package com.zizaike.open.service.impl;  
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.jws.soap.SOAPBinding.Style;
 
+import org.restlet.resource.Get;
+import org.restlet.resource.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
@@ -26,12 +32,13 @@ import com.zizaike.open.service.CtripSOAPService;
  * @since    JDK 1.7  
  * @see        
  */
-@WebService(endpointInterface="com.zizaike.open.service.CtripSOAPService")
-public class CtripSOAPServiceImpl implements CtripSOAPService {
+@SOAPBinding(style=Style.RPC)
+@WebService(serviceName="ctrip",portName="ctrip",targetNamespace="http://service.open.zizaike.com/"/**,endpointInterface="com.zizaike.open.service.CtripSOAPService"**/)
+public class CtripSOAPServiceImpl  {
     @Autowired
     private CtripService ctripService;
-    @Override
-    public String invoke(String xml,String invoketype) {
+    @Post("inovke")
+    public String invoke(@WebParam(name = "xml") String xml,@WebParam(name = "Invoketype") String invoketype) {
         String returnXml = null;
         try {
             returnXml = ctripService.service(xml);

@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = {"classpath:/spring/applicationContext.xml",
 "classpath:/spring/springmvc-servlet.xml"})
 @Transactional
-@TransactionConfiguration(defaultRollback = true)
 public class BaseTest extends AbstractTestNGSpringContextTests {
     
 }
