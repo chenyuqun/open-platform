@@ -23,6 +23,6 @@ import javax.jws.WebService;
  */
 @WebService
 public interface CtripSOAPService {
-    String invoke(String xml);
+    String invoke(String xml,String invoketype);
 }
   

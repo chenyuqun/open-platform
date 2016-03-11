@@ -31,7 +31,7 @@ public class CtripSOAPServiceImpl implements CtripSOAPService {
     @Autowired
     private CtripService ctripService;
     @Override
-    public String invoke(String xml) {
+    public String invoke(String xml,String invoketype) {
         String returnXml = null;
         try {
             returnXml = ctripService.service(xml);
