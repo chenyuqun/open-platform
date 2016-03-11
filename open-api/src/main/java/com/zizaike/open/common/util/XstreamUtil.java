@@ -74,7 +74,7 @@ public  class XstreamUtil {
      //用注解返回xml
      xstream.autodetectAnnotations(true);
      String beanXml = xstream.toXML(data);
-     StringBuffer xml = new StringBuffer(xmlHead).append("<RequestResponse>\r\n").append(beanXml).append("</RequestResponse>\r\n");  
+     StringBuffer xml = new StringBuffer(xmlHead).append("<Response>\r\n").append(beanXml).append("</Response>\r\n");
      return xml.toString();
  }
   
