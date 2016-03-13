@@ -31,7 +31,7 @@ import com.zizaike.open.domain.event.RoomTypeApplicationEvent;
  * @since JDK 1.7
  * @see
  */
-@Service("roomTypeRmqConsumer")
+@Service
 public class RoomTypeRmqConsumer {
     protected final Logger LOG = LoggerFactory.getLogger(RoomTypeRmqConsumer.class);
     @Autowired
