@@ -96,6 +96,7 @@ public class OrderServiceImpl implements OrderService {
         JSONObject result = null;
         try {
             result = httpProxy.httpGet(alitripHost + "validateRQ", map);
+            LOG.info("validateRQ return{}",result);
         } catch (IOException e) {
             e.printStackTrace();
             LOG.error("validateRQ IOException {}", e.toString());
@@ -170,6 +171,7 @@ public class OrderServiceImpl implements OrderService {
         JSONObject result = null;
         try {
             result = httpProxy.httpGet(alitripHost + "bookRQ", map);
+            LOG.info("bookRQ return{}",result);
         } catch (IOException e) {
             e.printStackTrace();
             LOG.error("bookRQ IOException {}", e.toString());
@@ -210,6 +212,7 @@ public class OrderServiceImpl implements OrderService {
         JSONObject result = null;
         try {
             result = httpProxy.httpGet(alitripHost + "cancelRQ", map);
+            LOG.info("cancelRQ return{}",result);
         } catch (IOException e) {
             e.printStackTrace();
             LOG.error("bookRQ IOException {}", e.toString());
@@ -239,6 +242,7 @@ public class OrderServiceImpl implements OrderService {
         JSONObject result = null;
         try {
             result=httpProxy.httpGet(alitripHost+"queryStatusRQ", map);
+            LOG.info("aueryStatusOrder return{}",result);
         } catch (IOException e) {
             e.printStackTrace();
             LOG.error("QueryStatusOrder IOException {}", e.toString());
