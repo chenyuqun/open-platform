@@ -15,7 +15,7 @@
     <!-- 配置超时时间 -->
     <dubbo:consumer timeout="${dubbo.timeout}"/>
      <dubbo:monitor protocol="registry"/>
-    <!-- 翻译服务 -->
     <dubbo:reference id="taobaoServie" interface="com.zizaike.is.open.TaobaoService" version="1.0.0" group="${dubbo.group}"  check="false"/>
+    <dubbo:reference id="ctripService" interface="com.zizaike.is.open.CtripService" version="1.0.0" group="${dubbo.group}"  check="false"/>
 
 </beans>

@@ -5,3 +5,5 @@
 /test-output
 /target/
 /.checkstyle
+/velocity.log
+/velocity.log.1

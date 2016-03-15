@@ -22,7 +22,7 @@ import com.zizaike.open.bastest.BaseTest;
 public class HotelRmqConsumerTest extends BaseTest {
     @Autowired
     private HotelRmqConsumer hotelRmqConsumer;
-    @Test(description = "rabbitmq hotel addHotelMessage 测试")
+    @Test
     public void addHotelMessage() throws ZZKServiceException, InterruptedException, ApiException {
             Hotel hotel = new Hotel();
             hotel.setAction(Action.ADD);
@@ -36,7 +36,7 @@ public class HotelRmqConsumerTest extends BaseTest {
             hotel.setTel("4008886232");
             hotelRmqConsumer.reveiveHotelMessage(hotel);
     }
-    @Test(description = "rabbitmq hotel updateHotelMessage 测试")
+    @Test
     public void updateHotelMessage() throws ZZKServiceException, InterruptedException, ApiException {
         Hotel hotel = new Hotel();
         hotel.setAction(Action.UPDATE);

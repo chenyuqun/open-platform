@@ -9,6 +9,8 @@
   
 package com.zizaike.open.controller;  
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
-import com.zizaike.is.open.TaobaoService;
-import com.zizaike.open.BaseAjaxController;
+import com.zizaike.is.open.CtripService;
+import com.zizaike.open.BaseCtripXMLController;
 
 /**
  * 
@@ -32,13 +34,15 @@ import com.zizaike.open.BaseAjaxController;
  */
 @Controller
 @RequestMapping("/ctrip")
-public class CtripController extends BaseAjaxController {
+public class CtripController extends BaseCtripXMLController {
+    protected final Logger LOG = LoggerFactory.getLogger(CtripController.class);
     @Autowired
-    private TaobaoService taobaoService;
-    @RequestMapping(value = "", method = RequestMethod.POST,produces={"application/xml"},consumes={"application/xml"})
+    private CtripService ctripService;
+    @RequestMapping(value = "", method = RequestMethod.POST,produces={"text/xml"},consumes={"text/xml"})
     @ResponseBody
     public String getSearchResult(@RequestBody String xml ) throws ZZKServiceException {
-       return taobaoService.service(xml);
+        LOG.info("ctripService xml:{}",xml);
+        return ctripService.service(xml);
     }
 }
   
