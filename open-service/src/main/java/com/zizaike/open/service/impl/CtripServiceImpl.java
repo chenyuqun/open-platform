@@ -788,7 +788,7 @@ public class CtripServiceImpl implements CtripService {
     }
 
     @Override
-    public GetHotelInfoResponse getHotelInfo() throws ZZKServiceException {
+    public GetHotelInfoResponse getHotelInfo(Integer currentPage) throws ZZKServiceException {
         String template = "GetHotelInfo.vm";
         Date currentTime = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -797,8 +797,9 @@ public class CtripServiceImpl implements CtripService {
         map.put("userName", username);
         map.put("password", password);
         map.put("date", dateString);
-        map.put("userId", userId); 
+        map.put("userId", userId);
         map.put("supplierID", supplierID);
+        map.put("currentPage", currentPage==null || currentPage==0 ? 1: currentPage);
         GetHotelInfoResponse getHotelInfoResponse = null;
         try {
             long start = System.currentTimeMillis();
