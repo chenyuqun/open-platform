@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zizaike.core.bean.ResponseResult;
@@ -76,9 +77,9 @@ public class CtripOperateController extends BaseAjaxController {
      */
     @RequestMapping(value = "/getHotelInfo", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseResult getHotelInfo() throws ZZKServiceException {
+    public ResponseResult getHotelInfo(@RequestParam Integer currentPage) throws ZZKServiceException {
         ResponseResult resultResult = new ResponseResult();
-        resultResult.setInfo(ctripService.getHotelInfo());
+        resultResult.setInfo(ctripService.getHotelInfo(currentPage));
         return resultResult;
     }
     @RequestMapping(value = "/getMappingInfo", method = RequestMethod.POST)

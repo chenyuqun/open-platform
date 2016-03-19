@@ -6,7 +6,7 @@
       &lt;Request&gt;&lt;HeaderInfo UserID="${userId}" RequestorId="Ctrip.com" AsyncRequest="false" TimeStamp="${date}"&gt;&lt;Authentication UserName="${userName}" Password="${password}"/&gt;&lt;RequestType Name="GetHotelInfo" Version="1.2"/&gt;&lt;/HeaderInfo&gt;
       &lt;GetHotelInfoRequest&gt;
       	&lt;SupplierID&gt;${supplierID}&lt;/SupplierID&gt;
-      	&lt;CurrentPage&gt;1&lt;/CurrentPage&gt;
+      	&lt;CurrentPage&gt;${currentPage}&lt;/CurrentPage&gt;
       &lt;/GetHotelInfoRequest&gt;
       &lt;/Request&gt;
       </requestXml>
