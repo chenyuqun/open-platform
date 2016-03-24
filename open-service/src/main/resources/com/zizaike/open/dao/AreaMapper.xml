@@ -9,9 +9,10 @@
     <result column="active" property="active" jdbcType="INTEGER" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="country_code" property="countryCode" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, area_code, area_name, type_code, active, create_at, update_at
+    id, area_code, area_name, type_code, active, create_at, update_at,country_code
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

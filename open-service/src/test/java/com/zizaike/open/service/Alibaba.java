@@ -76,9 +76,11 @@ public class Alibaba extends BaseTest{
     @Test(description = "酒店添加")
     public void xhotelAdd() throws ZZKServiceException, ApiException {
         XhotelAddRequest req = new XhotelAddRequest();
-        req.setOuterId("12345678");
-        req.setName("自在客");
-        req.setCity((long) 310100);
+        req.setOuterId("123456789");
+        req.setDomestic(1L);
+        req.setCountry("900085");
+        req.setName("自在客japan");
+        req.setCity((long) 903457);
         XhotelAddResponse response = client.execute(req , sessionKey);
         System.out.println(response.getBody());       
     }

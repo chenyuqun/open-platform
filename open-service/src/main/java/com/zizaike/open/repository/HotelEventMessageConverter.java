@@ -33,16 +33,16 @@ public class HotelEventMessageConverter implements MessageConverter{
     private String encoding = "utf-8";
     @Override
     public Object fromMessage(Message message) throws MessageConversionException {
-        Hotel room = new Hotel();
+        Hotel hotel = new Hotel();
         
         if(message == null){
-            return room;
+            return hotel;
         }
         String body;
         try {
             body = new String(message.getBody(), encoding);
-            room = JSON.parseObject(body, Hotel.class);
-            return room;
+            hotel = JSON.parseObject(body, Hotel.class);
+            return hotel;
         } catch (Exception e) {
             LOG.error("could not parse message exception{},Message{}", e,message);
         }

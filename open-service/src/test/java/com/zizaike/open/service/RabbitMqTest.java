@@ -40,7 +40,7 @@ public class RabbitMqTest extends BaseTest {
             hotel.setAction(Action.ADD);
             hotel.setOuterId("12345678");
             hotel.setName("自在客总部");
-            hotel.setCity((long) 310100);
+            hotel.setCity((long) 1100128);
             hotel.setAddress("浦东金科路");
             hotel.setLatitude("31.20624");
             hotel.setLongitude("121.60190");
