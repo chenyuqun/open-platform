@@ -37,14 +37,14 @@ public class AreaServiceImpl implements AreaService {
     private AreaDao areaDao;
 
     @Override
-    public String getAreaCodeTypeCode(String typeCode) throws ZZKServiceException {
+    public Area getAreaCodeTypeCode(String typeCode) throws ZZKServiceException {
 
         Area area = areaDao.queryByTypeCode(typeCode);
         if (area == null) {
             LOG.error("area not found");
             throw new AreaNotFoundException();
         }
-        return area.getAreaCode();
+        return area;
     }
 
 }

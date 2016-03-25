@@ -9,6 +9,8 @@
 
 package com.zizaike.open.mq;
 
+import com.taobao.api.internal.util.StringUtils;
+import com.zizaike.entity.open.alibaba.Area;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +50,13 @@ public class HotelRmqConsumer {
             throw new IllegalParamterException("hotel.action is null");
         }
         if(hotel.getCity()!=null){
-            hotel.setCity(Long.valueOf(areaService.getAreaCodeTypeCode(""+hotel.getCity())));
+            Area area=areaService.getAreaCodeTypeCode(""+hotel.getCity());
+            hotel.setCity(Long.valueOf(area.getAreaCode()));
+            //海外城市
+            if(!StringUtils.isEmpty(area.getCountryCode())){
+                hotel.setDomestic(1L);
+                hotel.setCountry(area.getCountryCode());
+            }
         }
         applicationContext.publishEvent(new HotelApplicationEvent(hotel));
     }

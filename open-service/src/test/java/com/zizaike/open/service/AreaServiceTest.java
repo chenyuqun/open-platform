@@ -9,6 +9,7 @@
   
 package com.zizaike.open.service;  
 
+import com.zizaike.entity.open.alibaba.Area;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -32,8 +33,8 @@ public class AreaServiceTest extends BaseTest{
     private AreaService areaService;
     @Test(description = "checkUser")
     public void queryByTypeCode() throws ZZKServiceException, ApiException {
-       String areaCode =  areaService.getAreaCodeTypeCode("1000111");
-       Assert.assertNotNull(areaCode);
+       Area area =  areaService.getAreaCodeTypeCode("1000111");
+       Assert.assertNotNull(area);
     }
     
    
