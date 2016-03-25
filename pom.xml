@@ -26,9 +26,6 @@
 		<maven.surefire.version>2.12</maven.surefire.version>
 		<maven.findbugs.version>2.5.2</maven.findbugs.version>
 
-		<zizaike.core.version>1.0.5-RELEASE</zizaike.core.version>
-		<zizaike.entity.version>1.0.11-SNAPSHOT</zizaike.entity.version>
-		<zizaike.is.version>1.0.12-SNAPSHOT</zizaike.is.version>
 		<!-- Spring -->
 		<org.springframework.version>4.0.2.RELEASE</org.springframework.version>
 		<org.springframework.security.version>3.2.3.RELEASE</org.springframework.security.version>
@@ -176,21 +173,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>com.zizaike</groupId>
-				<artifactId>zizaike-entity</artifactId>
-				<version>${zizaike.entity.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.zizaike</groupId>
-				<artifactId>zizaike-core</artifactId>
-				<version>${zizaike.core.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.zizaike</groupId>
-				<artifactId>zizaike-is</artifactId>
-				<version>${zizaike.is.version}</version>
-			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>servlet-api</artifactId>

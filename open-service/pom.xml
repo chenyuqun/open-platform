@@ -12,6 +12,9 @@
 	<description>open-service</description>
 	<properties>
 		<project.build.finalname>open-service</project.build.finalname>
+		<zizaike.core.version>1.0.5-RELEASE</zizaike.core.version>
+		<zizaike.entity.version>1.0.11-RELEASE</zizaike.entity.version>
+		<zizaike.is.version>1.0.12-RELEASE</zizaike.is.version>
 	</properties>
 	<build>
 		<finalName>${project.build.finalname}</finalName>
@@ -99,19 +102,18 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.zizaike</groupId>
-			<artifactId>zizaike-entity</artifactId>
+			<artifactId>zizaike-core</artifactId>
+			<version>${zizaike.core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.zizaike</groupId>
-			<artifactId>zizaike-core</artifactId>
+			<artifactId>zizaike-entity</artifactId>
+			<version>${zizaike.entity.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.zizaike</groupId>
 			<artifactId>zizaike-is</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
+			<version>${zizaike.is.version}</version>
 		</dependency>
 		<!-- spring start -->
 		<dependency>
