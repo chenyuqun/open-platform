@@ -36,7 +36,7 @@ public class RatePlanRmqConsumer {
     protected final Logger LOG = LoggerFactory.getLogger(RatePlanRmqConsumer.class);
     @Autowired
     ApplicationContext applicationContext;
-    public void reveiveRoomTypeMessage(RatePlan ratePlan) throws ApiException, ZZKServiceException {
+    public void reveiveRatePlanMessage(RatePlan ratePlan) throws ApiException, ZZKServiceException {
         if (ratePlan == null) {
             throw new IllegalParamterException("ratePlan is null");
         }
