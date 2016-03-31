@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.zizaike.entity.open.qunar.response.Hotel;
+import com.zizaike.entity.open.qunar.response.HotelList;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -195,6 +197,16 @@ public class XstreamUtilTest extends BaseTest {
         doc = DocumentHelper.parseText(xml);
         Element root = doc.getRootElement();
         System.err.println(root.getQualifiedName());
+    }
+
+    @Test
+    public void getQunarParamXml() throws ZZKServiceException {
+
+        List<Hotel> hotelList=new ArrayList<Hotel>();
+        hotelList.add(new Hotel("1","shanghai","zizaike","jinke road","021-12345"));
+        hotelList.add(new Hotel("2","shanghai","alex","pudong","021-12346"));
+        HotelList hotelList1=new HotelList(hotelList);
+        System.err.println(XstreamUtil.getResponseXml(hotelList1));
     }
 
 }
