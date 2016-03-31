@@ -189,7 +189,11 @@
 			<artifactId>aspectjrt</artifactId>
 		</dependency>
 		<!-- spring end -->
-
+		<!-- servlet -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+		</dependency>
 		<!-- 日志打印 log4j包 -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
