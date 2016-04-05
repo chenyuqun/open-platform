@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 
 /**  
  * ClassName:QunarPhoneUtil <br/>  
- * Function: TODO ADD FUNCTION. <br/>  
+ * Function: 格式化手机号码. <br/>  
  * Reason:   TODO ADD REASON. <br/>  
  * Date:     2016年4月5日 上午10:14:14 <br/>  
  * @author   lin 
@@ -34,40 +34,42 @@ import java.util.regex.Pattern;
 public class QunarPhoneUtil {
     public String StandardPhoneUtil(String phone){
         String standardPhone = null;
-        if(phone == null || phone == "")
-            return standardPhone;
-        /**
-         * 长度超过20的不处理,超过20的数据源特例太多，一次处理很难
-         */
-        if(phone.length() < 20) {
-            /**
-             * 只保留数字
-             */
-            String regNumber = "[^0-9]";
+        if(phone == null || phone == ""|| phone.equals(" , "))
+            return null;
+        String regNumber = "[^0-9]";
+        String regEmail = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+        Pattern patternEmail = Pattern.compile(regEmail);
+        Matcher matcherEmail = patternEmail.matcher(phone);
+        if(phone.length() < 20){
             Pattern patternNum = Pattern.compile(regNumber);
-            Matcher matcher = patternNum.matcher(phone);
-            standardPhone = matcher.replaceAll("");
-            /**
-             * 判断是否是00886，886开头
-             */
-             StringBuffer stringBuffer = new StringBuffer(standardPhone);
-             if(standardPhone.startsWith("00886")){
-                 stringBuffer.insert(5,"-");}
-             else if(standardPhone.startsWith("886")){
-                 stringBuffer.insert(0,"00");
-                 stringBuffer.insert(5,"-");
-             }
-             else{
-                 stringBuffer.insert(0,"00886-");
-             }
-             standardPhone = stringBuffer.toString();
+            Matcher matcherNum = patternNum.matcher(phone);
+            standardPhone = matcherNum.replaceAll("");
+        }
+        else if(matcherEmail.matches()){
+            return phone;
+        }
+        else{
+            String reg = "微|或|;|；|/|、|,|，|\\s+";
+            String[] newPhone = phone.split(reg);
+            standardPhone = newPhone[0];
+            Pattern patternNum = Pattern.compile(regNumber);
+            Matcher matcherNum = patternNum.matcher(standardPhone);
+            standardPhone = matcherNum.replaceAll("");
         }
         /**
-         * 长度超过20
+         * 判断是否是00886，886开头
          */
-        else{
-            
+        StringBuffer stringBuffer = new StringBuffer(standardPhone);
+        if(standardPhone.startsWith("00886")){
+            stringBuffer.insert(5,"-");}
+        else if(standardPhone.startsWith("886")){
+            stringBuffer.insert(0,"00");
+            stringBuffer.insert(5,"-");
         }
+        else{
+            stringBuffer.insert(0,"00886-");
+        }
+        standardPhone = stringBuffer.toString();
         return standardPhone;
     }
 }
