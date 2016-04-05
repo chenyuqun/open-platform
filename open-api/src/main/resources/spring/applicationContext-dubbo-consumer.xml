@@ -17,5 +17,6 @@
      <dubbo:monitor protocol="registry"/>
     <dubbo:reference id="taobaoServie" interface="com.zizaike.is.open.TaobaoService" version="1.0.0" group="${dubbo.group}"  check="false"/>
     <dubbo:reference id="ctripService" interface="com.zizaike.is.open.CtripService" version="1.0.0" group="${dubbo.group}"  check="false"/>
+    <dubbo:reference id="qunarService" interface="com.zizaike.is.open.QunarService" version="1.0.0" group="${dubbo.group}" check="false"/>
 
 </beans>

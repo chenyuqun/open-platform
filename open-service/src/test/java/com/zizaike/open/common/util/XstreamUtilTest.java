@@ -1,17 +1,5 @@
 package com.zizaike.open.common.util;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import com.zizaike.entity.open.qunar.response.Hotel;
-import com.zizaike.entity.open.qunar.response.HotelList;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.testng.annotations.Test;
-
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.open.alibaba.request.CancelRQRequest;
@@ -21,12 +9,22 @@ import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.alibaba.response.ValidateRQResponse;
 import com.zizaike.entity.open.ctrip.RoomPrice;
 import com.zizaike.entity.open.ctrip.RoomPrices;
-import com.zizaike.entity.open.ctrip.SetRoomPriceItem;
 import com.zizaike.entity.open.ctrip.response.AvailRoomQuantity;
 import com.zizaike.entity.open.ctrip.response.AvailRoomQuantitys;
 import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResp;
 import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResponse;
+import com.zizaike.entity.open.qunar.response.Hotel;
+import com.zizaike.entity.open.qunar.response.HotelList;
 import com.zizaike.open.bastest.BaseTest;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class XstreamUtilTest extends BaseTest {
     @Test
