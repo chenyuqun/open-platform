@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 
 public class QunarPhoneUtil {
     public String StandardPhoneUtil(String phone){
-        String standardPhone = "不处理";
+        String standardPhone = null;
         if(phone == null || phone == "")
             return standardPhone;
         /**
