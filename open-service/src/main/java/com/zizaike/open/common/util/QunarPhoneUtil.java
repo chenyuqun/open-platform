@@ -20,6 +20,8 @@ package com.zizaike.open.common.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.zizaike.entity.open.qunar.response.HotelList;
+
 /**  
  * ClassName:QunarPhoneUtil <br/>  
  * Function: 格式化手机号码. <br/>  
@@ -49,7 +51,8 @@ public class QunarPhoneUtil {
             return phone;
         }
         else{
-            String reg = "微|或|;|；|/|、|,|，|\\s+";
+            //String reg = "．|／|客|微|或|;|；|/|、|,|，|\\s+";
+            String reg = "（|．|／|～|客|微|或|;|；|/|、|,|，|\\s+";
             String[] newPhone = phone.split(reg);
             standardPhone = newPhone[0];
             Pattern patternNum = Pattern.compile(regNumber);
@@ -71,5 +74,13 @@ public class QunarPhoneUtil {
         }
         standardPhone = stringBuffer.toString();
         return standardPhone;
+    }
+    public HotelList CoverPhoneNumber(HotelList hotelList){
+        for(int i = 0;i < hotelList.getHotel().size();i++){
+            QunarPhoneUtil qunarPhoneUtil = new QunarPhoneUtil();
+            hotelList.getHotel().get(i).setTel(qunarPhoneUtil.StandardPhoneUtil(hotelList.getHotel().get(i).getTel()));;
+        }
+        return hotelList;
+
     }
 }
