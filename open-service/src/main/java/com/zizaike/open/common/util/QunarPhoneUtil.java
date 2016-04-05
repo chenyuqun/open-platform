@@ -51,7 +51,12 @@ public class QunarPhoneUtil {
             return phone;
         }
         else{
-            //String reg = "．|／|客|微|或|;|；|/|、|,|，|\\s+";
+            //去除开头是空格的特例
+            if(phone.startsWith(" ")){
+                StringBuffer stringBufferphone = new StringBuffer(phone);
+                stringBufferphone.replace(0,1,"");
+                phone = stringBufferphone.toString();
+            }
             String reg = "（|．|／|～|客|微|或|;|；|/|、|,|，|\\s+";
             String[] newPhone = phone.split(reg);
             standardPhone = newPhone[0];
