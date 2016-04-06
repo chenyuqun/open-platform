@@ -13,8 +13,8 @@ import com.zizaike.entity.open.ctrip.response.AvailRoomQuantity;
 import com.zizaike.entity.open.ctrip.response.AvailRoomQuantitys;
 import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResp;
 import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResponse;
-import com.zizaike.entity.open.qunar.response.Hotel;
-import com.zizaike.entity.open.qunar.response.HotelList;
+import com.zizaike.entity.open.qunar.request.PriceRequest;
+import com.zizaike.entity.open.qunar.response.*;
 import com.zizaike.open.bastest.BaseTest;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -205,6 +205,152 @@ public class XstreamUtilTest extends BaseTest {
         hotelList.add(new Hotel("2","shanghai","alex","pudong","021-12346"));
         HotelList hotelList1=new HotelList(hotelList);
         System.err.println(XstreamUtil.getResponseXml(hotelList1));
+    }
+
+    @Test
+    public void qunarPriceRequest() throws  ZZKServiceException{
+        String xml= "<priceRequest>" +
+                "<hotelId>16166</hotelId>" +
+                "<checkin>2014-12-28</checkin>" +
+                "<checkout>2014-12-30</checkout>" +
+                "<roomId>199</roomId>" +
+                "<numberOfRooms>2</numberOfRooms>" +
+                "<customerInfos>" +
+                "<customerInfo seq=\"0\" numberOfAdults=\"2\" numberOfChildren=\"2\" childrenAges=\"8|12\" >" +
+                "</customerInfo>" +
+                "<customerInfo seq=\"1\" numberOfAdults=\"2\" numberOfChildren=\"0\" childrenAges=\"\" >" +
+                "</customerInfo>" +
+                "</customerInfos>" +
+                "</priceRequest>";
+        PriceRequest priceRequest = (PriceRequest) XstreamUtil.getXml2Bean(xml, PriceRequest.class);
+        System.out.println(priceRequest.toString());
+    }
+
+    @Test(description = "测试qunar返回")
+    public void qunarPriceResponse() throws ZZKServiceException{
+        /**
+         * 床型
+         */
+        BedType bedType=new BedType();
+        bedType.setRelation("OR");
+        List<Beds> bedsList=new ArrayList<Beds>();
+        Beds beds=new Beds();
+        beds.setSeq("1");
+        beds.setCode(BedTypeCode.BUNK);
+        beds.setDesc(BedTypeCode.getByCode("BUNK"));
+        beds.setCount(2);
+        beds.setSize("1.8m*2m");
+        bedsList.add(beds);
+        Beds beds2=new Beds();
+        beds2.setSeq("2");
+        beds2.setCode(BedTypeCode.SINGLE);
+        beds2.setDesc(BedTypeCode.getByCode("SINGLE"));
+        beds2.setCount(1);
+        beds2.setSize("1.8m*1.5m");
+        bedsList.add(beds2);
+        bedType.setBeds(bedsList);
+        /**
+         * Meal
+         */
+        Meal meal=new Meal();
+        Breakfast breakfast=new Breakfast("2|2","日式早餐");
+        Lunch lunch=new Lunch("0|0","");
+        Dinner dinner=new Dinner("0|0","");
+        meal.setBreakfast(breakfast);
+        meal.setLunch(lunch);
+        meal.setDinner(dinner);
+        /**
+         * 退款
+         */
+        List<RefundRule> refundRules=new ArrayList<RefundRule>();
+        refundRules.add(new RefundRule(29, RefundType.DEDUCT_BY_AMOUNT,"50"));
+        refundRules.add(new RefundRule(20, RefundType.DEDUCT_BY_PERCENT,"70"));
+
+        List<NonRefundableRange> nonRefundableRanges=new ArrayList<NonRefundableRange>();
+        nonRefundableRanges.add(new NonRefundableRange("2015-10-01","2015-10-07"));
+
+        Refund refund=new Refund();
+        refund.setReturnable(Boolean.TRUE);
+        refund.setTimeZone("GMT+9");
+        refund.setRefundRules(refundRules);
+        refund.setNonRefundableRanges(nonRefundableRanges);
+        /**
+         * 备注节点
+         */
+        Remarks remarks=new Remarks();
+        List<Remark> remarkList=new ArrayList<Remark>();
+        remarkList.add(new Remark(1,"the weather will be rainy in July, please prepare rain gears by yourself"));
+        remarkList.add(new Remark(2,"no pets allowed please"));
+        remarkList.add(new Remark(3,"free parking, but cannot make sure available parking lots any time"));
+        remarks.setRemarks(remarkList);
+        /**
+         * optionRules节点 设施？
+         */
+        OptionRules optionRules=new OptionRules();
+        List<OptionRule> optionRuleList=new ArrayList<OptionRule>();
+        optionRuleList.add(new OptionRule(OptionRuleCode.HIGH_SPEED_NETWORK,OptionRuleCode.getByCode("HIGH_SPEED_NETWORK"),"10",UnitOfCharge.PER_DAY,Boolean.TRUE));
+        optionRuleList.add(new OptionRule(OptionRuleCode.AIRPORT_PICKUP,OptionRuleCode.getByCode("AIRPORT_PICKUP"),"20",UnitOfCharge.PER_TIME,Boolean.FALSE));
+        optionRules.setOptionRules(optionRuleList);
+        /**
+         * 促销节点
+         */
+        PromotionRules promotionRules=new PromotionRules();
+        List<PromotionRule> promotionRuleList=new ArrayList<PromotionRule>();
+        promotionRuleList.add(new PromotionRule(PromotionRuleCode.FREE_UPGRADE,PromotionRuleCode.getByCode("FREE_UPGRADE"),"0"));
+        promotionRuleList.add(new PromotionRule(PromotionRuleCode.LAST,PromotionRuleCode.getByCode("LAST"),"3"));
+        promotionRules.setPromotionRules(promotionRuleList);
+        /**
+         * 额外节点
+         */
+        Extras extras=new Extras();
+        List<Extra> extraList=new ArrayList<Extra>();
+        extraList.add(new Extra("TOKEN","ASDFJJJJ9999XXXXYYY"));
+        extraList.add(new Extra("OTHER_KEY","XXXYYY"));
+        extras.setExtras(extraList);
+        /**
+         * 房间节点
+         */
+        List<Room> roomList=new ArrayList<Room>();
+        Room room=new Room();
+        room.setBedType(bedType);
+        room.setMeal(meal);
+        room.setRefund(refund);
+        room.setRemarks(remarks);
+        room.setOptionRules(optionRules);
+        room.setPromotionRules(promotionRules);
+        room.setExtras(extras);
+        room.setId("P_1");
+        room.setArea("");
+        room.setBroadband("FREE");
+        room.setCheckinTime("12:00");
+        room.setCheckoutTime("12:30");
+        room.setCounts("5|5");
+        room.setStatus("ACTIVE|DISABLED");
+        room.setFreeChildrenAgeLimit(8);
+        room.setFreeChildrenNumber(1);
+        room.setInstantConfirmRoomCount("3|3");
+        room.setPrices("200|200");
+        room.setName("特色房");
+        room.setMaxOccupancy(2);
+        room.setOccupancyNumber(2);
+        room.setPayType(PayType.PREPAY);
+        room.setRoomRate("180|180");
+        room.setWifi("FREE");
+        room.setTaxAndFee("20|20");
+        roomList.add(room);
+        PriceResponse priceResponse=new PriceResponse();
+        priceResponse.setCheckin("2015-05-01");
+        priceResponse.setCheckout("2015-05-03");
+        priceResponse.setCurrrencyCode("USD");
+        priceResponse.setHotelAddress("1-3-3, Naka-machi, Machida-city, Tokyo");
+        priceResponse.setHotelCity("tokyo");
+        priceResponse.setHotelId("9987");
+        priceResponse.setHotelPhone("0081-42-7281045");
+        priceResponse.setHotelName("Toyoko Inn Tokyo Machida-eki Odakyu-sen Higashi-guchi");
+        priceResponse.setRooms(roomList);
+        System.err.println(XstreamUtil.getResponseXml(priceResponse));
+
+
     }
 
 }
