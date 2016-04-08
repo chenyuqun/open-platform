@@ -368,7 +368,7 @@ public class XstreamUtilTest extends BaseTest {
                 + "<numberOfRooms>2</numberOfRooms>"
                 + "<bedChoice>1</bedChoice>"
                 + "<instantConfirm>false</instantConfirm>"
-                + "<requiredAction>CONFIRM_ROOM_SUCCESS/CONFIRM_ROOM_FAILURE</requiredAction>"
+                + "<requiredAction>CONFIRM_ROOM_SUCCESS</requiredAction>"
                 + "<room id=\"9986\" name=\"特色房\" broadband=\"FREE\" payType=\"PREPAY\" prices=\"200|200\" status=\"ACTIVE|ACTIVE\" counts=\"5|5\" "
                 + "roomRate=\"180|180\" taxAndFee=\"20|20\" maxOccupancy=\"2\" occupancyNumber=\"2\""
                 + "freeChildrenNumber=\"1\" freeChildrenAgeLimit=\"8\" instantConfirmRoomCount=\"3|3\" wifi=\"FREE\" "
