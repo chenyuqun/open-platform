@@ -406,4 +406,21 @@ public class XstreamUtilTest extends BaseTest {
         BookingRequest bookingRequest = (BookingRequest) XstreamUtil.getXml2Bean(xml, BookingRequest.class);
         System.err.print(bookingRequest.toString());        
     }
+    @Test(description="test qunarBookingResponse")
+    public void qunarBookingResponse()throws ZZKServiceException{
+        BookingResponse bookingResponse = new BookingResponse();
+        bookingResponse.setQunarOrderNum("j3gm141219163017759");
+        bookingResponse.setOrderId("9987654");
+        bookingResponse.setResult(ResultCode.SUCCESS);
+        /**
+         * extras info
+         */
+        List<Extra> extraList = new ArrayList<>();
+        Extra ex1 = new Extra("TOKEN","ASDFJJJJ9999XXXXYYY");
+        Extra ex2 = new Extra("OTHER_KEY","XXXYYY");
+        extraList.add(ex1);
+        extraList.add(ex2);
+        bookingResponse.setExtras(extraList);
+        System.err.println(XstreamUtil.getResponseXml(bookingResponse));
+    }
 }
