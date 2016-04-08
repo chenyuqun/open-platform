@@ -13,9 +13,11 @@ import com.zizaike.entity.open.ctrip.response.AvailRoomQuantity;
 import com.zizaike.entity.open.ctrip.response.AvailRoomQuantitys;
 import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResp;
 import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResponse;
+import com.zizaike.entity.open.qunar.request.BookingRequest;
 import com.zizaike.entity.open.qunar.request.PriceRequest;
 import com.zizaike.entity.open.qunar.response.*;
 import com.zizaike.open.bastest.BaseTest;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -352,5 +354,63 @@ public class XstreamUtilTest extends BaseTest {
 
 
     }
-
+    @Test(description="test qunarBookingRequest")
+    public void qunarBookingRequest()throws ZZKServiceException{
+        String xml = "<bookingRequest>"
+                + "<hotelId>16166</hotelId>"
+                + "<checkin>2015-02-20</checkin>"
+                + "<checkout>2015-02-22</checkout>"
+                + "<totalPrice>380</totalPrice><!--  totalPrices = sum(prices) - promotionRule[@code=INSTANT_SUBTRACT]/value  -->"
+                + "<currencyCode>USD</currencyCode>"
+                + "<rmbPrice>2356.87</rmbPrice>"
+                + "<customerArriveTime>16:00-18:00</customerArriveTime>"
+                + "<specialRemarks>PREFER_NON_SMOKING,PREFER_HIGH_FLOOR</specialRemarks> <!-- preference from consumer -->"
+                + "<numberOfRooms>2</numberOfRooms>"
+                + "<bedChoice>1</bedChoice>"
+                + "<instantConfirm>false</instantConfirm>"
+                + "<requiredAction>CONFIRM_ROOM_SUCCESS/CONFIRM_ROOM_FAILURE</requiredAction>"
+                + "<room id=\"9986\" name=\"特色房\" broadband=\"FREE\" payType=\"PREPAY\" prices=\"200|200\" status=\"ACTIVE|ACTIVE\" counts=\"5|5\" "
+                + "roomRate=\"180|180\" taxAndFee=\"20|20\" maxOccupancy=\"2\" occupancyNumber=\"2\""
+                + "freeChildrenNumber=\"1\" freeChildrenAgeLimit=\"8\" instantConfirmRoomCount=\"3|3\" wifi=\"FREE\" "
+                + "checkinTime=\"\" checkoutTime=\"\" area=\"\" >"
+                + "<bedType>"
+                + "<beds seq=\"1\" code=\"SINGLE\" desc=\"单人床\" count=\"2\" size=\"1.2m*2m\" >"
+                + "</beds>\""
+                + "</bedType>\""
+                + "<meal>\""
+                + "<breakfast count=\"2|2\" desc=\"self-service breakfast\" />"
+                + "<lunch count=\"0|0\" desc=\"\" /><dinner count=\"0|0\" desc=\"\" /></meal>"
+                + "<promotionRules><promotionRule code=\"INSTANT_DEDUCT\" desc=\"立减\" value=\"20\"></promotionRule></promotionRules>"
+                + "</room>"
+                + "<customerInfos>"
+                + "<customerInfo seq=\"1\" numberOfAdults=\"2\" numberOfChildren=\"2\" childrenAges=\"8|12\" >"
+                + "<customer firstName=\"Deng\" lastName=\"Ziqiang\" nationality=\"CN\" gender=\"male\" />"
+                //+ "<customer firstName=\"Li\" lastName=\"Xuejuan\" nationality=\"CN\" gender=\"female\" />"
+                //+ "<customer firstName=\"Child\" lastName=\"One\" nationality=\"CN\" gender=\"female\" />"
+                + "</customerInfo>"
+                + "<customerInfo seq=\"2\" numberOfAdults=\"2\" numberOfChildren=\"0\" childrenAges=\"\" >"
+               // + "<customer firstName=\"Li\" lastName=\"XoXo\" nationality=\"CN\" gender=\"male\" />"
+                + "<customer firstName=\"Sun\" lastName=\"MoMo\" nationality=\"CN\" gender=\"female\" />"
+                + "</customerInfo>" 
+                + "</customerInfos>" 
+                + "<qunarOrderInfo>"
+                + "<orderNum>j3gm141219163017759</orderNum><!-- unique order id at Qunar  -->"
+                + "<hotelSeq>osaka_2202</hotelSeq><!-- unique id for a hotel at Qunar -->"
+                + "<hotelName>阪急阪神大阪国际酒店(Hotel Hankyu International)</hotelName>"
+                + "<hotelAddress>19-19, Chayamachi, Kita-ku, Osaka 530-0013, Japan</hotelAddress>"
+                + "<cityName>大阪</cityName>" 
+                + "<hotelPhone>0081-6-63772100</hotelPhone>"
+                + "<orderDate>2014-12-19 16:30:17</orderDate>" 
+                + "<contactName>张三</contactName>"
+                + "<contactPhone>1381****818</contactPhone>" 
+                + "<contactEmail>miao.****@qunar.com</contactEmail>"
+                + "<payType>PREPAY</payType>" 
+                + "<customerIp>103.24.27.9</customerIp>"
+                + "<invoiceCode>E</invoiceCode><!-- N=no require Y=paper invoice E=electronic receipt -->"
+                + "</qunarOrderInfo>" 
+                + "</bookingRequest>";
+        
+        BookingRequest bookingRequest = (BookingRequest) XstreamUtil.getXml2Bean(xml, BookingRequest.class);
+        System.err.print(bookingRequest.toString());        
+    }
 }
