@@ -279,36 +279,29 @@ public class XstreamUtilTest extends BaseTest {
         /**
          * 备注节点
          */
-        Remarks remarks=new Remarks();
         List<Remark> remarkList=new ArrayList<Remark>();
         remarkList.add(new Remark(1,"the weather will be rainy in July, please prepare rain gears by yourself"));
         remarkList.add(new Remark(2,"no pets allowed please"));
         remarkList.add(new Remark(3,"free parking, but cannot make sure available parking lots any time"));
-        remarks.setRemarks(remarkList);
         /**
          * optionRules节点 设施？
          */
-        OptionRules optionRules=new OptionRules();
+
         List<OptionRule> optionRuleList=new ArrayList<OptionRule>();
         optionRuleList.add(new OptionRule(OptionRuleCode.HIGH_SPEED_NETWORK,OptionRuleCode.getByCode("HIGH_SPEED_NETWORK"),"10",UnitOfCharge.PER_DAY,Boolean.TRUE));
         optionRuleList.add(new OptionRule(OptionRuleCode.AIRPORT_PICKUP,OptionRuleCode.getByCode("AIRPORT_PICKUP"),"20",UnitOfCharge.PER_TIME,Boolean.FALSE));
-        optionRules.setOptionRules(optionRuleList);
         /**
          * 促销节点
          */
-        PromotionRules promotionRules=new PromotionRules();
         List<PromotionRule> promotionRuleList=new ArrayList<PromotionRule>();
         promotionRuleList.add(new PromotionRule(PromotionRuleCode.FREE_UPGRADE,PromotionRuleCode.getByCode("FREE_UPGRADE"),"0"));
         promotionRuleList.add(new PromotionRule(PromotionRuleCode.LAST,PromotionRuleCode.getByCode("LAST"),"3"));
-        promotionRules.setPromotionRules(promotionRuleList);
         /**
          * 额外节点
          */
-        Extras extras=new Extras();
         List<Extra> extraList=new ArrayList<Extra>();
         extraList.add(new Extra("TOKEN","ASDFJJJJ9999XXXXYYY"));
         extraList.add(new Extra("OTHER_KEY","XXXYYY"));
-        extras.setExtras(extraList);
         /**
          * 房间节点
          */
@@ -317,10 +310,10 @@ public class XstreamUtilTest extends BaseTest {
         room.setBedType(bedType);
         room.setMeal(meal);
         room.setRefund(refund);
-        room.setRemarks(remarks);
-        room.setOptionRules(optionRules);
-        room.setPromotionRules(promotionRules);
-        room.setExtras(extras);
+        room.setRemarks(remarkList);
+        room.setOptionRules(optionRuleList);
+        room.setPromotionRules(promotionRuleList);
+        room.setExtras(extraList);
         room.setId("P_1");
         room.setArea("");
         room.setBroadband("FREE");
