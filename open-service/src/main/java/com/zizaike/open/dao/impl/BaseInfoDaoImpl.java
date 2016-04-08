@@ -9,6 +9,7 @@
   
 package com.zizaike.open.dao.impl;  
 
+import com.zizaike.entity.open.OpenDiscount;
 import org.springframework.stereotype.Repository;
 
 import com.zizaike.core.framework.mybatis.impl.GenericMyIbatisDao;
@@ -37,5 +38,10 @@ public class BaseInfoDaoImpl extends GenericMyIbatisDao<RoomInfoDto, Integer> im
         return result;
     }
 
+    @Override
+    public OpenDiscount getOpenDiscount(OpenDiscount openDiscount) {
+        OpenDiscount result =this.getSqlSession().selectOne(NAMESPACE+"getOpenDiscount", openDiscount);
+        return result;
+    }
 }
   
