@@ -18,6 +18,14 @@
         <result column="address" jdbcType="VARCHAR" property="address"/>
         <result column="tel" jdbcType="VARCHAR" property="tel"/>
     </resultMap>
+    <resultMap id="QunarResultMapExt" type="com.zizaike.entity.open.qunar.HotelExt">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="tel" jdbcType="VARCHAR" property="tel"/>
+        <result column="rids" jdbcType="VARCHAR" property="rids"/>
+    </resultMap>
     <sql id="Base_Column_List">
 id, uid, rids, status, channel, operator_uid, create_time, update_date
 </sql>
@@ -32,5 +40,12 @@ id, uid, rids, status, channel, operator_uid, create_time, update_date
         LEFT JOIN one_db.drupal_users b ON a.uid=b.uid
         LEFT JOIN LKYou.t_weibo_poi_tw c ON a.uid=c.uid where a.status=1 and a.channel='qunar')as d
         LEFT JOIN LKYou.t_open_qunar_area e ON d.local_code=e.type_code
+    </select>
+    <select id="queryQunarHotel" parameterType="java.lang.String" resultMap="QunarResultMapExt">
+       select d.uid as id,d.tel_num as tel,d.address as address,d.name as name,d.rids,e.city_code as city from (SELECT a.uid,a.rids,b.tel_num,b.name,b.address,SUBSTR(c.local_code,1,7) as local_code from LKYou.t_homestay_docking a
+        LEFT JOIN one_db.drupal_users b ON a.uid=b.uid
+        LEFT JOIN LKYou.t_weibo_poi_tw c ON a.uid=c.uid where a.status=1 and a.channel='qunar' and a.uid=#{id,jdbcType=VARCHAR })as d
+        LEFT JOIN LKYou.t_open_qunar_area e ON d.local_code=e.type_code
+
     </select>
 </mapper>

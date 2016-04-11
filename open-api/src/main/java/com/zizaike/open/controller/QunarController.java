@@ -1,14 +1,13 @@
 package com.zizaike.open.controller;
 
+import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.is.open.QunarService;
 import com.zizaike.open.BaseXMLController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Class Name: QunarController <br/>
@@ -28,5 +27,12 @@ public class QunarController extends BaseXMLController {
     @ResponseBody
     public String getHotelList(){
         return qunarService.getHotelList();
+    }
+
+    @RequestMapping(value = "/getPriceResponse", method = RequestMethod.GET,produces={"text/xml"})
+    @ResponseBody
+    public String getPriceResponse(@RequestParam("xml") String xml ){
+        LOG.info("qunarService priceRequest xml:{}",xml);
+        return qunarService.getPriceResponse(xml);
     }
 }

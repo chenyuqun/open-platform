@@ -2,6 +2,7 @@ package com.zizaike.open.dao;
 
 import com.zizaike.core.framework.springext.database.Slave;
 import com.zizaike.entity.open.HomestayDocking;
+import com.zizaike.entity.open.qunar.HotelExt;
 import com.zizaike.entity.open.qunar.response.Hotel;
 
 import java.util.List;
@@ -26,5 +27,13 @@ public interface HomestayDockingDao {
      */
     @Slave
     List<Hotel> queryAllQunarHotel();
+
+    /**
+     *查询推送给Qunar的hotel信息
+     * @param id
+     * @return
+     */
+    @Slave
+    HotelExt queryQunarHotel(String id);
 
 }

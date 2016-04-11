@@ -2,6 +2,7 @@ package com.zizaike.open.dao.impl;
 
 import com.zizaike.core.framework.mybatis.impl.GenericMyIbatisDao;
 import com.zizaike.entity.open.HomestayDocking;
+import com.zizaike.entity.open.qunar.HotelExt;
 import com.zizaike.entity.open.qunar.response.Hotel;
 import com.zizaike.open.dao.HomestayDockingDao;
 import org.springframework.stereotype.Repository;
@@ -31,5 +32,11 @@ public class HomestayDockingDaoImpl extends GenericMyIbatisDao<HomestayDocking, 
     public List<Hotel> queryAllQunarHotel() {
         List<Hotel> hotelList = this.getSqlSession().selectList(NAMESPACE+"queryAllQunarHotel");
         return hotelList;
+    }
+
+    @Override
+    public HotelExt queryQunarHotel(String id) {
+        HotelExt hotelExt = this.getSqlSession().selectOne(NAMESPACE+"queryQunarHotel",id);
+        return hotelExt;
     }
 }
