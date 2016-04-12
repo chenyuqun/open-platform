@@ -9,6 +9,7 @@
   
 package com.zizaike.open.dao;  
 
+import com.zizaike.entity.open.OpenDiscount;
 import com.zizaike.entity.open.RoomInfoDto;
 
 /**  
@@ -27,5 +28,10 @@ public interface BaseInfoDao {
      * getRefundAndBreakfast: 退款政策和早餐<br/>  
      */
     RoomInfoDto getRefundAndBreakfast(int nid);
+
+    /**
+     * 获取open项目的配置
+     */
+    OpenDiscount getOpenDiscount(OpenDiscount openDiscount);
 }
   
