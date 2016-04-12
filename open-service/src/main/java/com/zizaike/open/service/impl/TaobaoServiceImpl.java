@@ -124,6 +124,7 @@ public class TaobaoServiceImpl implements TaobaoService {
          map.put("extensions", validateRQRequest.getExtensions());
          JSONObject result=httpProxy.httpGet(alitripHost+"validateRQ", map);**/
         ValidateOrderRequest validateOrderRequest = new ValidateOrderRequest();
+        validateOrderRequest.setOpenChannelType(OpenChannelType.ALITRIP);
         validateOrderRequest.setRoomTypeId(validateRQRequest.getRoomTypeId());
         validateOrderRequest.setOpenHotelId(validateRQRequest.getTaoBaoHotelId() + "");
         validateOrderRequest.setOpenRatePlanId(validateRQRequest.getTaoBaoRatePlanId());

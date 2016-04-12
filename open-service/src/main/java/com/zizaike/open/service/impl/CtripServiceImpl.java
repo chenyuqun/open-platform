@@ -145,6 +145,7 @@ public class CtripServiceImpl implements CtripService {
         validateRQRequest.setCheckOut(domesticCheckRoomAvailRequest.getDeparture());
         validateRQRequest.setRoomNum(domesticCheckRoomAvailRequest.getRoomNumber());
         validateRQRequest.setPaymentType(1);
+        validateRQRequest.setOpenChannelType(OpenChannelType.CTRIP);
         JSONObject result = orderService.validateRQ(validateRQRequest);
         DomesticCheckRoomAvailResp domesticCheckRoomAvailResp = new DomesticCheckRoomAvailResp();
         DomesticCheckRoomAvailResponse domesticCheckRoomAvailResponse = new DomesticCheckRoomAvailResponse();
