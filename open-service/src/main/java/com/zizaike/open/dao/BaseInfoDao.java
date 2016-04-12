@@ -9,6 +9,7 @@
   
 package com.zizaike.open.dao;  
 
+import com.zizaike.entity.open.QunarRoomInfoDto;
 import com.zizaike.entity.open.RoomInfoDto;
 
 /**  
@@ -27,5 +28,12 @@ public interface BaseInfoDao {
      * getRefundAndBreakfast: 退款政策和早餐<br/>  
      */
     RoomInfoDto getRefundAndBreakfast(int nid);
+
+    /**
+     * getQunarRoomInfoDto
+     * @param nid
+     * @return
+     */
+    QunarRoomInfoDto getQunarRoomInfoDto(int nid);
 }
   

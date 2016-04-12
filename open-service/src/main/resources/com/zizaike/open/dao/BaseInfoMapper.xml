@@ -7,6 +7,13 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="refund_rule" property="refundRule" jdbcType="VARCHAR" />
   </resultMap>
+    <resultMap id="QunarResultMap" type="com.zizaike.entity.open.QunarRoomInfoDto" >
+        <id column="uid" property="uid" jdbcType="INTEGER" />
+        <result column="value" property="value" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="refund_rule" property="refundRule" jdbcType="VARCHAR" />
+        <result column="field_chuangxing_tid" property="fieldChuangxingTid" jdbcType="INTEGER" />
+    </resultMap>
    <select id="getRefundAndBreakfast" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
    select d.refund_rule as refund_rule,e.name as name,f.value as value,c.uid as uid from one_db.drupal_node c 
 	LEFT JOIN one_db.drupal_users d
@@ -18,6 +25,18 @@
 	LEFT JOIN LKYou.t_zaocan f
 	ON d.uid=f.uid
   </select>
+    <select id="getQunarRoomInfoDto" resultMap="QunarResultMap" parameterType="java.lang.Integer" >
+        select d.refund_rule as refund_rule,e.name as name,f.value as value,c.uid as uid,e.field__chuangxing_tid from one_db.drupal_node c
+	LEFT JOIN one_db.drupal_users d
+	ON c.uid=d.uid
+	Right JOIN (select b.name,a.entity_id,g.field__chuangxing_tid from one_db.drupal_field_data_field_room_beds a
+	left join one_db.drupal_taxonomy_term_data b on a.field_room_beds_tid = b.tid
+	left join one_db.drupal_field_data_field__chuangxing g on a.entity_id=g.entity_id
+	where a.entity_type = 'node' and a.entity_id = #{roomId,jdbcType=INTEGER}) as e
+	ON c.nid=e.entity_id
+	LEFT JOIN LKYou.t_zaocan f
+	ON d.uid=f.uid
+    </select>
  
  
 

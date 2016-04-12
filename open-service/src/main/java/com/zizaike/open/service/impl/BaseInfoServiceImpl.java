@@ -12,6 +12,7 @@ package com.zizaike.open.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.zizaike.core.common.util.http.HttpProxyUtil;
 import com.zizaike.core.framework.exception.open.ErrorCodeFields;
+import com.zizaike.entity.open.QunarRoomInfoDto;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,6 +70,12 @@ public class BaseInfoServiceImpl implements BaseInfoService {
             LOG.error("getZizaikePrice IOException {}", e.toString());
         }
         return result;
+    }
+
+    @Override
+    public QunarRoomInfoDto getQunarRoomInfo(int nid){
+        QunarRoomInfoDto query=baseInfoDao.getQunarRoomInfoDto(nid);
+        return query;
     }
 }
   

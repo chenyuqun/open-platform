@@ -2,6 +2,7 @@ package com.zizaike.open.service.impl;
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.HomestayDocking;
+import com.zizaike.entity.open.QunarRoomInfoDto;
 import com.zizaike.entity.open.RoomInfoDto;
 import com.zizaike.entity.open.qunar.HotelExt;
 import com.zizaike.entity.open.qunar.request.PriceRequest;
@@ -97,19 +98,43 @@ public class QunarServiceImpl implements QunarService{
          * 订单填写时才需要
          */
         try {
-            RoomInfoDto roomInfoDto=baseInfoService.getRefundAndBreakfast(Integer.valueOf(roomId));
+            QunarRoomInfoDto qunarRoomInfo=baseInfoService.getQunarRoomInfo(Integer.valueOf(roomId));
             /**
              * 退款政策
              */
-            roomInfoDto.getRefundRule();
+            qunarRoomInfo.getRefundRule();
             /**
              * 是否有早餐
              */
-            roomInfoDto.getValue();
+            qunarRoomInfo.getValue();
             /**
              * 最大入住人数 有个10+的
              */
-            roomInfoDto.getName();
+            qunarRoomInfo.getName();
+            /**
+             * 床型
+             */
+            if(StringUtils.isEmpty(qunarRoomInfo.getFieldChuangxingTid())){
+
+            }else if(qunarRoomInfo.getFieldChuangxingTid()==316){
+
+            }
+            else if(qunarRoomInfo.getFieldChuangxingTid()==324){
+
+            }
+            else if(qunarRoomInfo.getFieldChuangxingTid()==318){
+
+            }
+            else if(qunarRoomInfo.getFieldChuangxingTid()==317){
+
+            }
+            else if(qunarRoomInfo.getFieldChuangxingTid()==325){
+
+            }
+            else{
+
+            }
+            ;
         } catch (ZZKServiceException e) {
             e.printStackTrace();
         }
