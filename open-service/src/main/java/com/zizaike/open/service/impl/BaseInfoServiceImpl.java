@@ -57,9 +57,11 @@ public class BaseInfoServiceImpl implements BaseInfoService {
     }
 
     @Override
-    public JSONObject getZizaikePrice(String roomId){
+    public JSONObject getZizaikePrice(String roomId,String checkIn,String checkOut){
         Map<String,String> map = new HashMap<String, String>();
         map.put("rid", roomId);
+        map.put("start_date",checkIn);
+        map.put("end_date",checkOut);
         map.put("auth_type", "internal");
         map.put("auth_key","9371d966ed8749fd959b8dfed2de7f");
         JSONObject result = null;
