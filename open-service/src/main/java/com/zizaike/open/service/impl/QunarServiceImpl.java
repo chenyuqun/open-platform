@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +90,17 @@ public class QunarServiceImpl implements QunarService {
             priceResponse.setCheckin(checkIn);
             priceResponse.setCheckout(checkOut);
             priceResponse.setCurrrencyCode("CNY");
+            /**
+             * 入住总人数
+             */
+            int num=0;
+            for (int i=0;i<priceRequest.getCustomerInfos().size();i++) {
+                num+=priceRequest.getCustomerInfos().get(i).getNumberOfAdults()
+                        +priceRequest.getCustomerInfos().get(i).getNumberOfChildren();
+            }
+            if(num==0){
+                num=1;
+            }
             //TODO 加入roomList
             /**
              * 房间列表
@@ -98,10 +110,10 @@ public class QunarServiceImpl implements QunarService {
             if (StringUtils.isEmpty(roomId)) {
                 String[] rids = hotelExt.getRids().split(",");
                 for (String rid : rids) {
-                    roomList.add(this.getRoomPriceResponse(rid, checkIn, checkOut));
+                    roomList.add(this.getRoomPriceResponse(rid, checkIn, checkOut,num));
                 }
             } else {
-                roomList.add(this.getRoomPriceResponse(roomId, checkIn, checkOut));
+                roomList.add(this.getRoomPriceResponse(roomId, checkIn, checkOut,num));
             }
             priceResponse.setRooms(roomList);
             String priceResponeXml = XstreamUtil.getResponseXml(priceResponse);
@@ -132,7 +144,8 @@ public class QunarServiceImpl implements QunarService {
             bookOrderRequest.setRoomTypeId(bookingRequest.getRoom().getId());
             bookOrderRequest.setOpenChannelType(OpenChannelType.QUNAR);
             bookOrderRequest.setOpenOrderId(qunarOrderInfo.getOrderNum());
-            bookOrderRequest.setTotalPrice(Long.valueOf(bookingRequest.getRmbPrice()));
+            bookOrderRequest.setPaymentType(1);
+            bookOrderRequest.setTotalPrice((long)(Double.valueOf(bookingRequest.getRmbPrice())*100));
             bookOrderRequest.setRoomNum(Integer.valueOf(bookingRequest.getNumberOfRooms()));
             List<OrderGuest> orderGuestList=new ArrayList<OrderGuest>();
             for(int i=0;i<bookingRequest.getCustomerinfo().size();i++) {
@@ -143,72 +156,33 @@ public class QunarServiceImpl implements QunarService {
                 }
             }
             bookOrderRequest.setOrderGuests(orderGuestList);
-//            try {
-//                JSONObject result=orderService.bookRQ(bookOrderRequest);
-//                /**
-//                 * 200是success 201是网站端口下单成功[非速订]
-//                 */
-//                if(result.getString("resultCode").equals("200")||result.getString("resultCode").equals("201")){
-//                    bookRQResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
-//                    bookRQResponse.setPmsResID(result.getJSONObject("info").getString("pmsResId"));
-//                    return bookRQResponse;
-//                }else{
-//
-//                    switch (result.getString("resultCode")) {
-//                        case "400":
-//                            errorCodeFields = ErrorCodeFields.BOOK_PARAMS_ERROR;
-//                            break;
-//                        case "401":
-//                            errorCodeFields = ErrorCodeFields.BOOK_ROOMTYPE_NOT_EXIST;
-//                            break;
-//                        case "402":
-//                            errorCodeFields = ErrorCodeFields.BOOK_HOTEL_NOT_EXIST;
-//                            break;
-//                        case "403":
-//                            errorCodeFields = ErrorCodeFields.BOOK_CONTACT_NAME_ERROR;
-//                            break;
-//                        case "404":
-//                            errorCodeFields = ErrorCodeFields.BOOK_CONTACT_PHONE_ERROR;
-//                            break;
-//                        case "406":
-//                            errorCodeFields = ErrorCodeFields.BOOK_CHECKIN_ERROR;
-//                            break;
-//                        case "407":
-//                            errorCodeFields = ErrorCodeFields.BOOK_CHECKOUT_ERROR;
-//                            break;
-//                        case "408":
-//                            errorCodeFields = ErrorCodeFields.BOOK_OVER_ROOM_LIMIT;
-//                            break;
-////                    /**
-////                     * 409表示房间连住条件不满足
-////                     */
-////                case "409":
-////                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
-////                    break;
-//                        /**
-//                         * 价格校验失败
-//                         */
-//                        case "207":
-//                                break;
-//                            }
-//                        default:
-//                            errorCodeFields =  ErrorCodeFields.BOOK_FAILURE;
-//                            break;
-//                    }
-//                    throw new ZZKServiceException(errorCodeFields);
-//                }
-//            } catch (ZZKServiceException e) {
-//                e.printStackTrace();
-//            }
-//
-//
-        }catch(Exception e){
+            BookingResponse bookingResponse=new BookingResponse();
+                JSONObject result=orderService.bookRQ(bookOrderRequest);
+                /**
+                 * 200是success 201是网站端口下单成功[非速订]
+                 */
+                if(result.getString("resultCode").equals("200")||result.getString("resultCode").equals("201")){
+                    bookingResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
+                    bookingResponse.setResult(QunarResultCode.SUCCESS);
+                    bookingResponse.setQunarOrderNum(qunarOrderInfo.getOrderNum());
+                    String bookRQResponseXml = XstreamUtil.getResponseXml(bookingResponse);
+                    return bookRQResponseXml;
+                }else{
+                    bookingResponse.setResult(QunarResultCode.FAILURE);
+                    bookingResponse.setQunarOrderNum(qunarOrderInfo.getOrderNum());
+                    bookingResponse.setMsg(result.getString("message"));
 
+                    String bookRQResponseXml = XstreamUtil.getResponseXml(bookingResponse);
+                    return bookRQResponseXml;
+                }
+
+       }catch(ZZKServiceException | ParseException e){
+            LOG.error("qunarBook exception{}",e);
         }
         return null;
     }
 
-    public Room getRoomPriceResponse(String roomId, String checkIn, String checkOut) {
+    public Room getRoomPriceResponse(String roomId, String checkIn, String checkOut,int number) {
         Room room = new Room();
         /**
          * 订单填写时才需要
@@ -231,7 +205,11 @@ public class QunarServiceImpl implements QunarService {
                     int priceCN = jsonArray.getJSONObject(i).getIntValue("price_cn");
                     priceCNList.add(priceCN);
                     //房间数
+
                     int num = jsonArray.getJSONObject(i).getIntValue("num");
+                    if(roomStyle==2){
+                        num=1;
+                    }
                     numList.add(num);
                     if (num > 0) {
                         String status = "ACTIVE";
@@ -265,7 +243,7 @@ public class QunarServiceImpl implements QunarService {
 
                 room.setMaxOccupancy(maxOccupancy);
                 if (roomStyle == 2) {
-                    room.setOccupancyNumber(1);
+                    room.setOccupancyNumber(number);
                 } else {
                     room.setOccupancyNumber(room.getMaxOccupancy());
                 }
@@ -369,7 +347,7 @@ public class QunarServiceImpl implements QunarService {
             List<RefundRule> refundRules = new ArrayList<RefundRule>();
             List<NonRefundableRange> nonRefundableRanges = new ArrayList<NonRefundableRange>();
 
-            if (org.apache.commons.lang.StringUtils.isEmpty(qunarRoomInfo.getRefundRule())) {
+            if (StringUtils.isEmpty(qunarRoomInfo.getRefundRule())) {
                 refundRules.add(new RefundRule(720, RefundType.DEDUCT_BY_PERCENT, "0"));
                 refundRules.add(new RefundRule(0, RefundType.DEDUCT_BY_PERCENT, "100"));
             } else {
