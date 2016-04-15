@@ -411,7 +411,7 @@ public class XstreamUtilTest extends BaseTest {
         BookingResponse bookingResponse = new BookingResponse();
         bookingResponse.setQunarOrderNum("j3gm141219163017759");
         bookingResponse.setOrderId("9987654");
-        bookingResponse.setResult(ResultCode.SUCCESS);
+        bookingResponse.setResult(QunarResultCode.SUCCESS);
         /**
          * extras info
          */
