@@ -182,7 +182,17 @@ public class QunarServiceImpl implements QunarService {
         return null;
     }
 
-    public Room getRoomPriceResponse(String roomId, String checkIn, String checkOut,int number) {
+    @Override
+    public String cancel(String xml) {
+        return null;
+    }
+
+    @Override
+    public String query(String xml) {
+        return null;
+    }
+
+    public Room getRoomPriceResponse(String roomId, String checkIn, String checkOut, int number) {
         Room room = new Room();
         /**
          * 订单填写时才需要
