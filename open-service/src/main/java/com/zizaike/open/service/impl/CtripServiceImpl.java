@@ -250,8 +250,8 @@ public class CtripServiceImpl implements CtripService {
         StringBuffer contactName = new StringBuffer();
         for (GuestEntity guestEntity : guests) {
             OrderGuest orderGuest = new OrderGuest();
-            contactName.append("/"+guestEntity.getFirstName()+" "+guestEntity.getLastName());
-            orderGuest.setName(guestEntity.getFirstName()+" "+guestEntity.getLastName());
+            contactName.append("/"+guestEntity.getFirstName()+"."+guestEntity.getLastName()+" "+(StringUtils.isNotEmpty(guestEntity.getChinesName()) ?guestEntity.getChinesName():"")+" ");
+            orderGuest.setName(guestEntity.getFirstName()+"."+guestEntity.getLastName()+" "+(StringUtils.isNotEmpty(guestEntity.getChinesName()) ?guestEntity.getChinesName():"")+" ");
             orderGuests.add(orderGuest);
         }
         bookOrderRequest.setContactName(contactName.toString().replaceFirst("/", ""));
