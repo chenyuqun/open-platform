@@ -1,6 +1,7 @@
 package com.zizaike.open.common.util;
 
 import com.zizaike.entity.open.qunar.response.HotelList;
+import com.zizaike.open.dao.HomestayDockingDao;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,6 +10,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Project Name: code <br/>
@@ -64,7 +67,7 @@ public class QunarUtil {
         }
     }
 
-    public static String StandardPhoneUtil(String phone) {
+    public static String StandardPhoneUtil(String phone,Integer dest_id) {
         String standardPhone = null;
         if (phone == null || phone == "" || phone.equals(" , "))
             return null;
@@ -92,26 +95,32 @@ public class QunarUtil {
             Matcher matcherNum = patternNum.matcher(standardPhone);
             standardPhone = matcherNum.replaceAll("");
         }
-        /**
-         * 判断是否是00886，886开头
-         */
         StringBuffer stringBuffer = new StringBuffer(standardPhone);
-        if (standardPhone.startsWith("00886")) {
+        /**
+         * 10 means Taiwan
+         */
+        if(dest_id.equals(10)){
+            if (standardPhone.startsWith("00886")) {
             stringBuffer.insert(5, "-");
-        } else if (standardPhone.startsWith("886")) {
-            stringBuffer.insert(0, "00");
-            stringBuffer.insert(5, "-");
-        } else {
-            stringBuffer.insert(0, "00886-");
-        }
+            }else if (standardPhone.startsWith("886")) {
+                stringBuffer.insert(0, "00");
+                stringBuffer.insert(5, "-");
+            }else if(standardPhone.startsWith("09")){
+                stringBuffer.replace(0, 1, "");
+                stringBuffer.insert(0, "00886-");
+            }else{
+                stringBuffer.insert(0, "00886-");
+                }
+            }
         standardPhone = stringBuffer.toString();
         return standardPhone;
     }
 
-    public static HotelList CoverPhoneNumber(HotelList hotelList) {
+    public static HotelList CoverPhoneNumber(HomestayDockingDao homestayDockingDao,HotelList hotelList) {
         for (int i = 0; i < hotelList.getHotel().size(); i++) {
-            hotelList.getHotel().get(i).setTel(QunarUtil.StandardPhoneUtil(hotelList.getHotel().get(i).getTel()));
-            ;
+            hotelList.getHotel().get(i).setTel(QunarUtil.StandardPhoneUtil(hotelList.getHotel().get(i).getTel(), 
+                    homestayDockingDao.queryQunarHotel(hotelList.getHotel().get(i).getId()).getDest_id()));
+
         }
         return hotelList;
 
