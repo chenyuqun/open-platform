@@ -58,7 +58,12 @@ public class QunarServiceImpl implements QunarService {
     public String getHotelList() {
         HotelList hotelList = new HotelList();
         hotelList.setHotel(homestayDockingDao.queryAllQunarHotel());
-        hotelList = QunarUtil.CoverPhoneNumber(homestayDockingDao,hotelList);
+        for (int i = 0; i < hotelList.getHotel().size(); i++) {
+            hotelList.getHotel().get(i).setTel(QunarUtil.StandardPhoneUtil(hotelList.getHotel().get(i).getTel(), 
+                    homestayDockingDao.queryQunarHotel(hotelList.getHotel().get(i).getId()).getDest_id()));
+
+        }
+        //hotelList = QunarUtil.CoverPhoneNumber(homestayDockingDao,hotelList);
         String xml = XstreamUtil.getResponseXml(hotelList);
         return xml;
     }

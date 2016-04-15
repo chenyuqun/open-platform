@@ -84,9 +84,12 @@ public class QunarUtil {
         } else {
             //去除前7位中有空格的
             StringBuffer stringBufferphone = new StringBuffer(phone);
-            for( int i = 0 ;i< 7 ;i++) {
+            int length = 7;
+            for( int i = 0 ;i< length ;i++) {
                 if(String.valueOf(stringBufferphone.charAt(i))==" "){
                     stringBufferphone.deleteCharAt(i);
+                    i--;
+                    length--;
                 }
             }
             phone = stringBufferphone.toString();
