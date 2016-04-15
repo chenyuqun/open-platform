@@ -35,4 +35,12 @@ public class QunarController extends BaseXMLController {
         LOG.info("qunarService priceRequest xml:{}",xml);
         return qunarService.getPriceResponse(xml);
     }
+
+    @RequestMapping(value = "/book", method = RequestMethod.POST,produces={"text/xml"},consumes={"text/xml"})
+    @ResponseBody
+    public String getSearchResult(@RequestBody String xml ){
+        LOG.info("qunarService book xml:{}",xml);
+          return   qunarService.book(xml);
+
+    }
 }

@@ -5,18 +5,27 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.core.framework.exception.open.ErrorCodeFields;
 import com.zizaike.entity.open.HomestayDocking;
+import com.zizaike.entity.open.OpenChannelType;
 import com.zizaike.entity.open.QunarRoomInfoDto;
 import com.zizaike.entity.open.RoomInfoDto;
+import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.open.qunar.HotelExt;
+import com.zizaike.entity.open.qunar.request.BookingRequest;
 import com.zizaike.entity.open.qunar.request.PriceRequest;
+import com.zizaike.entity.open.qunar.request.QunarOrderInfo;
 import com.zizaike.entity.open.qunar.response.*;
+import com.zizaike.entity.order.request.BookOrderRequest;
+import com.zizaike.entity.order.request.OrderGuest;
+import com.zizaike.entity.order.request.ValidateOrderRequest;
 import com.zizaike.is.open.BaseInfoService;
 import com.zizaike.is.open.QunarService;
 import com.zizaike.open.common.util.QunarPhoneUtil;
 import com.zizaike.open.common.util.QunarUtil;
 import com.zizaike.open.common.util.XstreamUtil;
 import com.zizaike.open.dao.HomestayDockingDao;
+import com.zizaike.open.gateway.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +51,8 @@ public class QunarServiceImpl implements QunarService {
     private HomestayDockingDao homestayDockingDao;
     @Autowired
     private BaseInfoService baseInfoService;
+    @Autowired
+    private OrderService orderService;
 
     @Override
     public String getHotelList() {
@@ -102,6 +113,99 @@ public class QunarServiceImpl implements QunarService {
             return priceResponeXml;
         }
 
+    }
+
+    @Override
+    public String book(String xml) {
+        try{
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+            BookingRequest bookingRequest = (BookingRequest) XstreamUtil.getXml2Bean(xml, BookingRequest.class);
+            QunarOrderInfo qunarOrderInfo=bookingRequest.getQunarOrderInfo();
+            BookOrderRequest  bookOrderRequest=new BookOrderRequest();
+
+            bookOrderRequest.setCheckIn(sdf.parse(bookingRequest.getCheckin()));
+            bookOrderRequest.setCheckOut(sdf.parse(bookingRequest.getCheckout()));
+            bookOrderRequest.setContactEmail(qunarOrderInfo.getContactEmail());
+            bookOrderRequest.setContactTel(qunarOrderInfo.getContactPhone());
+            bookOrderRequest.setContactName(qunarOrderInfo.getContactName());
+            bookOrderRequest.setHotelId(bookingRequest.getHotelId());
+            bookOrderRequest.setRoomTypeId(bookingRequest.getRoom().getId());
+            bookOrderRequest.setOpenChannelType(OpenChannelType.QUNAR);
+            bookOrderRequest.setOpenOrderId(qunarOrderInfo.getOrderNum());
+            bookOrderRequest.setTotalPrice(Long.valueOf(bookingRequest.getRmbPrice()));
+            bookOrderRequest.setRoomNum(Integer.valueOf(bookingRequest.getNumberOfRooms()));
+            List<OrderGuest> orderGuestList=new ArrayList<OrderGuest>();
+            for(int i=0;i<bookingRequest.getCustomerinfo().size();i++) {
+                for(int j=0;j<bookingRequest.getCustomerinfo().get(i).getCustomer().size();j++) {
+                    String name = bookingRequest.getCustomerinfo().get(i).getCustomer().get(j).getFirstname()+
+                            bookingRequest.getCustomerinfo().get(i).getCustomer().get(j).getLastName();
+                    orderGuestList.add(new OrderGuest(name,1));
+                }
+            }
+            bookOrderRequest.setOrderGuests(orderGuestList);
+//            try {
+//                JSONObject result=orderService.bookRQ(bookOrderRequest);
+//                /**
+//                 * 200是success 201是网站端口下单成功[非速订]
+//                 */
+//                if(result.getString("resultCode").equals("200")||result.getString("resultCode").equals("201")){
+//                    bookRQResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
+//                    bookRQResponse.setPmsResID(result.getJSONObject("info").getString("pmsResId"));
+//                    return bookRQResponse;
+//                }else{
+//
+//                    switch (result.getString("resultCode")) {
+//                        case "400":
+//                            errorCodeFields = ErrorCodeFields.BOOK_PARAMS_ERROR;
+//                            break;
+//                        case "401":
+//                            errorCodeFields = ErrorCodeFields.BOOK_ROOMTYPE_NOT_EXIST;
+//                            break;
+//                        case "402":
+//                            errorCodeFields = ErrorCodeFields.BOOK_HOTEL_NOT_EXIST;
+//                            break;
+//                        case "403":
+//                            errorCodeFields = ErrorCodeFields.BOOK_CONTACT_NAME_ERROR;
+//                            break;
+//                        case "404":
+//                            errorCodeFields = ErrorCodeFields.BOOK_CONTACT_PHONE_ERROR;
+//                            break;
+//                        case "406":
+//                            errorCodeFields = ErrorCodeFields.BOOK_CHECKIN_ERROR;
+//                            break;
+//                        case "407":
+//                            errorCodeFields = ErrorCodeFields.BOOK_CHECKOUT_ERROR;
+//                            break;
+//                        case "408":
+//                            errorCodeFields = ErrorCodeFields.BOOK_OVER_ROOM_LIMIT;
+//                            break;
+////                    /**
+////                     * 409表示房间连住条件不满足
+////                     */
+////                case "409":
+////                    errorCodeFields = ErrorCodeFields.OTHER_NOT_BOOK_ERROR;
+////                    break;
+//                        /**
+//                         * 价格校验失败
+//                         */
+//                        case "207":
+//                                break;
+//                            }
+//                        default:
+//                            errorCodeFields =  ErrorCodeFields.BOOK_FAILURE;
+//                            break;
+//                    }
+//                    throw new ZZKServiceException(errorCodeFields);
+//                }
+//            } catch (ZZKServiceException e) {
+//                e.printStackTrace();
+//            }
+//
+//
+        }catch(Exception e){
+
+        }
+        return null;
     }
 
     public Room getRoomPriceResponse(String roomId, String checkIn, String checkOut) {
