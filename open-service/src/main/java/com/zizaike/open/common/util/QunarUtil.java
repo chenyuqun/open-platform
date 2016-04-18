@@ -69,31 +69,28 @@ public class QunarUtil {
 
     public static String StandardPhoneUtil(String phone,Integer dest_id) {
         String standardPhone = null;
-        if (phone == null || phone == "" || phone.equals(" , "))
+        if (phone == null || phone == "")
             return null;
+        int length = phone.length();
         String regNumber = "[^0-9]";
         String regEmail = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
         Pattern patternEmail = Pattern.compile(regEmail);
         Matcher matcherEmail = patternEmail.matcher(phone);
-        if (phone.length() < 20) {
+        if (length < 18) {
             Pattern patternNum = Pattern.compile(regNumber);
             Matcher matcherNum = patternNum.matcher(phone);
             standardPhone = matcherNum.replaceAll("");
         } else if (matcherEmail.matches()) {
             return phone;
         } else {
-            //去除前7位中有空格的
-            StringBuffer stringBufferphone = new StringBuffer(phone);
-            int length = 7;
-            for( int i = 0 ;i< length ;i++) {
-                if(String.valueOf(stringBufferphone.charAt(i))==" "){
-                    stringBufferphone.deleteCharAt(i);
-                    i--;
-                    length--;
-                }
-            }
-            phone = stringBufferphone.toString();
-            String reg = "（|．|／|～|客|微|或|;|；|/|、|,|，|\\s+";
+            //去除前9位中有特殊字符
+            String reg = "（|．|\\(|\\.|‧|／|～|客|微|或|;|；|/|、|,|，|\\s+";          
+            String prefixPhone = phone.substring(0,9);
+            String postfixPhone = phone.substring(9);
+            Pattern patternPrefix = Pattern.compile(reg);
+            Matcher matchPrefix = patternPrefix.matcher(prefixPhone);
+            prefixPhone = matchPrefix.replaceAll("");
+            phone = prefixPhone.concat(postfixPhone);
             String[] newPhone = phone.split(reg);
             standardPhone = newPhone[0];
             Pattern patternNum = Pattern.compile(regNumber);
@@ -121,7 +118,7 @@ public class QunarUtil {
         return standardPhone;
     }
 
-    public static HotelList CoverPhoneNumber(HomestayDockingDao homestayDockingDao,HotelList hotelList) {
+/*    public static HotelList CoverPhoneNumber(HomestayDockingDao homestayDockingDao,HotelList hotelList) {
         for (int i = 0; i < hotelList.getHotel().size(); i++) {
             hotelList.getHotel().get(i).setTel(QunarUtil.StandardPhoneUtil(hotelList.getHotel().get(i).getTel(), 
                     homestayDockingDao.queryQunarHotel(hotelList.getHotel().get(i).getId()).getDest_id()));
@@ -129,7 +126,7 @@ public class QunarUtil {
         }
         return hotelList;
 
-    }
+    }*/
 
     public static int dateDiff(String checkIn,String checkOut){
         try{
