@@ -26,6 +26,7 @@ import com.zizaike.open.common.util.QunarUtil;
 import com.zizaike.open.common.util.XstreamUtil;
 import com.zizaike.open.dao.HomestayDockingDao;
 import com.zizaike.open.gateway.OrderService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,14 +58,24 @@ public class QunarServiceImpl implements QunarService {
 
     @Override
     public String getHotelList() {
-        HotelList hotelList = new HotelList();
-        hotelList.setHotel(homestayDockingDao.queryAllQunarHotel());
-        for (int i = 0; i < hotelList.getHotel().size(); i++) {
-            hotelList.getHotel().get(i).setTel(QunarUtil.StandardPhoneUtil(hotelList.getHotel().get(i).getTel(), 
-                    homestayDockingDao.queryQunarHotel(hotelList.getHotel().get(i).getId()).getDest_id()));
+        List<HotelExt> hotelExtList = homestayDockingDao.queryAllQunarHotel();
 
+        for (int i = 0; i < hotelExtList.size(); i++) {
+            hotelExtList.get(i).setTel(QunarUtil.StandardPhoneUtil(hotelExtList.get(i).getTel(), hotelExtList.get(i).getDest_id()));
         }
-        //hotelList = QunarUtil.CoverPhoneNumber(homestayDockingDao,hotelList);
+        HotelList hotelList = new HotelList();
+       
+        List<Hotel> listHotel = new ArrayList();
+        for(int i = 0 ;i<hotelExtList.size();i++){
+            Hotel hotel = new Hotel();     
+            hotel.setId(hotelExtList.get(i).getId());
+            hotel.setName(hotelExtList.get(i).getName());
+            hotel.setCity(hotelExtList.get(i).getCity());
+            hotel.setTel(hotelExtList.get(i).getTel());
+            hotel.setAddress(hotelExtList.get(i).getAddress());
+            listHotel.add(hotel);
+        }
+        hotelList.setHotel(listHotel);
         String xml = XstreamUtil.getResponseXml(hotelList);
         return xml;
     }

@@ -18,7 +18,13 @@ import org.testng.annotations.Test;
 public class QunarServiceTest extends BaseTest {
     @Autowired
     private QunarService qunarService;
-
+    @Test(description = "getHotelList")
+    public void getHotelList(){
+        long startTime=System.currentTimeMillis();
+        System.err.println(qunarService.getHotelList());
+        long endTime=System.currentTimeMillis(); 
+        System.out.println("getHotelListTime: "+(endTime-startTime)+"ms");   
+    }
     @Test(description = "priceRespnse")
     public void getPriceResponse() {
         String xml="<?xml version=\"1.0\"     encoding=\"utf-8\"?>\n" +
