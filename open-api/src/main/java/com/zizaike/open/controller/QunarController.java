@@ -43,4 +43,11 @@ public class QunarController extends BaseXMLController {
           return   qunarService.book(xml);
 
     }
+    @RequestMapping(value = "/cancelBooking", method = RequestMethod.POST,produces={"text/xml"},consumes={"text/xml"})
+    @ResponseBody
+    public String cancelBooking(@RequestBody String xml ) throws ZZKServiceException{
+        LOG.info("qunarService cancelBooking xml:{}",xml);
+          return   qunarService.cancelBooking(xml);
+
+    }
 }

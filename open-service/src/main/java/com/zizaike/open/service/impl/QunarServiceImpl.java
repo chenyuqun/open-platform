@@ -13,10 +13,12 @@ import com.zizaike.entity.open.RoomInfoDto;
 import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.open.qunar.HotelExt;
 import com.zizaike.entity.open.qunar.request.BookingRequest;
+import com.zizaike.entity.open.qunar.request.CancelRequest;
 import com.zizaike.entity.open.qunar.request.PriceRequest;
 import com.zizaike.entity.open.qunar.request.QunarOrderInfo;
 import com.zizaike.entity.open.qunar.response.*;
 import com.zizaike.entity.order.request.BookOrderRequest;
+import com.zizaike.entity.order.request.CancelOrderRequest;
 import com.zizaike.entity.order.request.OrderGuest;
 import com.zizaike.entity.order.request.ValidateOrderRequest;
 import com.zizaike.is.open.BaseInfoService;
@@ -404,5 +406,36 @@ public class QunarServiceImpl implements QunarService {
 
 
         return room;
+    }
+
+    /**  
+     * TODO 去哪儿取消预订  
+     * @throws ZZKServiceException 
+     * 
+     */
+    @Override
+    public String cancelBooking(String xml) throws ZZKServiceException {
+       CancelRequest cancelRequest = (CancelRequest)XstreamUtil.getXml2Bean(xml, CancelRequest.class);
+       CancelResponse cancelResponse = new CancelResponse();
+/*       CancelOrderRequest cancelOrderRequest = new CancelOrderRequest();
+       cancelOrderRequest.setOpenChannelType(OpenChannelType.QUNAR);
+       cancelOrderRequest.setOpenOrderId(cancelRequest.getQunarOrderNum());
+       cancelOrderRequest.setOrderId(cancelRequest.getOrderId());
+       JSONObject result = orderService.cancelRQ(cancelOrderRequest);
+       if(result.getString("resultCode").equals("200")){
+           cancelResponse.setQunarOrderNum(cancelRequest.getQunarOrderNum());
+           cancelResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
+           cancelResponse.setResult(QunarResultCode.PROCESSING);
+           cancelResponse.setMsg("");
+           String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
+           return cancelBookingXML;    
+           
+       }*/
+       cancelResponse.setQunarOrderNum(cancelRequest.getQunarOrderNum());
+       cancelResponse.setOrderId(cancelRequest.getOrderId());
+       cancelResponse.setResult(QunarResultCode.PROCESSING); 
+       cancelResponse.setMsg("");
+       String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
+       return cancelBookingXML;
     }
 }
