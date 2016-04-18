@@ -31,6 +31,7 @@ import com.zizaike.open.gateway.OrderService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -65,9 +66,14 @@ public class QunarServiceImpl implements QunarService {
         for (int i = 0; i < hotelExtList.size(); i++) {
             hotelExtList.get(i).setTel(QunarUtil.StandardPhoneUtil(hotelExtList.get(i).getTel(), hotelExtList.get(i).getDest_id()));
         }
-        HotelList hotelList = new HotelList();
-       
-        List<Hotel> listHotel = new ArrayList();
+        List<Hotel> hotelList = new ArrayList<>();
+        HotelList HOTELList = new HotelList();
+        for(int i = 0;i<hotelExtList.size();i++){
+            Hotel hotel = new Hotel();
+            BeanUtils.copyProperties(hotelExtList.get(i), hotel);
+            hotelList.add(hotel);
+        }        
+/*        
         for(int i = 0 ;i<hotelExtList.size();i++){
             Hotel hotel = new Hotel();     
             hotel.setId(hotelExtList.get(i).getId());
@@ -76,9 +82,9 @@ public class QunarServiceImpl implements QunarService {
             hotel.setTel(hotelExtList.get(i).getTel());
             hotel.setAddress(hotelExtList.get(i).getAddress());
             listHotel.add(hotel);
-        }
-        hotelList.setHotel(listHotel);
-        String xml = XstreamUtil.getResponseXml(hotelList);
+        }*/
+        HOTELList.setHotel(hotelList);
+        String xml = XstreamUtil.getResponseXml(HOTELList);
         return xml;
     }
 
@@ -417,25 +423,48 @@ public class QunarServiceImpl implements QunarService {
     public String cancelBooking(String xml) throws ZZKServiceException {
        CancelRequest cancelRequest = (CancelRequest)XstreamUtil.getXml2Bean(xml, CancelRequest.class);
        CancelResponse cancelResponse = new CancelResponse();
-/*       CancelOrderRequest cancelOrderRequest = new CancelOrderRequest();
+       CancelOrderRequest cancelOrderRequest = new CancelOrderRequest();
        cancelOrderRequest.setOpenChannelType(OpenChannelType.QUNAR);
        cancelOrderRequest.setOpenOrderId(cancelRequest.getQunarOrderNum());
        cancelOrderRequest.setOrderId(cancelRequest.getOrderId());
-       JSONObject result = orderService.cancelRQ(cancelOrderRequest);
-       if(result.getString("resultCode").equals("200")){
+       
+       /**
+        * 去哪儿后台强制取消
+        */
+       if(cancelRequest.getRequiredAction().equals("AGREE_UNSUBSCRIBE")||cancelRequest.getRequiredAction().equals("")){
+           JSONObject result = orderService.cancelRQ(cancelOrderRequest);
            cancelResponse.setQunarOrderNum(cancelRequest.getQunarOrderNum());
-           cancelResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
-           cancelResponse.setResult(QunarResultCode.PROCESSING);
-           cancelResponse.setMsg("");
+           cancelResponse.setOrderId(cancelRequest.getOrderId());
+           cancelResponse.setMsg("");    
+           if(result.getString("resultCode").equals("200")){
+               cancelResponse.setResult(QunarResultCode.SUCCESS);
+               String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
+               return cancelBookingXML;
+               }
+           else{
+               cancelResponse.setResult(QunarResultCode.FAILURE);
+               String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
+               return cancelBookingXML;
+               }
+           }
+       else if(cancelRequest.getRequiredAction().equals("REFUSE_UNSUBSCRIBE")){
+           cancelResponse.setQunarOrderNum(cancelRequest.getQunarOrderNum());
+           cancelResponse.setOrderId(cancelRequest.getOrderId());
+           cancelResponse.setMsg(""); 
+           cancelResponse.setResult(QunarResultCode.SUCCESS);
            String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
-           return cancelBookingXML;    
-           
-       }*/
-       cancelResponse.setQunarOrderNum(cancelRequest.getQunarOrderNum());
-       cancelResponse.setOrderId(cancelRequest.getOrderId());
-       cancelResponse.setResult(QunarResultCode.PROCESSING); 
-       cancelResponse.setMsg("");
-       String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
-       return cancelBookingXML;
+           return cancelBookingXML;
+       }
+       /**
+        * 需要我们确认操作
+        */
+       else{
+           cancelResponse.setQunarOrderNum(cancelRequest.getQunarOrderNum());
+           cancelResponse.setOrderId(cancelRequest.getOrderId());
+           cancelResponse.setMsg(""); 
+           cancelResponse.setResult(QunarResultCode.PROCESSING);
+           String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
+           return cancelBookingXML;                
+       }
     }
 }
