@@ -1,5 +1,6 @@
 package com.zizaike.open.common.util;
 
+import com.alibaba.fastjson.serializer.CalendarCodec;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.open.alibaba.request.CancelRQRequest;
@@ -14,6 +15,7 @@ import com.zizaike.entity.open.ctrip.response.AvailRoomQuantitys;
 import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResp;
 import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResponse;
 import com.zizaike.entity.open.qunar.request.BookingRequest;
+import com.zizaike.entity.open.qunar.request.CancelRequest;
 import com.zizaike.entity.open.qunar.request.PriceRequest;
 import com.zizaike.entity.open.qunar.response.*;
 import com.zizaike.open.bastest.BaseTest;
@@ -422,5 +424,29 @@ public class XstreamUtilTest extends BaseTest {
         extraList.add(ex2);
         bookingResponse.setExtras(extraList);
         System.err.println(XstreamUtil.getResponseXml(bookingResponse));
+    }
+    @Test(description = "test cancelBooking")
+    public void qunarCancelBooking()throws ZZKServiceException{
+        String xml = "<cancelRequest>"
+                + "<qunarOrderNum>j3gm141219163019999</qunarOrderNum>"
+                + "<orderId>9987654</orderId>"
+                + "<requiredAction>AGREE_UNSUBSCRIBE/REFUSE_UNSUBSCRIBE</requiredAction>"
+                + "<reason></reason>"
+                + "<extras><!-- optional -->"
+                + "<property key=\"TOKEN\" value=\"ASDFJJJJ9999XXXXYYY\" />"
+                + "<property key=\"OTHER_KEY\" value=\"XXXYYY\" />"
+                + "</extras>"
+                + "</cancelRequest>";
+        CancelRequest cancelRequest= (CancelRequest) XstreamUtil.getXml2Bean(xml,CancelRequest.class);
+        System.err.print(cancelRequest);
+    }
+    @Test(description = "test cancelBookingResponse")
+    public void qunarCanceBookingResponse()throws ZZKServiceException{
+        CancelResponse cancelResponse= new CancelResponse();
+        cancelResponse.setQunarOrderNum("j3gm141219163017759");
+        cancelResponse.setOrderId("9987654");
+        cancelResponse.setResult(QunarResultCode.SUCCESS);
+        cancelResponse.setMsg("");
+        System.err.println(XstreamUtil.getResponseXml(cancelResponse));
     }
 }

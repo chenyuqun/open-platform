@@ -18,7 +18,13 @@ import org.testng.annotations.Test;
 public class QunarServiceTest extends BaseTest {
     @Autowired
     private QunarService qunarService;
-
+    @Test(description = "getHotelList")
+    public void getHotelList(){
+        long startTime=System.currentTimeMillis();
+        System.err.println(qunarService.getHotelList());
+        long endTime=System.currentTimeMillis(); 
+        System.out.println("getHotelListTime: "+(endTime-startTime)+"ms");   
+    }
     @Test(description = "priceRespnse")
     public void getPriceResponse() {
         String xml="<?xml version=\"1.0\"     encoding=\"utf-8\"?>\n" +
@@ -97,5 +103,20 @@ public class QunarServiceTest extends BaseTest {
                 "    </qunarOrderInfo>\n" +
                 "</bookingRequest>";
         System.err.println(qunarService.book(xml));
+    }
+    @Test(description = "cancelBooking")
+    public void cancelBooking() throws ZZKServiceException{
+        String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                + "<cancelRequest>"
+                + "<qunarOrderNum>j3gm141219163019999</qunarOrderNum>"
+                + "<orderId>9987654</orderId>"
+                + "<requiredAction>AGREE_UNSUBSCRIBE</requiredAction>"
+                + "<reason></reason>"
+                + "<extras><!-- optional -->"
+                + "<property key=\"TOKEN\" value=\"ASDFJJJJ9999XXXXYYY\" />"
+                + "<property key=\"OTHER_KEY\" value=\"XXXYYY\" />"
+                + "</extras>"
+                + "</cancelRequest>";
+        System.err.println(qunarService.cancelBooking(xml));
     }
 }

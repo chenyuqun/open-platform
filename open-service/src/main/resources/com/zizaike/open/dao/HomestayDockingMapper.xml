@@ -36,8 +36,8 @@ id, uid, rids, status, channel, operator_uid, create_time, update_date
         from t_homestay_docking
         where status =1
     </select>
-    <select id="queryAllQunarHotel" parameterType="java.lang.Integer" resultMap="QunarResultMap">
-       select d.uid as id,d.tel_num as tel,d.address as address,d.name as name,e.city_code as city from (SELECT a.uid,b.tel_num,b.name,b.address,SUBSTR(c.local_code,1,7) as local_code from LKYou.t_homestay_docking a
+    <select id="queryAllQunarHotel" parameterType="java.lang.Integer" resultMap="QunarResultMapExt">
+       select d.uid as id,d.tel_num as tel,d.dest_id,d.address as address,d.name as name,e.city_code as city from (SELECT a.uid,b.tel_num,b.dest_id,b.name,b.address,SUBSTR(c.local_code,1,7) as local_code from LKYou.t_homestay_docking a
         LEFT JOIN one_db.drupal_users b ON a.uid=b.uid
         LEFT JOIN LKYou.t_weibo_poi_tw c ON a.uid=c.uid where a.status=1 and a.channel='qunar')as d
         LEFT JOIN LKYou.t_open_qunar_area e ON d.local_code=e.type_code

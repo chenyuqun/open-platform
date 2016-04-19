@@ -29,9 +29,9 @@ public class HomestayDockingDaoImpl extends GenericMyIbatisDao<HomestayDocking, 
     }
 
     @Override
-    public List<Hotel> queryAllQunarHotel() {
-        List<Hotel> hotelList = this.getSqlSession().selectList(NAMESPACE+"queryAllQunarHotel");
-        return hotelList;
+    public List<HotelExt> queryAllQunarHotel() {
+        List<HotelExt> hotelExtList = this.getSqlSession().selectList(NAMESPACE+"queryAllQunarHotel");
+        return hotelExtList;
     }
 
     @Override

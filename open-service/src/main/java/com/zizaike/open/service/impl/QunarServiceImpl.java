@@ -13,10 +13,12 @@ import com.zizaike.entity.open.RoomInfoDto;
 import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.open.qunar.HotelExt;
 import com.zizaike.entity.open.qunar.request.BookingRequest;
+import com.zizaike.entity.open.qunar.request.CancelRequest;
 import com.zizaike.entity.open.qunar.request.PriceRequest;
 import com.zizaike.entity.open.qunar.request.QunarOrderInfo;
 import com.zizaike.entity.open.qunar.response.*;
 import com.zizaike.entity.order.request.BookOrderRequest;
+import com.zizaike.entity.order.request.CancelOrderRequest;
 import com.zizaike.entity.order.request.OrderGuest;
 import com.zizaike.entity.order.request.ValidateOrderRequest;
 import com.zizaike.is.open.BaseInfoService;
@@ -26,8 +28,10 @@ import com.zizaike.open.common.util.QunarUtil;
 import com.zizaike.open.common.util.XstreamUtil;
 import com.zizaike.open.dao.HomestayDockingDao;
 import com.zizaike.open.gateway.OrderService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -57,15 +61,30 @@ public class QunarServiceImpl implements QunarService {
 
     @Override
     public String getHotelList() {
-        HotelList hotelList = new HotelList();
-        hotelList.setHotel(homestayDockingDao.queryAllQunarHotel());
-        for (int i = 0; i < hotelList.getHotel().size(); i++) {
-            hotelList.getHotel().get(i).setTel(QunarUtil.StandardPhoneUtil(hotelList.getHotel().get(i).getTel(), 
-                    homestayDockingDao.queryQunarHotel(hotelList.getHotel().get(i).getId()).getDest_id()));
+        List<HotelExt> hotelExtList = homestayDockingDao.queryAllQunarHotel();
 
+        for (int i = 0; i < hotelExtList.size(); i++) {
+            hotelExtList.get(i).setTel(QunarUtil.StandardPhoneUtil(hotelExtList.get(i).getTel(), hotelExtList.get(i).getDest_id()));
         }
-        //hotelList = QunarUtil.CoverPhoneNumber(homestayDockingDao,hotelList);
-        String xml = XstreamUtil.getResponseXml(hotelList);
+        List<Hotel> hotelList = new ArrayList<>();
+        HotelList HOTELList = new HotelList();
+        for(int i = 0;i<hotelExtList.size();i++){
+            Hotel hotel = new Hotel();
+            BeanUtils.copyProperties(hotelExtList.get(i), hotel);
+            hotelList.add(hotel);
+        }        
+/*        
+        for(int i = 0 ;i<hotelExtList.size();i++){
+            Hotel hotel = new Hotel();     
+            hotel.setId(hotelExtList.get(i).getId());
+            hotel.setName(hotelExtList.get(i).getName());
+            hotel.setCity(hotelExtList.get(i).getCity());
+            hotel.setTel(hotelExtList.get(i).getTel());
+            hotel.setAddress(hotelExtList.get(i).getAddress());
+            listHotel.add(hotel);
+        }*/
+        HOTELList.setHotel(hotelList);
+        String xml = XstreamUtil.getResponseXml(HOTELList);
         return xml;
     }
 
@@ -403,5 +422,59 @@ public class QunarServiceImpl implements QunarService {
 
 
         return room;
+    }
+
+    /**  
+     * TODO 去哪儿取消预订  
+     * @throws ZZKServiceException 
+     * 
+     */
+    @Override
+    public String cancelBooking(String xml) throws ZZKServiceException {
+       CancelRequest cancelRequest = (CancelRequest)XstreamUtil.getXml2Bean(xml, CancelRequest.class);
+       CancelResponse cancelResponse = new CancelResponse();
+       CancelOrderRequest cancelOrderRequest = new CancelOrderRequest();
+       cancelOrderRequest.setOpenChannelType(OpenChannelType.QUNAR);
+       cancelOrderRequest.setOpenOrderId(cancelRequest.getQunarOrderNum());
+       cancelOrderRequest.setOrderId(cancelRequest.getOrderId());
+       
+       /**
+        * 去哪儿后台强制取消
+        */
+       if(cancelRequest.getRequiredAction().equals("AGREE_UNSUBSCRIBE")||cancelRequest.getRequiredAction().equals("")){
+           JSONObject result = orderService.cancelRQ(cancelOrderRequest);
+           cancelResponse.setQunarOrderNum(cancelRequest.getQunarOrderNum());
+           cancelResponse.setOrderId(cancelRequest.getOrderId());
+           cancelResponse.setMsg("");    
+           if(result.getString("resultCode").equals("200")){
+               cancelResponse.setResult(QunarResultCode.SUCCESS);
+               String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
+               return cancelBookingXML;
+               }
+           else{
+               cancelResponse.setResult(QunarResultCode.FAILURE);
+               String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
+               return cancelBookingXML;
+               }
+           }
+       else if(cancelRequest.getRequiredAction().equals("REFUSE_UNSUBSCRIBE")){
+           cancelResponse.setQunarOrderNum(cancelRequest.getQunarOrderNum());
+           cancelResponse.setOrderId(cancelRequest.getOrderId());
+           cancelResponse.setMsg(""); 
+           cancelResponse.setResult(QunarResultCode.SUCCESS);
+           String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
+           return cancelBookingXML;
+       }
+       /**
+        * 需要我们确认操作
+        */
+       else{
+           cancelResponse.setQunarOrderNum(cancelRequest.getQunarOrderNum());
+           cancelResponse.setOrderId(cancelRequest.getOrderId());
+           cancelResponse.setMsg(""); 
+           cancelResponse.setResult(QunarResultCode.PROCESSING);
+           String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
+           return cancelBookingXML;                
+       }
     }
 }

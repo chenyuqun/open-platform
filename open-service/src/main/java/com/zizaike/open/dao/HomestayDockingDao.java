@@ -26,7 +26,7 @@ public interface HomestayDockingDao {
      * 连表查询推送给Qunar的hotel信息
      */
     @Slave
-    List<Hotel> queryAllQunarHotel();
+    List<HotelExt> queryAllQunarHotel();
 
     /**
      *查询推送给Qunar的hotel信息
