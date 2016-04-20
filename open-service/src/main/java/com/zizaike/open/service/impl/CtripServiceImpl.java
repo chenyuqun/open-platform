@@ -250,11 +250,11 @@ public class CtripServiceImpl implements CtripService {
         StringBuffer contactName = new StringBuffer();
         for (GuestEntity guestEntity : guests) {
             OrderGuest orderGuest = new OrderGuest();
-            contactName.append("/"+guestEntity.getFirstName()+"."+guestEntity.getLastName()+" "+(StringUtils.isNotEmpty(guestEntity.getChinesName()) ?guestEntity.getChinesName():"")+" ");
-            orderGuest.setName(guestEntity.getFirstName()+"."+guestEntity.getLastName()+" "+(StringUtils.isNotEmpty(guestEntity.getChinesName()) ?guestEntity.getChinesName():"")+" ");
+            contactName.append("&"+guestEntity.getLastName()+"/"+guestEntity.getFirstName()+" "+(StringUtils.isNotEmpty(guestEntity.getChinesName()) ?guestEntity.getChinesName():"")+" ");
+            orderGuest.setName(guestEntity.getLastName()+"/"+guestEntity.getFirstName()+" "+(StringUtils.isNotEmpty(guestEntity.getChinesName()) ?guestEntity.getChinesName():"")+" ");
             orderGuests.add(orderGuest);
         }
-        bookOrderRequest.setContactName(contactName.toString().replaceFirst("/", ""));
+        bookOrderRequest.setContactName(contactName.toString().replaceFirst("&", ""));
         bookOrderRequest.setOrderGuests(orderGuests);
         List<DailyInfo> dailyInfos = new ArrayList<DailyInfo>(); 
         for (RoomPrice roomPrice : domesticSubmitNewHotelOrderReqeust.getRoomPrices().getRoomPrices()) {
