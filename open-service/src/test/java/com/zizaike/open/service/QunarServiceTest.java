@@ -1,6 +1,8 @@
 package com.zizaike.open.service;
 
 import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.entity.open.qunar.OtaOptVO;
+import com.zizaike.entity.open.qunar.response.OptCode;
 import com.zizaike.is.open.QunarService;
 import com.zizaike.open.bastest.BaseTest;
 import org.dom4j.DocumentException;
@@ -118,5 +120,19 @@ public class QunarServiceTest extends BaseTest {
                 + "</extras>"
                 + "</cancelRequest>";
         System.err.println(qunarService.cancelBooking(xml));
+    }
+
+    @Test(description = "查询qunar订单")
+    public void qunarOrderQuery() throws ZZKServiceException{
+        String orderNums="test0127191351";
+        System.err.println(qunarService.qunarOrderQuery(orderNums));
+    }
+
+    @Test(description = "操作qunar订单")
+    public void qunarOpt() throws ZZKServiceException{
+        OtaOptVO otaOptVO=new OtaOptVO();
+        otaOptVO.setOrderNum("test0127191351");
+        otaOptVO.setOpt(OptCode.CONFIRM_ROOM_SUCCESS);
+        System.err.println(qunarService.qunarOrderOpt(otaOptVO));
     }
 }

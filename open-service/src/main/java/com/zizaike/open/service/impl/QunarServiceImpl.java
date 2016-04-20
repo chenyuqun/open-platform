@@ -4,23 +4,20 @@ package com.zizaike.open.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.zizaike.core.common.util.encrypt.MD5Encrypt;
+import com.zizaike.core.common.util.http.HttpProxyUtil;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.core.framework.exception.open.ErrorCodeFields;
 import com.zizaike.entity.open.HomestayDocking;
 import com.zizaike.entity.open.OpenChannelType;
 import com.zizaike.entity.open.QunarRoomInfoDto;
-import com.zizaike.entity.open.RoomInfoDto;
-import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.open.qunar.HotelExt;
-import com.zizaike.entity.open.qunar.request.BookingRequest;
-import com.zizaike.entity.open.qunar.request.CancelRequest;
-import com.zizaike.entity.open.qunar.request.PriceRequest;
-import com.zizaike.entity.open.qunar.request.QunarOrderInfo;
+import com.zizaike.entity.open.qunar.OtaOptVO;
+import com.zizaike.entity.open.qunar.request.*;
 import com.zizaike.entity.open.qunar.response.*;
 import com.zizaike.entity.order.request.BookOrderRequest;
 import com.zizaike.entity.order.request.CancelOrderRequest;
 import com.zizaike.entity.order.request.OrderGuest;
-import com.zizaike.entity.order.request.ValidateOrderRequest;
 import com.zizaike.is.open.BaseInfoService;
 import com.zizaike.is.open.QunarService;
 import com.zizaike.open.common.util.QunarPhoneUtil;
@@ -28,18 +25,21 @@ import com.zizaike.open.common.util.QunarUtil;
 import com.zizaike.open.common.util.XstreamUtil;
 import com.zizaike.open.dao.HomestayDockingDao;
 import com.zizaike.open.gateway.OrderService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Project Name: code <br/>
@@ -58,6 +58,12 @@ public class QunarServiceImpl implements QunarService {
     private BaseInfoService baseInfoService;
     @Autowired
     private OrderService orderService;
+    @Value("${qunar.signKey}")
+    private String signKey;
+    @Value("${qunar.url}")
+    private String qunarUrl;
+    @Autowired
+    private HttpProxyUtil httpProxy;
 
     @Override
     public String getHotelList() {
@@ -201,18 +207,18 @@ public class QunarServiceImpl implements QunarService {
                 }
 
        }catch(ZZKServiceException | ParseException e){
-            LOG.error("qunarBook exception{}",e);
+            LOG.error("qunar Book exception{}",e);
         }
         return null;
     }
 
     @Override
-    public String cancel(String xml) {
-        return null;
-    }
-
-    @Override
     public String query(String xml) {
+//        try{
+//            OrderQueryRequest queryRequest = (OrderQueryRequest) XstreamUtil.getXml2Bean(xml, OrderQueryRequest.class);
+//        }catch(ZZKServiceException e){
+//            LOG.error("qunar Query exception{}",e);
+//        }
         return null;
     }
 
@@ -266,15 +272,11 @@ public class QunarServiceImpl implements QunarService {
                 room.setPrices(QunarUtil.listToString(priceCNList));
                 room.setName(qunarRoomInfo.getTitle());
                 int maxOccupancy = 2;
-                if (qunarRoomInfo.getValue() == 1) {
-                    //有早餐 取人数
-                    if (qunarRoomInfo.getName().equals("10+")) {
-                        maxOccupancy = 10;
-                    } else {
-                        maxOccupancy = Integer.parseInt(qunarRoomInfo.getName());
-                    }
+                if (qunarRoomInfo.getName().equals("10+")) {
+                    maxOccupancy = 10;
+                } else {
+                    maxOccupancy = Integer.parseInt(qunarRoomInfo.getName());
                 }
-
                 room.setMaxOccupancy(maxOccupancy);
                 if (roomStyle == 2) {
                     room.setOccupancyNumber(number);
@@ -476,5 +478,73 @@ public class QunarServiceImpl implements QunarService {
            String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
            return cancelBookingXML;                
        }
+    }
+
+
+    @Override
+    public String qunarOrderQuery(String orderNums) {
+        String result=null;
+        try {
+            Map<String,String> map=new HashMap<String,String>();
+            map.put("orderNums",orderNums);
+            String hmac=MD5Encrypt.encrypt(signKey+orderNums);
+            map.put("hmac",hmac);
+            result = httpProxy.httpGetXMl(qunarUrl + "qunarOrderQuery", map);
+            LOG.info("qunarOrderQuery return{}",result);
+        } catch (IOException e) {
+            e.printStackTrace();
+            LOG.error("qunarOrderQuery IOException {}", e.toString());
+        }
+        return result;
+    }
+
+    @Override
+    public JSONObject qunarOrderOpt(OtaOptVO otaOptVO) {
+        JSONObject result=null;
+        try {
+            Map<String,String> map=new HashMap<String,String>();
+            map.put("orderNum",otaOptVO.getOrderNum());
+            map.put("opt",otaOptVO.getOpt().getCode());
+            if(otaOptVO.getOpt().getCode().equals("CONFIRM_ROOM_SUCCESS")||
+                    otaOptVO.getOpt().getCode().equals("CONFIRM_ROOM_FAILURE")||
+                    otaOptVO.getOpt().getCode().equals("REFUSE_UNSUBSCRIBE")){
+                /**
+                 * 确认可住，确认不可住，拒绝退订
+                 */
+                String hmac=MD5Encrypt.encrypt(signKey+otaOptVO.getOrderNum()+otaOptVO.getOpt());
+                map.put("hmac",hmac);
+            }else if(otaOptVO.getOpt().getCode().equals("ADD_REMARKS")){
+                /**
+                 * 添加备注
+                 */
+                map.put("remark",otaOptVO.getRemark());
+                String hmac=MD5Encrypt.encrypt(signKey+otaOptVO.getOrderNum()+otaOptVO.getOpt()+otaOptVO.getRemark());
+                map.put("hmac",hmac);
+            }else if(otaOptVO.getOpt().getCode().equals("SEND_SMS")){
+                /**
+                 * 发送短信
+                 */
+                map.put("smsContent",otaOptVO.getSmsContent());
+                String hmac=MD5Encrypt.encrypt(signKey+otaOptVO.getOrderNum()+otaOptVO.getOpt()+otaOptVO.getSmsContent());
+                map.put("hmac",hmac);
+
+            }else if(otaOptVO.getOpt().getCode().equals("AGREE_UNSUBSCRIBE")||
+                    otaOptVO.getOpt().getCode().equals("APPLY_UNSUBSCRIBE")){
+                /**
+                 * 同意退订，申请退订（从代理商一方）money，需要返还给消费者的金额，币别为RMB。代理商需要根据bookingRequest@rmbPrice 计算出相应的人民币金额。
+                 */
+                map.put("money",otaOptVO.getMoney());
+                String hmac=MD5Encrypt.encrypt(signKey+otaOptVO.getOrderNum()+otaOptVO.getOpt()+otaOptVO.getMoney());
+                map.put("hmac",hmac);
+            }
+
+
+            result = httpProxy.httpUrlPOST(qunarUrl + "otaOpt", map);
+            LOG.info("qunarOrderOpt return{}",result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOG.error("qunarOrderOpt Exception {}", e.toString());
+        }
+        return result;
     }
 }

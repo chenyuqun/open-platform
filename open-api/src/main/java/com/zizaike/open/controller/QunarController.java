@@ -1,6 +1,13 @@
 package com.zizaike.open.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.zizaike.core.bean.ResponseResult;
 import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.entity.open.ctrip.vo.MappingInfoVo;
+import com.zizaike.entity.open.qunar.OrderQueryVO;
+import com.zizaike.entity.open.qunar.OtaOptVO;
+import com.zizaike.entity.open.qunar.response.OptCode;
+import com.zizaike.entity.solr.SearchType;
 import com.zizaike.is.open.QunarService;
 import com.zizaike.open.BaseXMLController;
 import org.slf4j.Logger;
@@ -50,4 +57,48 @@ public class QunarController extends BaseXMLController {
           return   qunarService.cancelBooking(xml);
 
     }
+
+    @RequestMapping(value = "/query", method = RequestMethod.POST,produces={"text/xml"},consumes={"text/xml"})
+    @ResponseBody
+    public String query(@RequestBody String xml ) throws ZZKServiceException{
+        LOG.info("qunarService query xml:{}",xml);
+        return   qunarService.query(xml);
+
+    }
+
+    /**
+     * 调用qunar接口查询信息
+     * @param orderNums
+     * @return
+     * @throws ZZKServiceException
+     */
+    @RequestMapping(value = "/queryQunar", method = RequestMethod.GET,produces={"text/xml"})
+    @ResponseBody
+    public String queryQunar(@RequestParam("orderNums") String orderNums) throws ZZKServiceException{
+        LOG.info("qunarService queryQunar xml:{}",orderNums);
+        return   qunarService.qunarOrderQuery(orderNums);
+
+    }
+
+    /**
+     * 调用qunar接口操作
+     * @TODO 目前没有后台使用,报错不方便查看，目前直接用的qunar返回，以后可能要改成这边的标准返回
+     * @return
+     * @throws ZZKServiceException
+     */
+    @RequestMapping(value = "/opt", method = RequestMethod.GET,produces={"application/json"})
+    @ResponseBody
+    public JSONObject opt(@RequestParam("orderNum") String orderNum , @RequestParam("opt") OptCode opt, @RequestParam("remark") String remark, @RequestParam("money") String money,
+                          @RequestParam("smsContent") String smsContent) throws ZZKServiceException{
+        LOG.info("qunarService opt params orderNum="+orderNum+" opt="+opt+" remark="+remark+" money="+money+" smsContent="+smsContent);
+        OtaOptVO otaOptVO=new OtaOptVO();
+        otaOptVO.setMoney(money);
+        otaOptVO.setOrderNum(orderNum);
+        otaOptVO.setOpt(opt);
+        otaOptVO.setRemark(remark);
+        otaOptVO.setSmsContent(smsContent);
+        return qunarService.qunarOrderOpt(otaOptVO);
+
+    }
+
 }
