@@ -10,6 +10,7 @@ import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.core.framework.exception.open.ErrorCodeFields;
 import com.zizaike.entity.open.HomestayDocking;
 import com.zizaike.entity.open.OpenChannelType;
+import com.zizaike.entity.open.QunarRequest;
 import com.zizaike.entity.open.QunarRoomInfoDto;
 import com.zizaike.entity.open.qunar.HotelExt;
 import com.zizaike.entity.open.qunar.OtaOptVO;
@@ -18,12 +19,15 @@ import com.zizaike.entity.open.qunar.response.*;
 import com.zizaike.entity.order.request.BookOrderRequest;
 import com.zizaike.entity.order.request.CancelOrderRequest;
 import com.zizaike.entity.order.request.OrderGuest;
+import com.zizaike.entity.order.request.QueryStatusOrderRequest;
+import com.zizaike.entity.order.response.QueryStatusOrderResponse;
 import com.zizaike.is.open.BaseInfoService;
 import com.zizaike.is.open.QunarService;
 import com.zizaike.open.common.util.QunarPhoneUtil;
 import com.zizaike.open.common.util.QunarUtil;
 import com.zizaike.open.common.util.XstreamUtil;
 import com.zizaike.open.dao.HomestayDockingDao;
+import com.zizaike.open.dao.QunarRequestDao;
 import com.zizaike.open.gateway.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +68,8 @@ public class QunarServiceImpl implements QunarService {
     private String qunarUrl;
     @Autowired
     private HttpProxyUtil httpProxy;
+    @Autowired
+    private QunarRequestDao qunarRequestDao;
 
     @Override
     public String getHotelList() {
@@ -160,9 +166,17 @@ public class QunarServiceImpl implements QunarService {
     @Override
     public String book(String xml) {
         try{
+
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
             BookingRequest bookingRequest = (BookingRequest) XstreamUtil.getXml2Bean(xml, BookingRequest.class);
             QunarOrderInfo qunarOrderInfo=bookingRequest.getQunarOrderInfo();
+            /**
+             * requset入库
+             */
+            QunarRequest qunarRequest=new QunarRequest();
+            qunarRequest.setOrderId(qunarOrderInfo.getOrderNum());
+            qunarRequest.setRequest(xml);
+            qunarRequestDao.add(qunarRequest);
             BookOrderRequest  bookOrderRequest=new BookOrderRequest();
 
             bookOrderRequest.setCheckIn(sdf.parse(bookingRequest.getCheckin()));
@@ -214,12 +228,71 @@ public class QunarServiceImpl implements QunarService {
 
     @Override
     public String query(String xml) {
-//        try{
-//            OrderQueryRequest queryRequest = (OrderQueryRequest) XstreamUtil.getXml2Bean(xml, OrderQueryRequest.class);
-//        }catch(ZZKServiceException e){
-//            LOG.error("qunar Query exception{}",e);
-//        }
-        return null;
+        try{
+            OrderQueryRequest queryRequest = (OrderQueryRequest) XstreamUtil.getXml2Bean(xml, OrderQueryRequest.class);
+            /**
+             * 根据Qunar订单号（PK）去查询请求
+             */
+            QunarRequest qunarRequest=qunarRequestDao.getQunarRequest(queryRequest.getQunarOrderNum());
+            BookingRequest bookingRequest = (BookingRequest) XstreamUtil.getXml2Bean(qunarRequest.getRequest(), BookingRequest.class);
+            OrderQueryResponse orderQueryResponse=new OrderQueryResponse();
+            QunarOrderInfoResponse orderInfoResponse=new QunarOrderInfoResponse();
+            orderInfoResponse.setOrderNum(bookingRequest.getQunarOrderInfo().getOrderNum());
+            orderInfoResponse.setPayType(bookingRequest.getQunarOrderInfo().getPayType());
+            orderInfoResponse.setHotelSeq(bookingRequest.getQunarOrderInfo().getHotelSeq());
+            orderInfoResponse.setHotelName(bookingRequest.getQunarOrderInfo().getHotelName());
+            orderInfoResponse.setHotelAddress(bookingRequest.getQunarOrderInfo().getHotelAddress());
+            orderInfoResponse.setCityName(bookingRequest.getQunarOrderInfo().getCityName());
+            orderInfoResponse.setHotelPhone(bookingRequest.getQunarOrderInfo().getHotelPhone());
+            orderInfoResponse.setOrderDate(bookingRequest.getQunarOrderInfo().getOrderDate());
+            orderInfoResponse.setContactName(bookingRequest.getQunarOrderInfo().getContactName());
+            orderInfoResponse.setContactPhone(bookingRequest.getQunarOrderInfo().getContactPhone());
+            orderInfoResponse.setContactEmail(bookingRequest.getQunarOrderInfo().getContactEmail());
+            orderInfoResponse.setCustomerIp(bookingRequest.getQunarOrderInfo().getCustomerIp());
+            /**
+             * N不需要 Y纸质收据 E电子收据
+             */
+            orderInfoResponse.setInvoiceCode(bookingRequest.getQunarOrderInfo().getInvoiceCode());
+            //orderInfoResponse.setInvoice();
+            orderInfoResponse.setHotelId(bookingRequest.getHotelId());
+            orderInfoResponse.setCheckin(bookingRequest.getCheckin());
+            orderInfoResponse.setCheckout(bookingRequest.getCheckout());
+            orderInfoResponse.setTotalPrice(bookingRequest.getTotalPrice());
+            orderInfoResponse.setCurrencyCode(bookingRequest.getCurrencyCode());
+            orderInfoResponse.setRoom(bookingRequest.getRoom());
+            orderInfoResponse.setCustomerArriiveTime(bookingRequest.getCustomerArriveTime());
+            orderInfoResponse.setSpecialRemarks(bookingRequest.getSpecialRemarks());
+            orderInfoResponse.setCustomerInfos(bookingRequest.getCustomerinfo());
+            /**
+             * 查询zizaike订单信息
+             */
+            QueryStatusOrderRequest queryStatusOrderRequest=new QueryStatusOrderRequest();
+            queryStatusOrderRequest.setOpenChannelType(OpenChannelType.QUNAR);
+            queryStatusOrderRequest.setOpenOrderId(bookingRequest.getQunarOrderInfo().getOrderNum());
+            queryStatusOrderRequest.setHotelId(bookingRequest.getHotelId());
+            JSONObject result=orderService.aueryStatusOrder(queryStatusOrderRequest);
+            if(result.getString("resultCode").equals("200")) {
+                orderInfoResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
+                if ("2".equals(result.getJSONObject("info").getString("status")) || "6".equals(result.getJSONObject("info").getString("status"))) {
+                    orderInfoResponse.setStatus(Status.CONFIRMED_SUCCESS);
+                } else {
+                    orderInfoResponse.setStatus(Status.CANCELED);
+                }
+            }else{
+                ErrorCodeFields errorCodeFields;
+                errorCodeFields =  ErrorCodeFields.QUERY_FAILURE;
+                throw new ZZKServiceException(errorCodeFields);
+            }
+            orderQueryResponse.setOrderInfo(orderInfoResponse);
+            String orderQueryResponseXml = XstreamUtil.getResponseXml(orderQueryResponse);
+            return orderQueryResponseXml;
+        }catch(ZZKServiceException e){
+            LOG.error("qunar Query exception{}",e);
+            OrderQueryResponse orderQueryResponse=new OrderQueryResponse();
+            String orderQueryResponseXml = XstreamUtil.getResponseXml(orderQueryResponse);
+            return orderQueryResponseXml;
+        }
+
     }
 
     public Room getRoomPriceResponse(String roomId, String checkIn, String checkOut, int number) {

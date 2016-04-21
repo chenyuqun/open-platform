@@ -16,6 +16,7 @@ import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResp;
 import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResponse;
 import com.zizaike.entity.open.qunar.request.BookingRequest;
 import com.zizaike.entity.open.qunar.request.CancelRequest;
+import com.zizaike.entity.open.qunar.request.Customer;
 import com.zizaike.entity.open.qunar.request.PriceRequest;
 import com.zizaike.entity.open.qunar.response.*;
 import com.zizaike.open.bastest.BaseTest;
@@ -448,5 +449,22 @@ public class XstreamUtilTest extends BaseTest {
         cancelResponse.setResult(QunarResultCode.SUCCESS);
         cancelResponse.setMsg("");
         System.err.println(XstreamUtil.getResponseXml(cancelResponse));
+    }
+
+    @Test(description = "1")
+    public void qunarQueryResponse() throws ZZKServiceException{
+        OrderQueryResponse orderQueryResponse=new OrderQueryResponse();
+        QunarOrderInfoResponse qunarOrderInfoResponse=new QunarOrderInfoResponse();
+        Invoice invoice=new Invoice("","somebody","","","","","","上海","","","");
+        qunarOrderInfoResponse.setOrderId("9987654");
+        qunarOrderInfoResponse.setOrderNum("j3gm141219163017759");
+        qunarOrderInfoResponse.setCheckin("2014-12-29");
+        qunarOrderInfoResponse.setCheckout("2014-12-30");
+        qunarOrderInfoResponse.setCityName("大阪");
+        qunarOrderInfoResponse.setInvoice(invoice);
+        qunarOrderInfoResponse.setStatus(Status.CONFIRMED_SUCCESS);
+        orderQueryResponse.setOrderInfo(qunarOrderInfoResponse);
+        System.err.println(XstreamUtil.getResponseXml(orderQueryResponse));
+
     }
 }
