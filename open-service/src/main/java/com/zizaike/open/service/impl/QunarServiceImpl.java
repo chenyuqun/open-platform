@@ -432,52 +432,37 @@ public class QunarServiceImpl implements QunarService {
      * 
      */
     @Override
-    public String cancelBooking(String xml) throws ZZKServiceException {
+    public String cancelBooking(String xml) {
+       String cancelBookingXML = null;
        CancelRequest cancelRequest = (CancelRequest)XstreamUtil.getXml2Bean(xml, CancelRequest.class);
        CancelResponse cancelResponse = new CancelResponse();
        CancelOrderRequest cancelOrderRequest = new CancelOrderRequest();
        cancelOrderRequest.setOpenChannelType(OpenChannelType.QUNAR);
        cancelOrderRequest.setOpenOrderId(cancelRequest.getQunarOrderNum());
        cancelOrderRequest.setOrderId(cancelRequest.getOrderId());
-       
-       /**
-        * 去哪儿后台强制取消
-        */
-       if(cancelRequest.getRequiredAction().equals("AGREE_UNSUBSCRIBE")||cancelRequest.getRequiredAction().equals("")){
+       try{
            JSONObject result = orderService.cancelRQ(cancelOrderRequest);
            cancelResponse.setQunarOrderNum(cancelRequest.getQunarOrderNum());
            cancelResponse.setOrderId(cancelRequest.getOrderId());
            cancelResponse.setMsg("");    
            if(result.getString("resultCode").equals("200")){
                cancelResponse.setResult(QunarResultCode.SUCCESS);
-               String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
-               return cancelBookingXML;
+               cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
+               
                }
            else{
                cancelResponse.setResult(QunarResultCode.FAILURE);
-               String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
-               return cancelBookingXML;
+               cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
+               
                }
-           }
-       else if(cancelRequest.getRequiredAction().equals("REFUSE_UNSUBSCRIBE")){
-           cancelResponse.setQunarOrderNum(cancelRequest.getQunarOrderNum());
-           cancelResponse.setOrderId(cancelRequest.getOrderId());
-           cancelResponse.setMsg(""); 
-           cancelResponse.setResult(QunarResultCode.SUCCESS);
-           String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
-           return cancelBookingXML;
+           
+       }catch(ZZKServiceException e){
+           cancelResponse.setResult(QunarResultCode.FAILURE);
+           cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
+           LOG.error("qunarCancelBooking IOException {}",e.toString());
        }
-       /**
-        * 需要我们确认操作
-        */
-       else{
-           cancelResponse.setQunarOrderNum(cancelRequest.getQunarOrderNum());
-           cancelResponse.setOrderId(cancelRequest.getOrderId());
-           cancelResponse.setMsg(""); 
-           cancelResponse.setResult(QunarResultCode.PROCESSING);
-           String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
-           return cancelBookingXML;                
-       }
+       return cancelBookingXML;
+
     }
 
 
