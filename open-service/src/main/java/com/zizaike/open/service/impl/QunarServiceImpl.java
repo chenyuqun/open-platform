@@ -433,34 +433,31 @@ public class QunarServiceImpl implements QunarService {
      */
     @Override
     public String cancelBooking(String xml) {
-       String cancelBookingXML = null;
+       
        CancelRequest cancelRequest = (CancelRequest)XstreamUtil.getXml2Bean(xml, CancelRequest.class);
        CancelResponse cancelResponse = new CancelResponse();
        CancelOrderRequest cancelOrderRequest = new CancelOrderRequest();
        cancelOrderRequest.setOpenChannelType(OpenChannelType.QUNAR);
        cancelOrderRequest.setOpenOrderId(cancelRequest.getQunarOrderNum());
        cancelOrderRequest.setOrderId(cancelRequest.getOrderId());
+       
+       cancelResponse.setQunarOrderNum(cancelRequest.getQunarOrderNum());
+       cancelResponse.setOrderId(cancelRequest.getOrderId());
+       cancelResponse.setMsg("");   
        try{
            JSONObject result = orderService.cancelRQ(cancelOrderRequest);
-           cancelResponse.setQunarOrderNum(cancelRequest.getQunarOrderNum());
-           cancelResponse.setOrderId(cancelRequest.getOrderId());
-           cancelResponse.setMsg("");    
            if(result.getString("resultCode").equals("200")){
-               cancelResponse.setResult(QunarResultCode.SUCCESS);
-               cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
-               
+               cancelResponse.setResult(QunarResultCode.SUCCESS);                   
                }
            else{
-               cancelResponse.setResult(QunarResultCode.FAILURE);
-               cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
-               
+               cancelResponse.setResult(QunarResultCode.FAILURE);               
                }
            
        }catch(ZZKServiceException e){
            cancelResponse.setResult(QunarResultCode.FAILURE);
-           cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
            LOG.error("qunarCancelBooking IOException {}",e.toString());
        }
+       String cancelBookingXML = XstreamUtil.getResponseXml(cancelResponse);
        return cancelBookingXML;
 
     }
