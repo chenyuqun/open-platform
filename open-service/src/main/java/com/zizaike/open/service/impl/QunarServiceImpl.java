@@ -432,7 +432,7 @@ public class QunarServiceImpl implements QunarService {
      * 
      */
     @Override
-    public String cancelBooking(String xml) {
+    public String cancel(String xml) {
        
        CancelRequest cancelRequest = (CancelRequest)XstreamUtil.getXml2Bean(xml, CancelRequest.class);
        CancelResponse cancelResponse = new CancelResponse();
