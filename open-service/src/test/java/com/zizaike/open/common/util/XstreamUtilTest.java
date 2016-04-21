@@ -431,7 +431,7 @@ public class XstreamUtilTest extends BaseTest {
         String xml = "<cancelRequest>"
                 + "<qunarOrderNum>j3gm141219163019999</qunarOrderNum>"
                 + "<orderId>9987654</orderId>"
-                + "<requiredAction>AGREE_UNSUBSCRIBE/REFUSE_UNSUBSCRIBE</requiredAction>"
+                + "<requiredAction>AGREE_UNSUBSCRIBE</requiredAction>"
                 + "<reason></reason>"
                 + "<extras><!-- optional -->"
                 + "<property key=\"TOKEN\" value=\"ASDFJJJJ9999XXXXYYY\" />"

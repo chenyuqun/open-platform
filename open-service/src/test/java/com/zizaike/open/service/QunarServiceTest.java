@@ -107,7 +107,7 @@ public class QunarServiceTest extends BaseTest {
         System.err.println(qunarService.book(xml));
     }
     @Test(description = "cancelBooking")
-    public void cancelBooking() throws ZZKServiceException{
+    public void cancel() throws ZZKServiceException{
         String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                 + "<cancelRequest>"
                 + "<qunarOrderNum>j3gm141219163019999</qunarOrderNum>"
@@ -119,7 +119,7 @@ public class QunarServiceTest extends BaseTest {
                 + "<property key=\"OTHER_KEY\" value=\"XXXYYY\" />"
                 + "</extras>"
                 + "</cancelRequest>";
-        System.err.println(qunarService.cancelBooking(xml));
+        System.err.println(qunarService.cancel(xml));
     }
 
     @Test(description = "查询qunar订单")
