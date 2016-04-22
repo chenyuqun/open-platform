@@ -45,16 +45,16 @@ public class QunarController extends BaseXMLController {
 
     @RequestMapping(value = "/book", method = RequestMethod.POST,produces={"text/xml"},consumes={"text/xml"})
     @ResponseBody
-    public String getSearchResult(@RequestBody String xml ){
+    public String getSearchResult(@RequestBody String xml ) throws ZZKServiceException{
         LOG.info("qunarService book xml:{}",xml);
-          return   qunarService.book(xml);
+        return   qunarService.book(xml);
 
     }
     @RequestMapping(value = "/cancel", method = RequestMethod.POST,produces={"text/xml"},consumes={"text/xml"})
     @ResponseBody
-    public String cancelBooking(@RequestBody String xml ) throws ZZKServiceException{
+    public String cancel(@RequestBody String xml ) throws ZZKServiceException{
         LOG.info("qunarService cancel xml:{}",xml);
-          return   qunarService.cancel(xml);
+        return   qunarService.cancel(xml);
 
     }
 
@@ -86,17 +86,10 @@ public class QunarController extends BaseXMLController {
      * @return
      * @throws ZZKServiceException
      */
-    @RequestMapping(value = "/opt", method = RequestMethod.GET,produces={"application/json"})
+    @RequestMapping(value = "/opt", method = RequestMethod.POST,produces={"application/json"})
     @ResponseBody
-    public JSONObject opt(@RequestParam("orderNum") String orderNum , @RequestParam("opt") OptCode opt, @RequestParam("remark") String remark, @RequestParam("money") String money,
-                          @RequestParam("smsContent") String smsContent) throws ZZKServiceException{
-        LOG.info("qunarService opt params orderNum="+orderNum+" opt="+opt+" remark="+remark+" money="+money+" smsContent="+smsContent);
-        OtaOptVO otaOptVO=new OtaOptVO();
-        otaOptVO.setMoney(money);
-        otaOptVO.setOrderNum(orderNum);
-        otaOptVO.setOpt(opt);
-        otaOptVO.setRemark(remark);
-        otaOptVO.setSmsContent(smsContent);
+    public JSONObject opt(@RequestBody OtaOptVO otaOptVO) throws ZZKServiceException{
+        LOG.info("qunarService OtaOptVO {}",otaOptVO);
         return qunarService.qunarOrderOpt(otaOptVO);
 
     }

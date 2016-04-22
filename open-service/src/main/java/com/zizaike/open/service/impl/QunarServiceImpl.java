@@ -20,7 +20,6 @@ import com.zizaike.entity.order.request.BookOrderRequest;
 import com.zizaike.entity.order.request.CancelOrderRequest;
 import com.zizaike.entity.order.request.OrderGuest;
 import com.zizaike.entity.order.request.QueryStatusOrderRequest;
-import com.zizaike.entity.order.response.QueryStatusOrderResponse;
 import com.zizaike.is.open.BaseInfoService;
 import com.zizaike.is.open.QunarService;
 import com.zizaike.open.common.util.QunarPhoneUtil;
@@ -84,17 +83,7 @@ public class QunarServiceImpl implements QunarService {
             Hotel hotel = new Hotel();
             BeanUtils.copyProperties(hotelExtList.get(i), hotel);
             hotelList.add(hotel);
-        }        
-/*        
-        for(int i = 0 ;i<hotelExtList.size();i++){
-            Hotel hotel = new Hotel();     
-            hotel.setId(hotelExtList.get(i).getId());
-            hotel.setName(hotelExtList.get(i).getName());
-            hotel.setCity(hotelExtList.get(i).getCity());
-            hotel.setTel(hotelExtList.get(i).getTel());
-            hotel.setAddress(hotelExtList.get(i).getAddress());
-            listHotel.add(hotel);
-        }*/
+        }
         HOTELList.setHotel(hotelList);
         String xml = XstreamUtil.getResponseXml(HOTELList);
         return xml;
@@ -165,14 +154,16 @@ public class QunarServiceImpl implements QunarService {
 
     @Override
     public String book(String xml) {
-        try{
+
 
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
             BookingRequest bookingRequest = (BookingRequest) XstreamUtil.getXml2Bean(xml, BookingRequest.class);
             QunarOrderInfo qunarOrderInfo=bookingRequest.getQunarOrderInfo();
+            BookingResponse bookingResponse=new BookingResponse();
             /**
              * requset入库
              */
+        try{
             QunarRequest qunarRequest=new QunarRequest();
             qunarRequest.setOrderId(qunarOrderInfo.getOrderNum());
             qunarRequest.setRequest(xml);
@@ -196,11 +187,11 @@ public class QunarServiceImpl implements QunarService {
                 for(int j=0;j<bookingRequest.getCustomerinfo().get(i).getCustomer().size();j++) {
                     String name = bookingRequest.getCustomerinfo().get(i).getCustomer().get(j).getFirstname()+
                             bookingRequest.getCustomerinfo().get(i).getCustomer().get(j).getLastName();
-                    orderGuestList.add(new OrderGuest(name,1));
+                    orderGuestList.add(new OrderGuest(name,i));
                 }
             }
             bookOrderRequest.setOrderGuests(orderGuestList);
-            BookingResponse bookingResponse=new BookingResponse();
+
                 JSONObject result=orderService.bookRQ(bookOrderRequest);
                 /**
                  * 200是success 201是网站端口下单成功[非速订]
@@ -222,8 +213,13 @@ public class QunarServiceImpl implements QunarService {
 
        }catch(ZZKServiceException | ParseException e){
             LOG.error("qunar Book exception{}",e);
+            bookingResponse.setResult(QunarResultCode.FAILURE);
+            bookingResponse.setMsg("");
+            bookingResponse.setQunarOrderNum(qunarOrderInfo.getOrderNum()==null?"":qunarOrderInfo.getOrderNum());
+            String bookRQResponseXml = XstreamUtil.getResponseXml(bookingResponse);
+            return bookRQResponseXml;
         }
-        return null;
+
     }
 
     @Override
@@ -369,7 +365,7 @@ public class QunarServiceImpl implements QunarService {
             } else {
                 return room;
             }
-            /**
+            /*
              * 床型
              */
             BedType bedType = new BedType();
@@ -547,7 +543,6 @@ public class QunarServiceImpl implements QunarService {
             result = httpProxy.httpGetXMl(qunarUrl + "qunarOrderQuery", map);
             LOG.info("qunarOrderQuery return{}",result);
         } catch (IOException e) {
-            e.printStackTrace();
             LOG.error("qunarOrderQuery IOException {}", e.toString());
         }
         return result;
@@ -597,7 +592,6 @@ public class QunarServiceImpl implements QunarService {
             result = httpProxy.httpUrlPOST(qunarUrl + "otaOpt", map);
             LOG.info("qunarOrderOpt return{}",result);
         } catch (Exception e) {
-            e.printStackTrace();
             LOG.error("qunarOrderOpt Exception {}", e.toString());
         }
         return result;
