@@ -58,7 +58,7 @@ public class QunarController extends BaseXMLController {
 
     }
 
-    @RequestMapping(value = "/query", method = RequestMethod.POST,produces={"text/xml"})
+    @RequestMapping(value = "/query", method = RequestMethod.GET,produces={"text/xml"})
     @ResponseBody
     public String query(@RequestParam("xml") String xml ) throws ZZKServiceException{
         LOG.info("qunarService query xml:{}",xml);
