@@ -309,7 +309,7 @@ public class QunarServiceImpl implements QunarService {
                 List<Integer> priceCNList = new ArrayList<Integer>();
                 List<Integer> numList = new ArrayList<Integer>();
                 List<String> statusList = new ArrayList<String>();
-                for (int i = 0; i < jsonArray.size(); i++) {
+                for (int i = 0; i < jsonArray.size()-1; i++) {
                     //取人民币
                     int priceCN = jsonArray.getJSONObject(i).getIntValue("price_cn");
                     priceCNList.add(priceCN);

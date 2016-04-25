@@ -153,6 +153,7 @@ public class QunarUtil {
         b.add(3);
         System.out.println(QunarUtil.listToString(b));
         System.out.println(QunarUtil.repeatToString(7, 3));
+        System.out.println(dateDiff("2016-05-10","2016-05-12"));
         System.out.println("~~~~");
     }
 }

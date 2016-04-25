@@ -339,7 +339,7 @@ public class XstreamUtilTest extends BaseTest {
         PriceResponse priceResponse=new PriceResponse();
         priceResponse.setCheckin("2015-05-01");
         priceResponse.setCheckout("2015-05-03");
-        priceResponse.setCurrrencyCode("USD");
+        priceResponse.setCurrencyCode("USD");
         priceResponse.setHotelAddress("1-3-3, Naka-machi, Machida-city, Tokyo");
         priceResponse.setHotelCity("tokyo");
         priceResponse.setHotelId("9987");
