@@ -119,9 +119,11 @@ public class QunarServiceImpl implements QunarService {
              * 入住总人数
              */
             int num=0;
+            if(priceRequest.getCustomerInfos()!=null){
             for (int i=0;i<priceRequest.getCustomerInfos().size();i++) {
-                num+=priceRequest.getCustomerInfos().get(i).getNumberOfAdults()
-                        +priceRequest.getCustomerInfos().get(i).getNumberOfChildren();
+                    num+=priceRequest.getCustomerInfos().get(i).getNumberOfAdults()
+                            +priceRequest.getCustomerInfos().get(i).getNumberOfChildren();
+                }
             }
             if(num==0){
                 num=1;
