@@ -405,8 +405,8 @@ public class QunarServiceImpl implements QunarService {
              * 床型
              */
             if (StringUtils.isEmpty(qunarRoomInfo.getFieldChuangxingTid())) {
-                beds.setCode(BedTypeCode.OTHER);
-                beds.setDesc(BedTypeCode.getByCode("OTHER"));
+                beds.setCode(BedTypeCode.OTHERS);
+                beds.setDesc(BedTypeCode.getByCode("OTHERS"));
             } else if (qunarRoomInfo.getFieldChuangxingTid() == 316) {
                 beds.setCount(2);
                 beds.setCode(BedTypeCode.SINGLE);
