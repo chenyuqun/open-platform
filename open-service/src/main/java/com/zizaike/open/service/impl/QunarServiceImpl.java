@@ -114,7 +114,7 @@ public class QunarServiceImpl implements QunarService {
             priceResponse.setHotelPhone(qunarPhoneUtil.StandardPhoneUtil(hotelExt.getTel()));
             priceResponse.setCheckin(checkIn);
             priceResponse.setCheckout(checkOut);
-            priceResponse.setCurrrencyCode("CNY");
+            priceResponse.setCurrencyCode("CNY");
             /**
              * 入住总人数
              */
