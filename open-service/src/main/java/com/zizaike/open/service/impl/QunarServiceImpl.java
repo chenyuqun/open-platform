@@ -208,7 +208,7 @@ public class QunarServiceImpl implements QunarService {
                     bookingResponse.setResult(QunarResultCode.FAILURE);
                     bookingResponse.setQunarOrderNum(qunarOrderInfo.getOrderNum());
                     bookingResponse.setMsg(result.getString("message"));
-
+                    bookingResponse.setOrderId("");
                     String bookRQResponseXml = XstreamUtil.getResponseXml(bookingResponse);
                     return bookRQResponseXml;
                 }
