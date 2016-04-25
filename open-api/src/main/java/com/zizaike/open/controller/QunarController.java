@@ -43,14 +43,14 @@ public class QunarController extends BaseXMLController {
         return qunarService.getPriceResponse(xml);
     }
 
-    @RequestMapping(value = "/book", method = RequestMethod.POST,produces={"text/xml"},consumes={"text/xml"})
+    @RequestMapping(value = "/book", method = RequestMethod.POST,produces={"text/xml"})
     @ResponseBody
     public String getSearchResult(@RequestBody String xml ) throws ZZKServiceException{
         LOG.info("qunarService book xml:{}",xml);
         return   qunarService.book(xml);
 
     }
-    @RequestMapping(value = "/cancel", method = RequestMethod.POST,produces={"text/xml"},consumes={"text/xml"})
+    @RequestMapping(value = "/cancel", method = RequestMethod.POST,produces={"text/xml"})
     @ResponseBody
     public String cancel(@RequestBody String xml ) throws ZZKServiceException{
         LOG.info("qunarService cancel xml:{}",xml);
@@ -58,7 +58,7 @@ public class QunarController extends BaseXMLController {
 
     }
 
-    @RequestMapping(value = "/query", method = RequestMethod.POST,produces={"text/xml"},consumes={"text/xml"})
+    @RequestMapping(value = "/query", method = RequestMethod.POST,produces={"text/xml"})
     @ResponseBody
     public String query(@RequestBody String xml ) throws ZZKServiceException{
         LOG.info("qunarService query xml:{}",xml);
