@@ -378,29 +378,29 @@ public class QunarServiceImpl implements QunarService {
             /**
              * count
              */
-            if (StringUtils.isEmpty(qunarRoomInfo.getFieldCHuangshuTid())) {
+            if (StringUtils.isEmpty(qunarRoomInfo.getFieldChuangshuTid())) {
                 beds.setCount(2);
-            } else if (qunarRoomInfo.getFieldCHuangshuTid() == 320) {
+            } else if (qunarRoomInfo.getFieldChuangshuTid() == 320) {
                 beds.setCount(0);
-            } else if (qunarRoomInfo.getFieldCHuangshuTid() == 309) {
+            } else if (qunarRoomInfo.getFieldChuangshuTid() == 309) {
                 beds.setCount(1);
-            } else if (qunarRoomInfo.getFieldCHuangshuTid() == 310) {
+            } else if (qunarRoomInfo.getFieldChuangshuTid() == 310) {
                 beds.setCount(2);
-            } else if (qunarRoomInfo.getFieldCHuangshuTid() == 315) {
+            } else if (qunarRoomInfo.getFieldChuangshuTid() == 315) {
                 beds.setCount(3);
-            } else if (qunarRoomInfo.getFieldCHuangshuTid() == 313) {
+            } else if (qunarRoomInfo.getFieldChuangshuTid() == 313) {
                 beds.setCount(4);
-            } else if (qunarRoomInfo.getFieldCHuangshuTid() == 321) {
+            } else if (qunarRoomInfo.getFieldChuangshuTid() == 321) {
                 beds.setCount(5);
-            } else if (qunarRoomInfo.getFieldCHuangshuTid() == 312) {
+            } else if (qunarRoomInfo.getFieldChuangshuTid() == 312) {
                 beds.setCount(6);
-            } else if (qunarRoomInfo.getFieldCHuangshuTid() == 322) {
+            } else if (qunarRoomInfo.getFieldChuangshuTid() == 322) {
                 beds.setCount(7);
-            } else if (qunarRoomInfo.getFieldCHuangshuTid() == 311) {
+            } else if (qunarRoomInfo.getFieldChuangshuTid() == 311) {
                 beds.setCount(8);
-            } else if (qunarRoomInfo.getFieldCHuangshuTid() == 323) {
+            } else if (qunarRoomInfo.getFieldChuangshuTid() == 323) {
                 beds.setCount(9);
-            } else if (qunarRoomInfo.getFieldCHuangshuTid() == 314) {
+            } else if (qunarRoomInfo.getFieldChuangshuTid() == 314) {
                 beds.setCount(10);
             }
             /**

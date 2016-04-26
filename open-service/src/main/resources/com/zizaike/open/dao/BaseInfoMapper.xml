@@ -12,8 +12,8 @@
         <result column="value" property="value" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="refund_rule" property="refundRule" jdbcType="VARCHAR" />
-        <result column="field_chuangxing_tid" property="fieldChuangxingTid" jdbcType="INTEGER" />
-        <result column="field_chuangshu_tid" property="fieldChuangshuTid" jdbcType="INTEGER" />
+        <result column="field__chuangxing_tid" property="fieldChuangxingTid" jdbcType="INTEGER" />
+        <result column="field__chuangshu_tid" property="fieldChuangshuTid" jdbcType="INTEGER" />
         <result column="title" property="title" jdbcType="VARCHAR" />
         <result column="checkin_at" property="checkinAt" jdbcType="VARCHAR" />
         <result column="checkout_at" property="checkoutAt" jdbcType="VARCHAR" />
