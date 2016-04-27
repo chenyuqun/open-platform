@@ -77,15 +77,15 @@ public class QunarServiceImpl implements QunarService {
         for (int i = 0; i < hotelExtList.size(); i++) {
             hotelExtList.get(i).setTel(QunarUtil.StandardPhoneUtil(hotelExtList.get(i).getTel(), hotelExtList.get(i).getDest_id()));
         }
-        List<Hotel> hotelList = new ArrayList<>();
-        HotelList HOTELList = new HotelList();
+        List<Hotel> list = new ArrayList<Hotel>();
+        HotelList hoteList = new HotelList();
         for(int i = 0;i<hotelExtList.size();i++){
             Hotel hotel = new Hotel();
             BeanUtils.copyProperties(hotelExtList.get(i), hotel);
-            hotelList.add(hotel);
+            list.add(hotel);
         }
-        HOTELList.setHotel(hotelList);
-        String xml = XstreamUtil.getResponseXml(HOTELList);
+        hoteList.setHotel(list);
+        String xml = XstreamUtil.getResponseXml(hoteList);
         return xml;
     }
 
@@ -99,7 +99,6 @@ public class QunarServiceImpl implements QunarService {
 
         try {
             PriceResponse priceResponse=new PriceResponse();
-            SimpleDateFormat sdf = new SimpleDateFormat("YYYY-mm-dd");
             PriceRequest priceRequest = (PriceRequest) XstreamUtil.getXml2Bean(xml, PriceRequest.class);
             String hotelId = priceRequest.getHotelId();
             HotelExt hotelExt = homestayDockingDao.queryQunarHotel(hotelId);
@@ -128,7 +127,7 @@ public class QunarServiceImpl implements QunarService {
             if(num==0){
                 num=1;
             }
-            //TODO 加入roomList
+            // 加入roomList
             /**
              * 房间列表
              */
