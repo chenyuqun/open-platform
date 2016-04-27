@@ -7,6 +7,7 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="refund_rule" property="refundRule" jdbcType="VARCHAR" />
   </resultMap>
+<<<<<<< HEAD
     <resultMap id="QunarResultMap" type="com.zizaike.entity.open.QunarRoomInfoDto" >
         <id column="uid" property="uid" jdbcType="INTEGER" />
         <result column="value" property="value" jdbcType="INTEGER" />
@@ -18,6 +19,14 @@
         <result column="checkin_at" property="checkinAt" jdbcType="VARCHAR" />
         <result column="checkout_at" property="checkoutAt" jdbcType="VARCHAR" />
         <result column="wifi" property="wifi" jdbcType="INTEGER" />
+=======
+    <resultMap id="OpenDiscountResultMap" type="com.zizaike.entity.open.OpenDiscount" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="channel" property="channel" jdbcType="VARCHAR" />
+        <result column="rate" property="rate" jdbcType="REAL" />
+        <result column="active" property="active" jdbcType="INTEGER" />
+        <result column="room_type_id" property="roomTypeId" jdbcType="INTEGER" />
+>>>>>>> origin/master
     </resultMap>
    <select id="getRefundAndBreakfast" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
    select d.refund_rule as refund_rule,e.name as name,f.value as value,c.uid as uid from one_db.drupal_node c 
@@ -30,6 +39,7 @@
 	LEFT JOIN LKYou.t_zaocan f
 	ON d.uid=f.uid
   </select>
+<<<<<<< HEAD
     <select id="getQunarRoomInfoDto" resultMap="QunarResultMap" parameterType="java.lang.Integer" >
      select d.refund_rule as refund_rule,e.name as name,c.title,f.value as value,c.uid as uid,e.field__chuangxing_tid,e.field__chuangshu_tid,i.checkin_at,i.checkout_at,c.wifi from one_db.drupal_node c
 	LEFT JOIN one_db.drupal_users d
@@ -46,6 +56,17 @@
 	ON d.uid=f.uid
 
 
+=======
+    <select id="getOpenDiscount" resultMap="OpenDiscountResultMap" parameterType="com.zizaike.entity.open.OpenDiscount" >
+       select id,channel,rate,active,room_type_id from LKYou.t_open_discount where
+        active = 1
+        <if test="channel != null" >
+         and   channel = #{channel,jdbcType=VARCHAR}
+        </if>
+        <if test="roomTypeId != null" >
+         and   room_type_id = #{roomTypeId,jdbcType=INTEGER}
+        </if>
+>>>>>>> origin/master
     </select>
  
  

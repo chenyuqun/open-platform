@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.zizaike.entity.open.*;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -35,10 +36,6 @@ import com.zizaike.core.common.util.http.SoapFastUtil;
 import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.core.framework.exception.open.OpenReturnException;
-import com.zizaike.entity.open.OpenChannelType;
-import com.zizaike.entity.open.RoomInfoDto;
-import com.zizaike.entity.open.RoomTypeMapping;
-import com.zizaike.entity.open.User;
 import com.zizaike.entity.open.alibaba.Data;
 import com.zizaike.entity.open.alibaba.RateInventoryPrice;
 import com.zizaike.entity.open.alibaba.Rates;
@@ -148,6 +145,7 @@ public class CtripServiceImpl implements CtripService {
         validateRQRequest.setCheckOut(domesticCheckRoomAvailRequest.getDeparture());
         validateRQRequest.setRoomNum(domesticCheckRoomAvailRequest.getRoomNumber());
         validateRQRequest.setPaymentType(1);
+        validateRQRequest.setOpenChannelType(OpenChannelType.CTRIP);
         JSONObject result = orderService.validateRQ(validateRQRequest);
         DomesticCheckRoomAvailResp domesticCheckRoomAvailResp = new DomesticCheckRoomAvailResp();
         DomesticCheckRoomAvailResponse domesticCheckRoomAvailResponse = new DomesticCheckRoomAvailResponse();
@@ -212,7 +210,7 @@ public class CtripServiceImpl implements CtripService {
      * DomesticSubmitNewHotelOrder:新订订单. <br/>
      * 
      * @author snow.zhang
-     * @param domesticSubmitNewHotelOrderRequest
+     * @param DomesticSubmitNewHotelOrderRequest
      * @return
      * @since JDK 1.7
      */
@@ -252,11 +250,11 @@ public class CtripServiceImpl implements CtripService {
         StringBuffer contactName = new StringBuffer();
         for (GuestEntity guestEntity : guests) {
             OrderGuest orderGuest = new OrderGuest();
-            contactName.append("/"+guestEntity.getFirstName()+" "+guestEntity.getLastName());
-            orderGuest.setName(guestEntity.getFirstName()+" "+guestEntity.getLastName());
+            contactName.append("&"+guestEntity.getLastName()+"/"+guestEntity.getFirstName()+" "+(StringUtils.isNotEmpty(guestEntity.getChinesName()) ?guestEntity.getChinesName():"")+" ");
+            orderGuest.setName(guestEntity.getLastName()+"/"+guestEntity.getFirstName()+" "+(StringUtils.isNotEmpty(guestEntity.getChinesName()) ?guestEntity.getChinesName():"")+" ");
             orderGuests.add(orderGuest);
         }
-        bookOrderRequest.setContactName(contactName.toString().replaceFirst("/", ""));
+        bookOrderRequest.setContactName(contactName.toString().replaceFirst("&", ""));
         bookOrderRequest.setOrderGuests(orderGuests);
         List<DailyInfo> dailyInfos = new ArrayList<DailyInfo>(); 
         for (RoomPrice roomPrice : domesticSubmitNewHotelOrderReqeust.getRoomPrices().getRoomPrices()) {
@@ -420,10 +418,20 @@ public class CtripServiceImpl implements CtripService {
                 RoomInfoDto roomInfoDto=baseInfoService.getRefundAndBreakfast(Integer.parseInt(rateInventoryPrice.getOutRid()));
                 setRoomPriceItem.setRoomID(Integer.parseInt(roomTypeMapping.getOpenRoomTypeId()));
                 hotelID=roomTypeMapping.getOpenHotelId();
-                
+
                 setRoomPriceItem.setCurrency("CNY");
                 List<PriceInfo> priceInfos = new ArrayList<PriceInfo>();
                 List<RoomInfoItem> roomInfoItems = new ArrayList<RoomInfoItem>();
+                OpenDiscount openDiscount=new OpenDiscount();
+                openDiscount.setChannel("CTRIP");
+                openDiscount.setRoomTypeId(Integer.parseInt(roomTypeMapping.getRoomTypeId()));
+                Float zzkRate = 1f;
+                OpenDiscount discountInfo = baseInfoService.getOpenDiscount(openDiscount);
+                if (discountInfo == null) {
+                    zzkRate = 1f;
+                } else {
+                    zzkRate = discountInfo.getRate();
+                }
                 //房态房价
                 Data data=rateInventoryPrice.getData();
                 int firstDay=1;
@@ -434,8 +442,8 @@ public class CtripServiceImpl implements CtripService {
                         setRoomPriceItem.setStartDate(sdf.format(inventoryPrice.getDate()));
                         firstDay=0;
                     }
-                    priceInfo.setAmountAfterTaxFee(inventoryPrice.getPrice()/100);
-                    priceInfo.setAmountBeforeTaxFee(inventoryPrice.getPrice()/100);
+                    priceInfo.setAmountAfterTaxFee((int)(zzkRate*inventoryPrice.getPrice()/100));
+                    priceInfo.setAmountBeforeTaxFee((int)(zzkRate*inventoryPrice.getPrice()/100));
                     /**
                      * 适用于地区(适用人群) 默认111111
                      */
@@ -458,8 +466,8 @@ public class CtripServiceImpl implements CtripService {
                         priceInfo.setBreakfast(0);
                     }
                     
-                    priceInfo.setCostAmountAfterTaxFee(inventoryPrice.getPrice()/100);
-                    priceInfo.setCostAmountBeforeTaxFee(inventoryPrice.getPrice()/100);
+                    priceInfo.setCostAmountAfterTaxFee((int)(zzkRate*inventoryPrice.getPrice()/100));
+                    priceInfo.setCostAmountBeforeTaxFee((int)(zzkRate*inventoryPrice.getPrice()/100));
                     /**
                      * 连住天数，暂不用，默认为1       
                      */

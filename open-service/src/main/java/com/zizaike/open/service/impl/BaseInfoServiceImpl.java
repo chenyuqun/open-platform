@@ -9,29 +9,24 @@
   
 package com.zizaike.open.service.impl;  
 
-import com.alibaba.fastjson.JSONObject;
-import com.zizaike.core.common.util.http.HttpProxyUtil;
-import com.zizaike.core.framework.exception.open.ErrorCodeFields;
-import com.zizaike.entity.open.QunarRoomInfoDto;
-import org.apache.commons.lang.StringUtils;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.zizaike.core.framework.exception.IllegalParamterException;
+import com.alibaba.fastjson.JSONObject;
+import com.zizaike.core.common.util.http.HttpProxyUtil;
 import com.zizaike.core.framework.exception.ZZKServiceException;
-import com.zizaike.core.framework.exception.open.RoomTypeNotMappingException;
+import com.zizaike.entity.open.OpenDiscount;
+import com.zizaike.entity.open.QunarRoomInfoDto;
 import com.zizaike.entity.open.RoomInfoDto;
-import com.zizaike.entity.open.RoomTypeMapping;
 import com.zizaike.is.open.BaseInfoService;
-import com.zizaike.open.dao.AreaDao;
 import com.zizaike.open.dao.BaseInfoDao;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**  
  * ClassName:BaseInfoServiceImpl <br/>  
@@ -77,6 +72,10 @@ public class BaseInfoServiceImpl implements BaseInfoService {
     @Override
     public QunarRoomInfoDto getQunarRoomInfo(int nid){
         QunarRoomInfoDto query=baseInfoDao.getQunarRoomInfoDto(nid);
+        return query;
+    }
+    public OpenDiscount getOpenDiscount(OpenDiscount openDiscount) throws ZZKServiceException {
+        OpenDiscount query=baseInfoDao.getOpenDiscount(openDiscount);
         return query;
     }
 }

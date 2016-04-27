@@ -61,6 +61,9 @@ public class OrderServiceImpl implements OrderService {
         if (validateOrderRequest == null) {
             throw new IllegalParamterException("validateOrderRequest is null");
         }
+        if(validateOrderRequest.getOpenChannelType()==null){
+            throw new IllegalParamterException("openChannelType is null");
+        }
         if(StringUtils.isEmpty(validateOrderRequest.getRoomTypeId())){
             throw new IllegalParamterException("roomTypeId is null");
         }
@@ -77,6 +80,7 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalParamterException("paymentType is not 1");
         }
         Map<String, String> map = new HashMap<String, String>();
+        map.put("channelType",validateOrderRequest.getOpenChannelType()+"");
         map.put("roomTypeId", validateOrderRequest.getRoomTypeId());
         map.put("openHotelId", validateOrderRequest.getOpenHotelId());
         if(validateOrderRequest.getOpenRatePlanId()!=null){
