@@ -730,7 +730,7 @@ public class CtripServiceImpl implements CtripService {
             map.put("hotelGroupHotelCode", setMappingInfoVo.getHotelGroupHotelCode());
             map.put("hotelGroupRatePlanCode", setMappingInfoVo.getHotelGroupRatePlanCode());
             map.put("hotelGroupRoomName", setMappingInfoVo.getHotelGroupRoomName());
-        }else if(setMappingInfoVo.getSetMappingOperateType()==SetMappingOperateType.UN_MAPPING_ROOM_ID_DO_NOT_DELETE_PRICE){
+        }else if(setMappingInfoVo.getSetMappingOperateType()==SetMappingOperateType.UN_MAPPING_ROOM_ID_DELETE_PRICE){
             if(StringUtils.isEmpty(setMappingInfoVo.getHotel())){
                 throw new IllegalParamterException("setMappingInfoVo  getHotel is not  null");
             }
@@ -749,7 +749,7 @@ public class CtripServiceImpl implements CtripService {
             if(StringUtils.isEmpty(setMappingInfoVo.getHotelGroupRoomName())){
                 throw new IllegalParamterException("setMappingInfoVo  getHotelGroupRoomName is not  null");
             }
-            map.put("setType",-1);
+            map.put("setType",-2);
             map.put("hotel", setMappingInfoVo.getHotel());
             map.put("room", setMappingInfoVo.getRoom());
             map.put("hotelGroupRoomTypeCode", setMappingInfoVo.getHotelGroupRoomTypeCode());
