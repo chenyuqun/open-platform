@@ -306,8 +306,8 @@ public class CtripServiceImpl implements CtripService {
                 domesticSubmitNewHotelOrderResp.setResultCode("9999");
                 break;
             case "408":
-                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
-                domesticSubmitNewHotelOrderResp.setResultCode("9999");
+                domesticSubmitNewHotelOrderResp.setMessage("酒店满房/房量不足");
+                domesticSubmitNewHotelOrderResp.setResultCode("101");
                 break;
             /**
              * 价格校验失败
