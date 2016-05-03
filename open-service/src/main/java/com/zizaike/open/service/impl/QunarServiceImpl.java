@@ -458,7 +458,8 @@ public class QunarServiceImpl implements QunarService {
                 refundRules.add(new RefundRule(0, RefundType.DEDUCT_BY_PERCENT, "100"));
             } else {
                 JSONObject refundRule = JSON.parseObject(qunarRoomInfo.getRefundRule());
-                if (refundRule.get("type").equals(1)) {
+                //现在没有type为0这种说法
+                //if (refundRule.get("type").equals(1)) {
                     JSONArray refundList = refundRule.getJSONArray("refund_list");
                     Boolean firstRefund = true;
                     for (int i = 1; i <= refundList.size(); i++) {
@@ -470,9 +471,9 @@ public class QunarServiceImpl implements QunarService {
                         }
                     }
                     refundRules.add(new RefundRule(0, RefundType.DEDUCT_BY_PERCENT, "100"));
-                } else {
-                    nonRefundableRanges.add(new NonRefundableRange(checkIn, checkOut));
-                }
+                //} else {
+                //   nonRefundableRanges.add(new NonRefundableRange(checkIn, checkOut));
+                //}
             }
             Refund refund = new Refund();
             refund.setReturnable(Boolean.TRUE);
