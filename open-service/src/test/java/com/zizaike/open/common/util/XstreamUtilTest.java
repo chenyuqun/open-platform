@@ -403,6 +403,7 @@ public class XstreamUtilTest extends BaseTest {
                 + "<payType>PREPAY</payType>" 
                 + "<customerIp>103.24.27.9</customerIp>"
                 + "<invoiceCode>E</invoiceCode><!-- N=no require Y=paper invoice E=electronic receipt -->"
+                + "<invoice/>"
                 + "</qunarOrderInfo>" 
                 + "</bookingRequest>";
         
