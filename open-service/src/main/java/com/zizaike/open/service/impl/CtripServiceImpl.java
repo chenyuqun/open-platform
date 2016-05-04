@@ -645,7 +645,7 @@ public class CtripServiceImpl implements CtripService {
         Map map = new HashMap();
         map.put("userName", username);
         map.put("password", password);
-        map.put("userId", 204);
+        map.put("userId", userId);
         map.put("date", dateString);
         
         map.put("roomInfoItems", roomInfoItems);
