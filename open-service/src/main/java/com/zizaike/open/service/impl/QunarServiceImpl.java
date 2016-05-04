@@ -184,12 +184,21 @@ public class QunarServiceImpl implements QunarService {
             bookOrderRequest.setTotalPrice((long)(Double.valueOf(bookingRequest.getRmbPrice())*100));
             bookOrderRequest.setRoomNum(Integer.valueOf(bookingRequest.getNumberOfRooms()));
             List<OrderGuest> orderGuestList=new ArrayList<OrderGuest>();
+            int realNum=0;
             for(int i=0;i<bookingRequest.getCustomerinfo().size();i++) {
                 for(int j=0;j<bookingRequest.getCustomerinfo().get(i).getCustomer().size();j++) {
                     String name = bookingRequest.getCustomerinfo().get(i).getCustomer().get(j).getFirstname()+
                             bookingRequest.getCustomerinfo().get(i).getCustomer().get(j).getLastName();
                     orderGuestList.add(new OrderGuest(name,i));
                 }
+                realNum+=bookingRequest.getCustomerinfo().get(i).getNumberOfChildren()+bookingRequest.getCustomerinfo().get(i).getNumberOfAdults();
+            }
+            /**
+             * 用真实人数填充
+             */
+            while(realNum>orderGuestList.size()){
+                orderGuestList.add(new OrderGuest("",0));
+
             }
             bookOrderRequest.setOrderGuests(orderGuestList);
 
