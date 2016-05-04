@@ -196,7 +196,7 @@ public class QunarServiceImpl implements QunarService {
             /**
              * 用真实人数填充
              */
-            while(realNum==orderGuestList.size()){
+            while(realNum>orderGuestList.size()){
                 orderGuestList.add(new OrderGuest("",0));
 
             }
