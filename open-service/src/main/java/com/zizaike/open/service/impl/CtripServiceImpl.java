@@ -853,7 +853,7 @@ public class CtripServiceImpl implements CtripService {
         map.put("userName", username);
         map.put("password", password);
         map.put("date", dateString);
-        if(mappingInfoEntity.getIsOverSea()==0){
+        if(mappingInfoEntity.getIsOversea()==0){
             map.put("userId", userId);
             map.put("supplierID", supplierID);
         }else{
