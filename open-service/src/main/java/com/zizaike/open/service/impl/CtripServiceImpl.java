@@ -183,7 +183,7 @@ public class CtripServiceImpl implements CtripService {
      * DomesticSubmitNewHotelOrder:新订订单. <br/>
      * 
      * @author snow.zhang
-     * @param DomesticSubmitNewHotelOrderRequest
+     * @param domesticSubmitNewHotelOrderReqeust
      * @return
      * @since JDK 1.7
      */
@@ -740,7 +740,7 @@ public class CtripServiceImpl implements CtripService {
             map.put("hotelGroupRatePlanCode", setMappingInfoVo.getHotelGroupRatePlanCode());
             map.put("hotelGroupRoomName", setMappingInfoVo.getHotelGroupRoomName());
         }
-        RoomInfoDto roomInfoDto=baseInfoService.getRefundAndBreakfast(Integer.parseInt(setMappingInfoVo.getHotelGroupRoomTypeCode()));
+        //RoomInfoDto roomInfoDto=baseInfoService.getRefundAndBreakfast(Integer.parseInt(setMappingInfoVo.getHotelGroupRoomTypeCode()));
         String template = "SetMappingInfo.vm";
         Date currentTime = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -748,7 +748,7 @@ public class CtripServiceImpl implements CtripService {
         map.put("userName", username);
         map.put("password", password);
         map.put("date", dateString);
-        if(roomInfoDto.getDestId()==10||roomInfoDto.getDestId()==12){
+        if(setMappingInfoVo.getIsOversea()==0){
             map.put("userId", userId);
             map.put("supplierID", supplierID);
         }else{
