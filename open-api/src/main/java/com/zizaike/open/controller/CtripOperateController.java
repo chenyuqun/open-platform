@@ -77,9 +77,9 @@ public class CtripOperateController extends BaseAjaxController {
      */
     @RequestMapping(value = "/getHotelInfo", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseResult getHotelInfo(@RequestParam Integer currentPage) throws ZZKServiceException {
+    public ResponseResult getHotelInfo(@RequestParam Integer currentPage,@RequestParam Integer isOversea) throws ZZKServiceException {
         ResponseResult resultResult = new ResponseResult();
-        resultResult.setInfo(ctripService.getHotelInfo(currentPage));
+        resultResult.setInfo(ctripService.getHotelInfo(currentPage,isOversea));
         return resultResult;
     }
     @RequestMapping(value = "/getMappingInfo", method = RequestMethod.POST)

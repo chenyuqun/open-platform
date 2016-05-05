@@ -6,6 +6,7 @@
         <result column="value" property="value" jdbcType="INTEGER"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="refund_rule" property="refundRule" jdbcType="VARCHAR"/>
+        <result column="dest_id" property="destId" jdbcType="INTEGER"/>
     </resultMap>
     <resultMap id="QunarResultMap" type="com.zizaike.entity.open.QunarRoomInfoDto">
         <id column="uid" property="uid" jdbcType="INTEGER"/>
@@ -27,7 +28,7 @@
         <result column="room_type_id" property="roomTypeId" jdbcType="INTEGER"/>
     </resultMap>
     <select id="getRefundAndBreakfast" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-   select d.refund_rule as refund_rule,e.name as name,f.value as value,c.uid as uid from one_db.drupal_node c 
+   select d.refund_rule as refund_rule,e.name as name,f.value as value,c.uid as uid,d.dest_id as dest_id from one_db.drupal_node c
 	LEFT JOIN one_db.drupal_users d
 	ON c.uid=d.uid  
 	Right JOIN (select * from one_db.drupal_field_data_field_room_beds a 

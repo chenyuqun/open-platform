@@ -26,7 +26,7 @@
 					&lt;Recommend&gt;$roomInfoItem.recommend&lt;/Recommend&gt;
 					&lt;Recommend_Intl&gt;$roomInfoItem.recommendIntl&lt;/Recommend_Intl&gt;
 					&lt;HoldDeadline&gt;$roomInfoItem.holdDeadline&lt;/HoldDeadline&gt;
-					&lt;Roomstatus&gt;$roomInfoItem.roomstatus&lt;/Roomstatus&gt;
+					&lt;Roomstatus&gt;$roomInfoItem.roomStatus&lt;/Roomstatus&gt;
 					&lt;RoomsInv&gt;$roomInfoItem.roomsInv&lt;/RoomsInv&gt;
 					&lt;UserLimited&gt;$roomInfoItem.userLimited&lt;/UserLimited&gt;
 					&lt;Note&gt;$roomInfoItem.note&lt;/Note&gt;
