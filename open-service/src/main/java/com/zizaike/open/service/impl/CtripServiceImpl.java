@@ -9,16 +9,35 @@
 
 package com.zizaike.open.service.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.zizaike.core.common.util.http.SoapFastUtil;
+import com.zizaike.core.framework.exception.IllegalParamterException;
+import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.core.framework.exception.open.OpenReturnException;
 import com.zizaike.entity.open.*;
+import com.zizaike.entity.open.alibaba.Data;
+import com.zizaike.entity.open.alibaba.RateInventoryPrice;
+import com.zizaike.entity.open.alibaba.Rates;
+import com.zizaike.entity.open.alibaba.response.ResponseData;
+import com.zizaike.entity.open.ctrip.*;
+import com.zizaike.entity.open.ctrip.request.DomesticCancelHotelOrderRequest;
+import com.zizaike.entity.open.ctrip.request.DomesticCheckRoomAvailRequest;
+import com.zizaike.entity.open.ctrip.request.DomesticSubmitNewHotelOrderRequest;
+import com.zizaike.entity.open.ctrip.request.GuestEntity;
+import com.zizaike.entity.open.ctrip.response.*;
+import com.zizaike.entity.open.ctrip.vo.HotelGroupInterfaceRoomTypeVo;
+import com.zizaike.entity.open.ctrip.vo.MappingInfoVo;
+import com.zizaike.entity.open.ctrip.vo.SetMappingInfoVo;
+import com.zizaike.entity.order.request.*;
+import com.zizaike.entity.order.response.InventoryPrice;
+import com.zizaike.entity.order.response.OrderStatus;
+import com.zizaike.is.open.BaseInfoService;
+import com.zizaike.is.open.CtripService;
+import com.zizaike.is.open.RoomTypeMappingService;
+import com.zizaike.is.open.UserService;
+import com.zizaike.open.common.util.XstreamUtil;
+import com.zizaike.open.gateway.OrderService;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -30,59 +49,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.zizaike.core.common.util.http.SoapFastUtil;
-import com.zizaike.core.framework.exception.IllegalParamterException;
-import com.zizaike.core.framework.exception.ZZKServiceException;
-import com.zizaike.core.framework.exception.open.OpenReturnException;
-import com.zizaike.entity.open.alibaba.Data;
-import com.zizaike.entity.open.alibaba.RateInventoryPrice;
-import com.zizaike.entity.open.alibaba.Rates;
-import com.zizaike.entity.open.alibaba.response.ResponseData;
-import com.zizaike.entity.open.ctrip.BalanceType;
-import com.zizaike.entity.open.ctrip.GetHotelInfoResponse;
-import com.zizaike.entity.open.ctrip.GetMappingInfoResponseList;
-import com.zizaike.entity.open.ctrip.HotelGroupInterfaceRoomTypeEntity;
-import com.zizaike.entity.open.ctrip.MappingType;
-import com.zizaike.entity.open.ctrip.PriceInfo;
-import com.zizaike.entity.open.ctrip.RoomInfoItem;
-import com.zizaike.entity.open.ctrip.RoomPrice;
-import com.zizaike.entity.open.ctrip.RoomPrices;
-import com.zizaike.entity.open.ctrip.SetMappingOperateType;
-import com.zizaike.entity.open.ctrip.SetRoomInfoRequest;
-import com.zizaike.entity.open.ctrip.SetRoomPriceItem;
-import com.zizaike.entity.open.ctrip.request.DomesticCancelHotelOrderReq;
-import com.zizaike.entity.open.ctrip.request.DomesticCancelHotelOrderRequest;
-import com.zizaike.entity.open.ctrip.request.DomesticCheckRoomAvailReq;
-import com.zizaike.entity.open.ctrip.request.DomesticCheckRoomAvailRequest;
-import com.zizaike.entity.open.ctrip.request.DomesticSubmitNewHotelOrderReq;
-import com.zizaike.entity.open.ctrip.request.DomesticSubmitNewHotelOrderRequest;
-import com.zizaike.entity.open.ctrip.request.GuestEntity;
-import com.zizaike.entity.open.ctrip.response.AvailRoomQuantity;
-import com.zizaike.entity.open.ctrip.response.AvailRoomQuantitys;
-import com.zizaike.entity.open.ctrip.response.DomesticCancelHotelOrderResp;
-import com.zizaike.entity.open.ctrip.response.DomesticCancelHotelOrderResponse;
-import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResp;
-import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResponse;
-import com.zizaike.entity.open.ctrip.response.DomesticSubmitNewHotelOrderResp;
-import com.zizaike.entity.open.ctrip.response.DomesticSubmitNewHotelOrderResponse;
-import com.zizaike.entity.open.ctrip.vo.HotelGroupInterfaceRoomTypeVo;
-import com.zizaike.entity.open.ctrip.vo.MappingInfoVo;
-import com.zizaike.entity.open.ctrip.vo.SetMappingInfoVo;
-import com.zizaike.entity.order.request.BookOrderRequest;
-import com.zizaike.entity.order.request.CancelOrderRequest;
-import com.zizaike.entity.order.request.DailyInfo;
-import com.zizaike.entity.order.request.OrderGuest;
-import com.zizaike.entity.order.request.ValidateOrderRequest;
-import com.zizaike.entity.order.response.InventoryPrice;
-import com.zizaike.entity.order.response.OrderStatus;
-import com.zizaike.is.open.BaseInfoService;
-import com.zizaike.is.open.CtripService;
-import com.zizaike.is.open.RoomTypeMappingService;
-import com.zizaike.is.open.UserService;
-import com.zizaike.open.common.util.XstreamUtil;
-import com.zizaike.open.gateway.OrderService;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * ClassName:CtripServiceImpl <br/>
@@ -111,6 +80,10 @@ public class CtripServiceImpl implements CtripService {
     private String userId;
     @Value("${ctrip.supplierID}")
     private String supplierID;
+    @Value("${ctrip.overseaUserId}")
+    private String overseaUserId;
+    @Value("${ctrip.overseaSupplierID}")
+    private String overseaSupplierID;
     @Value("${ctrip.url}")
     private String url;
     @Value("${ctrip.username}")
@@ -406,6 +379,7 @@ public class CtripServiceImpl implements CtripService {
             List<RateInventoryPrice> rateInventoryPriceList=object.getRateInventoryPriceMap();
             List<SetRoomPriceItem> setRoomPriceItems = new ArrayList<SetRoomPriceItem>();
             String hotelID="";
+            Integer destId=null;
             for(int i=0;i<rateInventoryPriceList.size();i++){
                 RateInventoryPrice rateInventoryPrice=new RateInventoryPrice();
                 SetRoomPriceItem setRoomPriceItem=new SetRoomPriceItem();
@@ -415,11 +389,11 @@ public class CtripServiceImpl implements CtripService {
                 //房型               
                 RoomTypeMapping roomTypeMapping = roomTypeMappingService.queryByRoomTypeId(
                         rateInventoryPrice.getOutRid());
-                //根据房间号获得额外信息 目前有退款政策，早餐信息，最大入住人数
+                //根据房间号获得额外信息 目前有退款政策，早餐信息，最大入住人数,携程现在还要区分海外酒店
                 RoomInfoDto roomInfoDto=baseInfoService.getRefundAndBreakfast(Integer.parseInt(rateInventoryPrice.getOutRid()));
                 setRoomPriceItem.setRoomID(Integer.parseInt(roomTypeMapping.getOpenRoomTypeId()));
                 hotelID=roomTypeMapping.getOpenHotelId();
-
+                destId=roomInfoDto.getDestId();
                 setRoomPriceItem.setCurrency("CNY");
                 List<PriceInfo> priceInfos = new ArrayList<PriceInfo>();
                 List<RoomInfoItem> roomInfoItems = new ArrayList<RoomInfoItem>();
@@ -597,16 +571,16 @@ public class CtripServiceImpl implements CtripService {
                 setRoomPriceItem.setPriceInfos(priceInfos);
                 setRoomPriceItems.add(setRoomPriceItem);
                 //更新房态
-                setRoomInfo(roomInfoItems, roomTypeMapping.getOpenRoomTypeId(),sdf.format(startDay),sdf.format(endDay));
+                setRoomInfo(roomInfoItems, roomTypeMapping.getOpenRoomTypeId(),sdf.format(startDay),sdf.format(endDay),destId);
             } 
           //更新价格
-            setRoomPrice(setRoomPriceItems,hotelID);
+            setRoomPrice(setRoomPriceItems,hotelID,destId);
            
          
     }
 
     
-    public void setRoomPrice(List<SetRoomPriceItem> setRoomPriceItems,String hotelID){
+    public void setRoomPrice(List<SetRoomPriceItem> setRoomPriceItems,String hotelID,Integer destId){
         /**
          * SetRoomPrice.vm
          */
@@ -617,7 +591,11 @@ public class CtripServiceImpl implements CtripService {
         Map pricemap = new HashMap();
         pricemap.put("userName", username);
         pricemap.put("password", password);
-        pricemap.put("userId", userId);
+        if(destId==10||destId==12){
+            pricemap.put("userId", userId);
+        }else{
+            pricemap.put("userId", overseaUserId);
+        }
         pricemap.put("date", dateString);
         pricemap.put("setRoomPriceItems", setRoomPriceItems);
         pricemap.put("hotelID", hotelID);
@@ -635,7 +613,7 @@ public class CtripServiceImpl implements CtripService {
         }
     }
     
-    public void setRoomInfo(List<RoomInfoItem> roomInfoItems,String roomID,String startDate,String endDate){
+    public void setRoomInfo(List<RoomInfoItem> roomInfoItems,String roomID,String startDate,String endDate,Integer destId){
         /**
          * SetRoomInfo.vm
          */
@@ -646,7 +624,11 @@ public class CtripServiceImpl implements CtripService {
         Map map = new HashMap();
         map.put("userName", username);
         map.put("password", password);
-        map.put("userId", userId);
+        if(destId==10||destId==12){
+            map.put("userId", userId);
+        }else{
+            map.put("userId", overseaUserId);
+        }
         map.put("date", dateString);
         
         map.put("roomInfoItems", roomInfoItems);
@@ -758,6 +740,7 @@ public class CtripServiceImpl implements CtripService {
             map.put("hotelGroupRatePlanCode", setMappingInfoVo.getHotelGroupRatePlanCode());
             map.put("hotelGroupRoomName", setMappingInfoVo.getHotelGroupRoomName());
         }
+        RoomInfoDto roomInfoDto=baseInfoService.getRefundAndBreakfast(Integer.parseInt(setMappingInfoVo.getHotelGroupRoomTypeCode()));
         String template = "SetMappingInfo.vm";
         Date currentTime = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -765,8 +748,14 @@ public class CtripServiceImpl implements CtripService {
         map.put("userName", username);
         map.put("password", password);
         map.put("date", dateString);
-        map.put("userId", userId);
-        map.put("supplierID", supplierID);
+        if(roomInfoDto.getDestId()==10||roomInfoDto.getDestId()==12){
+            map.put("userId", userId);
+            map.put("supplierID", supplierID);
+        }else{
+            map.put("userId", overseaUserId);
+            map.put("supplierID",overseaSupplierID);
+        }
+
         map.put("balanceType", BalanceType.PP);
         //相互mapping
         map.put("mappingType", MappingType.MUTUAL_MAPPING.getValue());
@@ -797,7 +786,7 @@ public class CtripServiceImpl implements CtripService {
     }
 
     @Override
-    public GetHotelInfoResponse getHotelInfo(Integer currentPage) throws ZZKServiceException {
+    public GetHotelInfoResponse getHotelInfo(Integer currentPage,Integer isOversea) throws ZZKServiceException {
         String template = "GetHotelInfo.vm";
         Date currentTime = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -806,8 +795,13 @@ public class CtripServiceImpl implements CtripService {
         map.put("userName", username);
         map.put("password", password);
         map.put("date", dateString);
-        map.put("userId", userId);
-        map.put("supplierID", supplierID);
+        if(isOversea==0){
+            map.put("userId", userId);
+            map.put("supplierID", supplierID);
+        }else{
+            map.put("userId", overseaUserId);
+            map.put("supplierID", overseaSupplierID);
+        }
         map.put("currentPage", currentPage==null || currentPage==0 ? 1: currentPage);
         GetHotelInfoResponse getHotelInfoResponse = null;
         try {
@@ -859,8 +853,13 @@ public class CtripServiceImpl implements CtripService {
         map.put("userName", username);
         map.put("password", password);
         map.put("date", dateString);
-        map.put("userId", userId);
-        map.put("supplierID", supplierID);
+        if(mappingInfoEntity.getIsOverSea()==0){
+            map.put("userId", userId);
+            map.put("supplierID", supplierID);
+        }else{
+            map.put("userId", overseaUserId);
+            map.put("supplierID", overseaSupplierID);
+        }
         //获取信息类型：UnMapping表示  获取未对接的信息， Appoint表示获取指定信息
         map.put("getMappingInfoType", mappingInfoEntity.getGetMappingInfoType());
         map.put("hotels", mappingInfoEntity.getHotels());
@@ -914,7 +913,11 @@ public class CtripServiceImpl implements CtripService {
         Map map = new HashMap();
         map.put("userName", username);
         map.put("password", password);
-        map.put("userId", userId);
+        if(hotelGroupInterfaceRoomTypeVo.getIsOversea()==0){
+            map.put("userId", userId);
+        }else{
+            map.put("userId",overseaUserId);
+        }
         map.put("date", dateString);
         map.put("hotelGroupRoomTypeCode", hotelGroupInterfaceRoomTypeVo.getHotelGroupRoomTypeCode());
         map.put("hotelGroupHotelCode", hotelGroupInterfaceRoomTypeVo.getHotelGroupHotelCode());
