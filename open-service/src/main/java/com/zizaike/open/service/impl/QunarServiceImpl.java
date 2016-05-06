@@ -127,7 +127,7 @@ public class QunarServiceImpl implements QunarService {
             if(num==0){
                 num=1;
             }
-            // 加入roomList
+
             /**
              * 房间列表
              */
@@ -136,10 +136,10 @@ public class QunarServiceImpl implements QunarService {
             if (StringUtils.isEmpty(roomId)) {
                 String[] rids = hotelExt.getRids().split(",");
                 for (String rid : rids) {
-                    roomList.add(this.getRoomPriceResponse(rid, checkIn, checkOut,num));
+                    roomList.add(this.getRoomPriceResponse(rid, checkIn, checkOut,num,priceRequest.getNumberOfRooms()));
                 }
             } else {
-                roomList.add(this.getRoomPriceResponse(roomId, checkIn, checkOut,num));
+                roomList.add(this.getRoomPriceResponse(roomId, checkIn, checkOut,num,priceRequest.getNumberOfRooms()));
             }
             priceResponse.setRooms(roomList);
             String priceResponeXml = XstreamUtil.getResponseXml(priceResponse);
@@ -301,7 +301,7 @@ public class QunarServiceImpl implements QunarService {
 
     }
 
-    public Room getRoomPriceResponse(String roomId, String checkIn, String checkOut, int number) {
+    public Room getRoomPriceResponse(String roomId, String checkIn, String checkOut, int number,Integer roomNum) {
 
         try {
             Room room = new Room();
@@ -360,7 +360,7 @@ public class QunarServiceImpl implements QunarService {
                 /**
                  *入住人数可能带有儿童，目前采取成人数+儿童数和我们的入住人数进行对比
                  */
-                if(number>maxOccupancy){
+                if(number>(maxOccupancy*roomNum)){
                     throw new ZZKServiceException("100","入住人数大于房间最大人数");
                 }
                 room.setMaxOccupancy(maxOccupancy);
