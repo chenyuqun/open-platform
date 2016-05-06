@@ -302,11 +302,12 @@ public class QunarServiceImpl implements QunarService {
     }
 
     public Room getRoomPriceResponse(String roomId, String checkIn, String checkOut, int number) {
-        Room room = new Room();
-        /**
-         * 订单填写时才需要
-         */
+
         try {
+            Room room = new Room();
+            /**
+             * 订单填写时才需要
+             */
             QunarRoomInfoDto qunarRoomInfo = baseInfoService.getQunarRoomInfo(Integer.valueOf(roomId));
             int dateDiff = QunarUtil.dateDiff(checkIn, checkOut);
             /**
@@ -506,6 +507,7 @@ public class QunarServiceImpl implements QunarService {
 
         } catch (ZZKServiceException e) {
             LOG.error("getRoomPriceResponse exception{}",e);
+            Room room = new Room();
             return room;
         }
 
