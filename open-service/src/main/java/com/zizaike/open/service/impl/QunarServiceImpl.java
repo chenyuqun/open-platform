@@ -356,6 +356,12 @@ public class QunarServiceImpl implements QunarService {
                 } else {
                     maxOccupancy = Integer.parseInt(qunarRoomInfo.getName());
                 }
+                /**
+                 *入住人数可能带有儿童，目前采取成人数+儿童数和我们的入住人数进行对比
+                 */
+                if(number>maxOccupancy){
+                    throw new ZZKServiceException("100","入住人数大于房间最大人数");
+                }
                 room.setMaxOccupancy(maxOccupancy);
                 if (roomStyle == 2) {
                     room.setOccupancyNumber(number);
