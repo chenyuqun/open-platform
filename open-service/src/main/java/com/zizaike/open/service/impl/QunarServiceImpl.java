@@ -360,7 +360,7 @@ public class QunarServiceImpl implements QunarService {
                 /**
                  *入住人数可能带有儿童，目前采取成人数+儿童数和我们的入住人数进行对比
                  */
-                if(number>(maxOccupancy*roomNum)){
+                if(roomNum!=null&&number>(maxOccupancy*roomNum)){
                     throw new ZZKServiceException("100","入住人数大于房间最大人数");
                 }
                 room.setMaxOccupancy(maxOccupancy);
