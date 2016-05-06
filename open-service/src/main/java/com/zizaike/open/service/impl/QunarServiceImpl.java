@@ -506,10 +506,11 @@ public class QunarServiceImpl implements QunarService {
 
         } catch (ZZKServiceException e) {
             LOG.error("getRoomPriceResponse exception{}",e);
+            return room;
         }
 
+        return null;
 
-        return room;
     }
 
     /**  
