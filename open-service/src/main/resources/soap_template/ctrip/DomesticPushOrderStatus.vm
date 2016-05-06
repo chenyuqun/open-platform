@@ -2,10 +2,10 @@
 
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">  
   <soap:Header> 
-    <CtripSoapHeader xmlns="http://www.ctrip.com/">  
-      <Login>zhilianjishuzhuanshu</Login>  
-      <Password>zhilianzhuanshu11!!</Password>  
-      <Company>204</Company> 
+    <CtripSoapHeader xmlns="http://www.ctrip.com/">
+        <Login>${userName}</Login>
+        <Password>${password}</Password>
+        <Company>${userId}</Company>
     </CtripSoapHeader> 
   </soap:Header>  
   <soap:Body> 
