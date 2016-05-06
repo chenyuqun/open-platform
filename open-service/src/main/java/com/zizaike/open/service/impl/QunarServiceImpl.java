@@ -504,14 +504,12 @@ public class QunarServiceImpl implements QunarService {
 //            room.setOptionRules(optionRuleList);
 //            room.setPromotionRules(promotionRuleList);
 //            room.setExtras(extraList);
-
+            return room;
         } catch (ZZKServiceException e) {
             LOG.error("getRoomPriceResponse exception{}",e);
             Room room = new Room();
             return room;
         }
-
-        return null;
 
     }
 
