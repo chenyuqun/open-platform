@@ -327,7 +327,7 @@ public class QunarServiceImpl implements QunarService {
                     //房间数
 
                     int num = jsonArray.getJSONObject(i).getIntValue("num");
-                    if(roomStyle==2){
+                    if(roomStyle==2&&num>0){
                         num=1;
                     }
                     numList.add(num);
