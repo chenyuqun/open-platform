@@ -419,8 +419,8 @@ public class CtripServiceImpl implements CtripService {
                         setRoomPriceItem.setStartDate(sdf.format(inventoryPrice.getDate()));
                         firstDay=0;
                     }
-                    priceInfo.setAmountAfterTaxFee((int)(zzkRate*inventoryPrice.getPrice()/100));
-                    priceInfo.setAmountBeforeTaxFee((int)(zzkRate*inventoryPrice.getPrice()/100));
+                    priceInfo.setAmountAfterTaxFee((int)(Math.ceil(zzkRate*inventoryPrice.getPrice()/100)));
+                    priceInfo.setAmountBeforeTaxFee((int)(Math.ceil(zzkRate*inventoryPrice.getPrice()/100)));
                     /**
                      * 适用于地区(适用人群) 默认111111
                      */
@@ -443,8 +443,8 @@ public class CtripServiceImpl implements CtripService {
                         priceInfo.setBreakfast(0);
                     }
                     
-                    priceInfo.setCostAmountAfterTaxFee((int)(zzkRate*inventoryPrice.getPrice()/100));
-                    priceInfo.setCostAmountBeforeTaxFee((int)(zzkRate*inventoryPrice.getPrice()/100));
+                    priceInfo.setCostAmountAfterTaxFee((int)(Math.ceil(zzkRate*inventoryPrice.getPrice()/100)));
+                    priceInfo.setCostAmountBeforeTaxFee((int)(Math.ceil(zzkRate*inventoryPrice.getPrice()/100)));
                     /**
                      * 连住天数，暂不用，默认为1       
                      */
