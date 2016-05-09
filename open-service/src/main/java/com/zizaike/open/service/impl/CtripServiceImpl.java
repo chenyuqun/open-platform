@@ -86,6 +86,8 @@ public class CtripServiceImpl implements CtripService {
     private String overseaSupplierID;
     @Value("${ctrip.url}")
     private String url;
+    @Value("${ctrip.overseaUrl}")
+    private String overseaUrl;
     @Value("${ctrip.username}")
     private String username;
     @Value("${ctrip.password}")
@@ -604,7 +606,12 @@ public class CtripServiceImpl implements CtripService {
         pricemap.put("priority", "N");
         try {
             long start = System.currentTimeMillis();
-            String xmlStr = soapFastUtil.post(pricemap, prefix, template, url, "");
+            String xmlStr="";
+            if(destId==10||destId==12){
+                xmlStr = soapFastUtil.post(pricemap, prefix, template, url, "");
+            }else{
+                xmlStr = soapFastUtil.post(pricemap, prefix, template, overseaUrl, "");
+            }
             LOG.info(xmlStr);
             LOG.info("setRoomPrice excute time {} ms",System.currentTimeMillis() - start);
         } catch (Exception e) {
@@ -637,8 +644,13 @@ public class CtripServiceImpl implements CtripService {
         map.put("endDate", endDate);
         map.put("editer", "zizaike");
         try {
+            String xmlStr ="";
             long start = System.currentTimeMillis();
-            String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
+            if(destId==10||destId==12){
+                xmlStr = soapFastUtil.post(map, prefix, template, url, "");
+            }else{
+                xmlStr = soapFastUtil.post(map, prefix, template, overseaUrl, "");
+            }
             System.out.println(xmlStr);
             LOG.info("setRoomInfo excute time {} ms",System.currentTimeMillis() - start);
         } catch (Exception e) {
@@ -763,8 +775,13 @@ public class CtripServiceImpl implements CtripService {
             long start = System.currentTimeMillis();
             Document doc = null;
             String xml = null;
+            String xmlStr = null;
             try{
-                String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
+                if(setMappingInfoVo.getIsOversea()==0){
+                    xmlStr = soapFastUtil.post(map, prefix, template, url, "");
+                }else{
+                    xmlStr = soapFastUtil.post(map, prefix, template, overseaUrl, "");
+                }
                 LOG.info("setMappingInfo not replaceAll  response xml {}",xmlStr);
                  xml = xmlStr.replaceAll("&amp;", "&").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
                 LOG.info("setMappingInfo  response xml {}",xml);
@@ -806,7 +823,13 @@ public class CtripServiceImpl implements CtripService {
         GetHotelInfoResponse getHotelInfoResponse = null;
         try {
             long start = System.currentTimeMillis();
-            String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
+            String xmlStr=null;
+            if (isOversea == 0) {
+                xmlStr = soapFastUtil.post(map, prefix, template, url, "");
+            }else{
+                xmlStr = soapFastUtil.post(map, prefix, template, overseaUrl, "");
+            }
+
             String xml = xmlStr.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
             LOG.info("getHotelInfo  response xml {}",xml);
             Document doc = null;
@@ -867,8 +890,14 @@ public class CtripServiceImpl implements CtripService {
             long start = System.currentTimeMillis();
             Document doc = null; 
             String xml =null;
+            String xmlStr =null;
             try{
-            String xmlStr = soapFastUtil.post(map, prefix, template, url, "");
+                if(mappingInfoEntity.getIsOversea()==0){
+                    xmlStr = soapFastUtil.post(map, prefix, template, url, "");
+                }else{
+                    xmlStr = soapFastUtil.post(map, prefix, template, overseaUrl, "");
+                }
+
             LOG.info("getMappingInfo  response not replaceAll xml {}",xmlStr);
             xml = xmlStr.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
             LOG.info("getMappingInfo  response xml {}",xml);
@@ -927,7 +956,11 @@ public class CtripServiceImpl implements CtripService {
             String xml = null;
             Document doc = null;
             try{
-                xml = soapFastUtil.post(map, prefix, template, url, "");
+                if(hotelGroupInterfaceRoomTypeVo.getIsOversea()==0){
+                    xml = soapFastUtil.post(map, prefix, template, url, "");
+                }else{
+                    xml = soapFastUtil.post(map, prefix, template, overseaUrl, "");
+                }
                 LOG.info("getCtripRoomTypeInfo  response xml {}",xml);
                 doc = DocumentHelper.parseText(xml);
             } catch (Exception e) {
