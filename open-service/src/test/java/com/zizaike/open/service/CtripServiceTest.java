@@ -182,7 +182,7 @@ public class CtripServiceTest extends BaseTest {
     
     @Test(description = "getHotelInfo")
     public void getHotelInfo() throws ZZKServiceException, DocumentException {
-        System.err.println(ctipCtripService.getHotelInfo(2));
+        System.err.println(ctipCtripService.getHotelInfo(2,1));
     }
     
     @Test(description = "getMappingInfo")
