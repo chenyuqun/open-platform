@@ -313,7 +313,7 @@ public class QunarServiceImpl implements QunarService {
             JSONObject result = baseInfoService.getZizaikePrice(roomId, checkIn, checkOut);
             //现在加入打折逻辑
             OpenDiscount openDiscount=new OpenDiscount();
-            openDiscount.setChannel("CTRIP");
+            openDiscount.setChannel("QUNAR");
             openDiscount.setRoomTypeId(Integer.parseInt(roomId));
             Float zzkRate = 1f;
             OpenDiscount discountInfo = baseInfoService.getOpenDiscount(openDiscount);
