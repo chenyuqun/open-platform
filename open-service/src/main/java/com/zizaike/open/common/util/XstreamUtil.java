@@ -9,7 +9,7 @@ import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
 import com.zizaike.entity.open.alibaba.request.RequestData;
 import com.zizaike.entity.open.alibaba.response.ResponseData;
-public  class XstreamUtil { 
+public  class XstreamUtil {
     private static final String xmlHead = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
 	//private static final XStream xstream =  new XStream(new DomDriver("utf8"));
     //去掉 &quot 等特殊字符
@@ -77,6 +77,6 @@ public  class XstreamUtil {
      StringBuffer xml = new StringBuffer(xmlHead).append("<RequestResponse>\r\n").append(beanXml).append("</RequestResponse>\r\n");  
      return xml.toString();
  }
-  
- 
+
+
 }

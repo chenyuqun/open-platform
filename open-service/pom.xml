@@ -12,9 +12,9 @@
 	<description>open-service</description>
 	<properties>
 		<project.build.finalname>open-service</project.build.finalname>
-		<zizaike.core.version>1.0.5-RELEASE</zizaike.core.version>
-		<zizaike.entity.version>1.0.12-RELEASE</zizaike.entity.version>
-	<zizaike.is.version>1.0.13-RELEASE</zizaike.is.version>
+		<zizaike.core.version>1.0.6-SNAPSHOT</zizaike.core.version>
+		<zizaike.entity.version>1.0.12-SNAPSHOT</zizaike.entity.version>
+		<zizaike.is.version>1.0.13-SNAPSHOT</zizaike.is.version>
 	</properties>
 	<build>
 		<finalName>${project.build.finalname}</finalName>
@@ -311,7 +311,6 @@
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 		</dependency>
-		
 		<!-- mybatis start -->
 			<dependency>
 				<groupId>org.mybatis</groupId>

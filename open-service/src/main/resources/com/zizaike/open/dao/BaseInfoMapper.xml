@@ -1,21 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zizaike.open.dao.BaseInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.zizaike.entity.open.RoomInfoDto" >
-    <id column="uid" property="uid" jdbcType="INTEGER" />
-    <result column="value" property="value" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="refund_rule" property="refundRule" jdbcType="VARCHAR" />
-  </resultMap>
-    <resultMap id="OpenDiscountResultMap" type="com.zizaike.entity.open.OpenDiscount" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="channel" property="channel" jdbcType="VARCHAR" />
-        <result column="rate" property="rate" jdbcType="REAL" />
-        <result column="active" property="active" jdbcType="INTEGER" />
-        <result column="room_type_id" property="roomTypeId" jdbcType="INTEGER" />
+<mapper namespace="com.zizaike.open.dao.BaseInfoMapper">
+    <resultMap id="BaseResultMap" type="com.zizaike.entity.open.RoomInfoDto">
+        <id column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="value" property="value" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="refund_rule" property="refundRule" jdbcType="VARCHAR"/>
+        <result column="dest_id" property="destId" jdbcType="INTEGER"/>
     </resultMap>
-   <select id="getRefundAndBreakfast" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-   select d.refund_rule as refund_rule,e.name as name,f.value as value,c.uid as uid from one_db.drupal_node c 
+    <resultMap id="QunarResultMap" type="com.zizaike.entity.open.QunarRoomInfoDto">
+        <id column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="value" property="value" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="refund_rule" property="refundRule" jdbcType="VARCHAR"/>
+        <result column="field__chuangxing_tid" property="fieldChuangxingTid" jdbcType="INTEGER"/>
+        <result column="field__chuangshu_tid" property="fieldChuangshuTid" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="checkin_at" property="checkinAt" jdbcType="VARCHAR"/>
+        <result column="checkout_at" property="checkoutAt" jdbcType="VARCHAR"/>
+        <result column="wifi" property="wifi" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="OpenDiscountResultMap" type="com.zizaike.entity.open.OpenDiscount">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="channel" property="channel" jdbcType="VARCHAR"/>
+        <result column="rate" property="rate" jdbcType="REAL"/>
+        <result column="active" property="active" jdbcType="INTEGER"/>
+        <result column="room_type_id" property="roomTypeId" jdbcType="INTEGER"/>
+    </resultMap>
+    <select id="getRefundAndBreakfast" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+   select d.refund_rule as refund_rule,e.name as name,f.value as value,c.uid as uid,d.dest_id as dest_id from one_db.drupal_node c
 	LEFT JOIN one_db.drupal_users d
 	ON c.uid=d.uid  
 	Right JOIN (select * from one_db.drupal_field_data_field_room_beds a 
@@ -24,18 +37,30 @@
 	ON c.nid=e.entity_id
 	LEFT JOIN LKYou.t_zaocan f
 	ON d.uid=f.uid
-  </select>
-    <select id="getOpenDiscount" resultMap="OpenDiscountResultMap" parameterType="com.zizaike.entity.open.OpenDiscount" >
-       select id,channel,rate,active,room_type_id from LKYou.t_open_discount where
+    </select>
+    <select id="getQunarRoomInfoDto" resultMap="QunarResultMap" parameterType="java.lang.Integer">
+     select d.refund_rule as refund_rule,e.name as name,c.title,f.value as value,c.uid as uid,e.field__chuangxing_tid,e.field__chuangshu_tid,i.checkin_at,i.checkout_at,c.wifi from one_db.drupal_node c
+	LEFT JOIN one_db.drupal_users d
+	ON c.uid=d.uid
+	LEFT JOIN one_db.drupal_checkin_time i
+	ON c.uid=i.uid
+	Right JOIN (select b.name,a.entity_id,g.field__chuangxing_tid,h.field__chuangshu_tid from one_db.drupal_field_data_field_room_beds a
+	left join one_db.drupal_taxonomy_term_data b on a.field_room_beds_tid = b.tid
+	left join one_db.drupal_field_data_field__chuangxing g on a.entity_id=g.entity_id
+	left join one_db.drupal_field_data_field__chuangshu h on a.entity_id=h.entity_id
+	where a.entity_type = 'node' and a.entity_id = #{roomId,jdbcType=INTEGER}) as e
+	ON c.nid=e.entity_id
+	LEFT JOIN LKYou.t_zaocan f
+	ON d.uid=f.uid
+    </select>
+    <select id="getOpenDiscount" resultMap="OpenDiscountResultMap" parameterType="com.zizaike.entity.open.OpenDiscount">
+        select id,channel,rate,active,room_type_id from LKYou.t_open_discount where
         active = 1
-        <if test="channel != null" >
-         and   channel = #{channel,jdbcType=VARCHAR}
+        <if test="channel != null">
+            and channel = #{channel,jdbcType=VARCHAR}
         </if>
-        <if test="roomTypeId != null" >
-         and   room_type_id = #{roomTypeId,jdbcType=INTEGER}
+        <if test="roomTypeId != null">
+            and room_type_id = #{roomTypeId,jdbcType=INTEGER}
         </if>
     </select>
- 
- 
-
 </mapper>

@@ -145,8 +145,10 @@ public class OrderServiceImpl implements OrderService {
       map.put("checkIn", simpleDateFormat.format(bookOrderRequest.getCheckIn()));
       map.put("checkOut", simpleDateFormat.format(bookOrderRequest.getCheckOut()));
       map.put("hourRent", bookOrderRequest.getHourRent());
-      map.put("earliestArriveTime", simpleDateFormatAccurate.format(bookOrderRequest.getEarliestArriveTime()));
-      map.put("latestArriveTime", simpleDateFormatAccurate.format(bookOrderRequest.getLatestArriveTime()));
+        if(bookOrderRequest.getEarliestArriveTime()!=null&&bookOrderRequest.getLatestArriveTime()!=null){
+          map.put("earliestArriveTime", simpleDateFormatAccurate.format(bookOrderRequest.getEarliestArriveTime()));
+          map.put("latestArriveTime", simpleDateFormatAccurate.format(bookOrderRequest.getLatestArriveTime()));
+        }
       map.put("roomNum", Integer.toString(bookOrderRequest.getRoomNum()));
       map.put("totalPrice", Long.toString(bookOrderRequest.getTotalPrice()));
       map.put("sellerDiscount", Long.toString(bookOrderRequest.getSellerDiscount()));
@@ -156,22 +158,24 @@ public class OrderServiceImpl implements OrderService {
       map.put("contactName", bookOrderRequest.getContactName());
       map.put("contactTel", bookOrderRequest.getContactTel());
       map.put("contactEmail", bookOrderRequest.getContactEmail());
+        if(bookOrderRequest.getDailyInfos()!=null){
       map.put("dailyInfos", JSON.toJSON(bookOrderRequest.getDailyInfos()).toString());
+        }
       map.put("orderGuests", JSON.toJSON(bookOrderRequest.getOrderGuests()).toString());
       map.put("comment", bookOrderRequest.getComment());
       map.put("memberCardNo", bookOrderRequest.getMemberCardNo());
       map.put("guaranteeType", bookOrderRequest.getGuaranteeType());
       map.put("extensions", bookOrderRequest.getExtensions());
       map.put("openTradeNo", bookOrderRequest.getOpenTradeNo());
-      /**
-       * zizaike下单人数
-       */
-      if(null!=(bookOrderRequest.getOrderGuests())){
-          List<OrderGuest> orderGuests= bookOrderRequest.getOrderGuests();
-          map.put("guestNumber", orderGuests.size()>0?Integer.toString(orderGuests.size()):"1");
-      }else{
-          map.put("guestNumber","1");
-      }
+        /**
+         * zizaike下单人数
+         */
+        if(null!=(bookOrderRequest.getOrderGuests())){
+            List<OrderGuest> orderGuests= bookOrderRequest.getOrderGuests();
+            map.put("guestNumber", orderGuests.size()>0?Integer.toString(orderGuests.size()):"1");
+        }else{
+            map.put("guestNumber","1");
+        }
         JSONObject result = null;
         try {
             result = httpProxy.httpGet(alitripHost + "bookRQ", map);

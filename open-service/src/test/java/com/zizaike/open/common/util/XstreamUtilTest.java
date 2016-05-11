@@ -1,15 +1,6 @@
 package com.zizaike.open.common.util;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.testng.annotations.Test;
-
+import com.alibaba.fastjson.serializer.CalendarCodec;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.open.alibaba.request.CancelRQRequest;
@@ -19,12 +10,26 @@ import com.zizaike.entity.open.alibaba.response.ResponseData;
 import com.zizaike.entity.open.alibaba.response.ValidateRQResponse;
 import com.zizaike.entity.open.ctrip.RoomPrice;
 import com.zizaike.entity.open.ctrip.RoomPrices;
-import com.zizaike.entity.open.ctrip.SetRoomPriceItem;
 import com.zizaike.entity.open.ctrip.response.AvailRoomQuantity;
 import com.zizaike.entity.open.ctrip.response.AvailRoomQuantitys;
 import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResp;
 import com.zizaike.entity.open.ctrip.response.DomesticCheckRoomAvailResponse;
+import com.zizaike.entity.open.qunar.request.BookingRequest;
+import com.zizaike.entity.open.qunar.request.CancelRequest;
+import com.zizaike.entity.open.qunar.request.Customer;
+import com.zizaike.entity.open.qunar.request.PriceRequest;
+import com.zizaike.entity.open.qunar.response.*;
 import com.zizaike.open.bastest.BaseTest;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class XstreamUtilTest extends BaseTest {
     @Test
@@ -197,4 +202,270 @@ public class XstreamUtilTest extends BaseTest {
         System.err.println(root.getQualifiedName());
     }
 
+    @Test
+    public void getQunarParamXml() throws ZZKServiceException {
+
+        List<Hotel> hotelList=new ArrayList<Hotel>();
+        hotelList.add(new Hotel("1","shanghai","zizaike","jinke road","021-12345"));
+        hotelList.add(new Hotel("2","shanghai","alex","pudong","021-12346"));
+        HotelList hotelList1=new HotelList(hotelList);
+        System.err.println(XstreamUtil.getResponseXml(hotelList1));
+    }
+
+    @Test
+    public void qunarPriceRequest() throws  ZZKServiceException{
+        String xml= "<priceRequest>" +
+                "<hotelId>16166</hotelId>" +
+                "<checkin>2014-12-28</checkin>" +
+                "<checkout>2014-12-30</checkout>" +
+                "<roomId>199</roomId>" +
+                "<numberOfRooms>2</numberOfRooms>" +
+                "<customerInfos>" +
+                "<customerInfo seq=\"0\" numberOfAdults=\"2\" numberOfChildren=\"2\" childrenAges=\"8|12\" >" +
+                "</customerInfo>" +
+                "<customerInfo seq=\"1\" numberOfAdults=\"2\" numberOfChildren=\"0\" childrenAges=\"\" >" +
+                "</customerInfo>" +
+                "</customerInfos>" +
+                "</priceRequest>";
+        PriceRequest priceRequest = (PriceRequest) XstreamUtil.getXml2Bean(xml, PriceRequest.class);
+        System.out.println(priceRequest.toString());
+    }
+
+    @Test(description = "测试qunar返回")
+    public void qunarPriceResponse() throws ZZKServiceException{
+        /**
+         * 床型
+         */
+        BedType bedType=new BedType();
+        bedType.setRelation("OR");
+        List<Beds> bedsList=new ArrayList<Beds>();
+        Beds beds=new Beds();
+        beds.setSeq("1");
+        beds.setCode(BedTypeCode.BUNK);
+        beds.setDesc(BedTypeCode.getByCode("BUNK"));
+        beds.setCount(2);
+        beds.setSize("1.8m*2m");
+        bedsList.add(beds);
+        Beds beds2=new Beds();
+        beds2.setSeq("2");
+        beds2.setCode(BedTypeCode.SINGLE);
+        beds2.setDesc(BedTypeCode.getByCode("SINGLE"));
+        beds2.setCount(1);
+        beds2.setSize("1.8m*1.5m");
+        bedsList.add(beds2);
+        bedType.setBeds(bedsList);
+        /**
+         * Meal
+         */
+        Meal meal=new Meal();
+        Breakfast breakfast=new Breakfast("2|2","日式早餐");
+        Lunch lunch=new Lunch("0|0","");
+        Dinner dinner=new Dinner("0|0","");
+        meal.setBreakfast(breakfast);
+        meal.setLunch(lunch);
+        meal.setDinner(dinner);
+        /**
+         * 退款
+         */
+        List<RefundRule> refundRules=new ArrayList<RefundRule>();
+        refundRules.add(new RefundRule(29, RefundType.DEDUCT_BY_AMOUNT,"50"));
+        refundRules.add(new RefundRule(20, RefundType.DEDUCT_BY_PERCENT,"70"));
+
+        List<NonRefundableRange> nonRefundableRanges=new ArrayList<NonRefundableRange>();
+        nonRefundableRanges.add(new NonRefundableRange("2015-10-01","2015-10-07"));
+
+        Refund refund=new Refund();
+        refund.setReturnable(Boolean.TRUE);
+        refund.setTimeZone("GMT+9");
+        refund.setRefundRules(refundRules);
+        refund.setNonRefundableRanges(nonRefundableRanges);
+        /**
+         * 备注节点
+         */
+        List<Remark> remarkList=new ArrayList<Remark>();
+        remarkList.add(new Remark(1,"the weather will be rainy in July, please prepare rain gears by yourself"));
+        remarkList.add(new Remark(2,"no pets allowed please"));
+        remarkList.add(new Remark(3,"free parking, but cannot make sure available parking lots any time"));
+        /**
+         * optionRules节点 设施？
+         */
+
+        List<OptionRule> optionRuleList=new ArrayList<OptionRule>();
+        optionRuleList.add(new OptionRule(OptionRuleCode.HIGH_SPEED_NETWORK,OptionRuleCode.getByCode("HIGH_SPEED_NETWORK"),"10",UnitOfCharge.PER_DAY,Boolean.TRUE));
+        optionRuleList.add(new OptionRule(OptionRuleCode.AIRPORT_PICKUP,OptionRuleCode.getByCode("AIRPORT_PICKUP"),"20",UnitOfCharge.PER_TIME,Boolean.FALSE));
+        /**
+         * 促销节点
+         */
+        List<PromotionRule> promotionRuleList=new ArrayList<PromotionRule>();
+        promotionRuleList.add(new PromotionRule(PromotionRuleCode.FREE_UPGRADE,PromotionRuleCode.getByCode("FREE_UPGRADE"),"0"));
+        promotionRuleList.add(new PromotionRule(PromotionRuleCode.LAST,PromotionRuleCode.getByCode("LAST"),"3"));
+        /**
+         * 额外节点
+         */
+        List<Extra> extraList=new ArrayList<Extra>();
+        extraList.add(new Extra("TOKEN","ASDFJJJJ9999XXXXYYY"));
+        extraList.add(new Extra("OTHER_KEY","XXXYYY"));
+        /**
+         * 房间节点
+         */
+        List<Room> roomList=new ArrayList<Room>();
+        Room room=new Room();
+        room.setBedType(bedType);
+        room.setMeal(meal);
+        room.setRefund(refund);
+        room.setRemarks(remarkList);
+        room.setOptionRules(optionRuleList);
+        room.setPromotionRules(promotionRuleList);
+        room.setExtras(extraList);
+        room.setId("P_1");
+        room.setArea("");
+        room.setBroadband("FREE");
+        room.setCheckinTime("12:00");
+        room.setCheckoutTime("12:30");
+        room.setCounts("5|5");
+        room.setStatus("ACTIVE|DISABLED");
+        room.setFreeChildrenAgeLimit(8);
+        room.setFreeChildrenNumber(1);
+        room.setInstantConfirmRoomCount("3|3");
+        room.setPrices("200|200");
+        room.setName("特色房");
+        room.setMaxOccupancy(2);
+        room.setOccupancyNumber(2);
+        room.setPayType(PayType.PREPAY);
+        room.setRoomRate("180|180");
+        room.setWifi("FREE");
+        room.setTaxAndFee("20|20");
+        roomList.add(room);
+        PriceResponse priceResponse=new PriceResponse();
+        priceResponse.setCheckin("2015-05-01");
+        priceResponse.setCheckout("2015-05-03");
+        priceResponse.setCurrencyCode("USD");
+        priceResponse.setHotelAddress("1-3-3, Naka-machi, Machida-city, Tokyo");
+        priceResponse.setHotelCity("tokyo");
+        priceResponse.setHotelId("9987");
+        priceResponse.setHotelPhone("0081-42-7281045");
+        priceResponse.setHotelName("Toyoko Inn Tokyo Machida-eki Odakyu-sen Higashi-guchi");
+        priceResponse.setRooms(roomList);
+        System.err.println(XstreamUtil.getResponseXml(priceResponse));
+
+
+    }
+    @Test(description="test qunarBookingRequest")
+    public void qunarBookingRequest()throws ZZKServiceException{
+        String xml = "<bookingRequest>"
+                + "<hotelId>16166</hotelId>"
+                + "<checkin>2015-02-20</checkin>"
+                + "<checkout>2015-02-22</checkout>"
+                + "<totalPrice>380</totalPrice><!--  totalPrices = sum(prices) - promotionRule[@code=INSTANT_SUBTRACT]/value  -->"
+                + "<currencyCode>USD</currencyCode>"
+                + "<rmbPrice>2356.87</rmbPrice>"
+                + "<customerArriveTime>16:00-18:00</customerArriveTime>"
+                + "<specialRemarks>PREFER_NON_SMOKING,PREFER_HIGH_FLOOR</specialRemarks> <!-- preference from consumer -->"
+                + "<numberOfRooms>2</numberOfRooms>"
+                + "<bedChoice>1</bedChoice>"
+                + "<instantConfirm>false</instantConfirm>"
+                + "<requiredAction>CONFIRM_ROOM_SUCCESS</requiredAction>"
+                + "<room id=\"9986\" name=\"特色房\" broadband=\"FREE\" payType=\"PREPAY\" prices=\"200|200\" status=\"ACTIVE|ACTIVE\" counts=\"5|5\" "
+                + "roomRate=\"180|180\" taxAndFee=\"20|20\" maxOccupancy=\"2\" occupancyNumber=\"2\""
+                + "freeChildrenNumber=\"1\" freeChildrenAgeLimit=\"8\" instantConfirmRoomCount=\"3|3\" wifi=\"FREE\" "
+                + "checkinTime=\"\" checkoutTime=\"\" area=\"\" >"
+                + "<bedType>"
+                + "<beds seq=\"1\" code=\"SINGLE\" desc=\"单人床\" count=\"2\" size=\"1.2m*2m\" >"
+                + "</beds>\""
+                + "</bedType>\""
+                + "<meal>\""
+                + "<breakfast count=\"2|2\" desc=\"self-service breakfast\" />"
+                + "<lunch count=\"0|0\" desc=\"\" /><dinner count=\"0|0\" desc=\"\" /></meal>"
+                + "<promotionRules><promotionRule code=\"INSTANT_DEDUCT\" desc=\"立减\" value=\"20\"></promotionRule></promotionRules>"
+                + "</room>"
+                + "<customerInfos>"
+                + "<customerInfo seq=\"1\" numberOfAdults=\"2\" numberOfChildren=\"2\" childrenAges=\"8|12\" >"
+                + "<customer firstName=\"Deng\" lastName=\"Ziqiang\" nationality=\"CN\" gender=\"male\" />"
+                + "<customer firstName=\"Li\" lastName=\"Xuejuan\" nationality=\"CN\" gender=\"female\" />"
+                + "<customer firstName=\"Child\" lastName=\"One\" nationality=\"CN\" gender=\"female\" />"
+                + "</customerInfo>"
+                + "<customerInfo seq=\"2\" numberOfAdults=\"2\" numberOfChildren=\"0\" childrenAges=\"\" >"
+                + "<customer firstName=\"Li\" lastName=\"XoXo\" nationality=\"CN\" gender=\"male\" />"
+                + "<customer firstName=\"Sun\" lastName=\"MoMo\" nationality=\"CN\" gender=\"female\" />"
+                + "</customerInfo>" 
+                + "</customerInfos>" 
+                + "<qunarOrderInfo>"
+                + "<orderNum>j3gm141219163017759</orderNum><!-- unique order id at Qunar  -->"
+                + "<hotelSeq>osaka_2202</hotelSeq><!-- unique id for a hotel at Qunar -->"
+                + "<hotelName>阪急阪神大阪国际酒店(Hotel Hankyu International)</hotelName>"
+                + "<hotelAddress>19-19, Chayamachi, Kita-ku, Osaka 530-0013, Japan</hotelAddress>"
+                + "<cityName>大阪</cityName>" 
+                + "<hotelPhone>0081-6-63772100</hotelPhone>"
+                + "<orderDate>2014-12-19 16:30:17</orderDate>" 
+                + "<contactName>张三</contactName>"
+                + "<contactPhone>1381****818</contactPhone>" 
+                + "<contactEmail>miao.****@qunar.com</contactEmail>"
+                + "<payType>PREPAY</payType>" 
+                + "<customerIp>103.24.27.9</customerIp>"
+                + "<invoiceCode>E</invoiceCode><!-- N=no require Y=paper invoice E=electronic receipt -->"
+                + "<invoice/>"
+                + "</qunarOrderInfo>" 
+                + "</bookingRequest>";
+        
+        BookingRequest bookingRequest = (BookingRequest) XstreamUtil.getXml2Bean(xml, BookingRequest.class);
+        System.err.print(bookingRequest.toString());        
+    }
+    @Test(description="test qunarBookingResponse")
+    public void qunarBookingResponse()throws ZZKServiceException{
+        BookingResponse bookingResponse = new BookingResponse();
+        bookingResponse.setQunarOrderNum("j3gm141219163017759");
+        bookingResponse.setOrderId("9987654");
+        bookingResponse.setResult(QunarResultCode.SUCCESS);
+        /**
+         * extras info
+         */
+        List<Extra> extraList = new ArrayList<>();
+        Extra ex1 = new Extra("TOKEN","ASDFJJJJ9999XXXXYYY");
+        Extra ex2 = new Extra("OTHER_KEY","XXXYYY");
+        extraList.add(ex1);
+        extraList.add(ex2);
+        bookingResponse.setExtras(extraList);
+        System.err.println(XstreamUtil.getResponseXml(bookingResponse));
+    }
+    @Test(description = "test cancelBooking")
+    public void qunarCancelBooking()throws ZZKServiceException{
+        String xml = "<cancelRequest>"
+                + "<qunarOrderNum>j3gm141219163019999</qunarOrderNum>"
+                + "<orderId>9987654</orderId>"
+                + "<requiredAction>AGREE_UNSUBSCRIBE</requiredAction>"
+                + "<reason></reason>"
+                + "<extras><!-- optional -->"
+                + "<property key=\"TOKEN\" value=\"ASDFJJJJ9999XXXXYYY\" />"
+                + "<property key=\"OTHER_KEY\" value=\"XXXYYY\" />"
+                + "</extras>"
+                + "</cancelRequest>";
+        CancelRequest cancelRequest= (CancelRequest) XstreamUtil.getXml2Bean(xml,CancelRequest.class);
+        System.err.print(cancelRequest);
+    }
+    @Test(description = "test cancelBookingResponse")
+    public void qunarCanceBookingResponse()throws ZZKServiceException{
+        CancelResponse cancelResponse= new CancelResponse();
+        cancelResponse.setQunarOrderNum("j3gm141219163017759");
+        cancelResponse.setOrderId("9987654");
+        cancelResponse.setResult(QunarResultCode.SUCCESS);
+        cancelResponse.setMsg("");
+        System.err.println(XstreamUtil.getResponseXml(cancelResponse));
+    }
+
+    @Test(description = "1")
+    public void qunarQueryResponse() throws ZZKServiceException{
+        OrderQueryResponse orderQueryResponse=new OrderQueryResponse();
+        QunarOrderInfoResponse qunarOrderInfoResponse=new QunarOrderInfoResponse();
+        Invoice invoice=new Invoice("","somebody","","","","","","上海","","","");
+        qunarOrderInfoResponse.setOrderId("9987654");
+        qunarOrderInfoResponse.setOrderNum("j3gm141219163017759");
+        qunarOrderInfoResponse.setCheckin("2014-12-29");
+        qunarOrderInfoResponse.setCheckout("2014-12-30");
+        qunarOrderInfoResponse.setCityName("大阪");
+        qunarOrderInfoResponse.setInvoice(invoice);
+        qunarOrderInfoResponse.setStatus(Status.CONFIRMED_SUCCESS);
+        orderQueryResponse.setOrderInfo(qunarOrderInfoResponse);
+        System.err.println(XstreamUtil.getResponseXml(orderQueryResponse));
+
+    }
 }

@@ -9,6 +9,8 @@
   
 package com.zizaike.open.dao;  
 
+import com.zizaike.core.framework.springext.database.Slave;
+import com.zizaike.entity.open.QunarRoomInfoDto;
 import com.zizaike.entity.open.OpenDiscount;
 import com.zizaike.entity.open.RoomInfoDto;
 
@@ -27,11 +29,20 @@ public interface BaseInfoDao {
      * 
      * getRefundAndBreakfast: 退款政策和早餐<br/>  
      */
+    @Slave
     RoomInfoDto getRefundAndBreakfast(int nid);
 
     /**
+     * getQunarRoomInfoDto
+     * @param nid
+     * @return
+     */
+    @Slave
+    QunarRoomInfoDto getQunarRoomInfoDto(int nid);
+    /**
      * 获取open项目的配置
      */
+    @Slave
     OpenDiscount getOpenDiscount(OpenDiscount openDiscount);
 }
   

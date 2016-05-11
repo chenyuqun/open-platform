@@ -18,7 +18,7 @@
 	      	&lt;BalanceType&gt;${balanceType}&lt;/BalanceType&gt;
 	      	&lt;MappingType&gt;${mappingType}&lt;/MappingType&gt;
 	      	&lt;SetType&gt;${setType}&lt;/SetType&gt;
-	      #elseif($setMappingOperateType=="UN_MAPPING_ROOM_ID_DO_NOT_DELETE_PRICE")
+	      #elseif($setMappingOperateType=="UN_MAPPING_ROOM_ID_DELETE_PRICE")
 	      	&lt;SupplierID&gt;${supplierID}&lt;/SupplierID&gt;
 	      	&lt;Hotel&gt;${hotel}&lt;/Hotel&gt;
 	      	&lt;Room&gt;${room}&lt;/Room&gt;

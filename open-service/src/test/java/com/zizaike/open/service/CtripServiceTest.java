@@ -102,67 +102,11 @@ public class CtripServiceTest extends BaseTest {
     
     @Test(description = "下单请求单元测试")
     public void domesticSubmitNewHotelOrder() throws ZZKServiceException, DocumentException {
-        String xml = "<Request>"
-                +"<HeaderInfo UserID='25' RequestorId='Ctrip.com' AsyncRequest='false' TimeStamp='2012-8-6 3:54:24'>"
-                +"<Authentication UserName='zhilianjishuzhuanshu' Password='zhilianzhuanshu11!!'/>"
-                +"<RequestType Name='DomesticSubmitNewHotelOrder' Version='1.0'/>"
-              +"</HeaderInfo>"
-              +"<DomesticSubmitNewHotelOrderRequest>"
-                +"<OrderID>244512466</OrderID>"
-                +"<InterFaceSendID>14112314</InterFaceSendID>"
-                +"<Hotel>4504433</Hotel>"
-                +"<HotelName>桔子酒店精选(苏州金鸡湖店)</HotelName>"
-                +"<Arrival>2015-05-05T00:00:00</Arrival>"
-                +"<Departure>2016-05-06T00:00:00</Departure>"
-                +"<EarlyArrivalTime>2016-05-05T18:37:07</EarlyArrivalTime>"
-                +"<LastArrivalTime>2016-05-06T23:59:00</LastArrivalTime>"
-                +"<Person>2</Person>"
-                +"<Notice/>"
-                +"<Guests>"
-                  +"<GuestEntity>"
-                    +"<FirstName>kobe</FirstName>"
-                    +"<LastName>bryant</LastName>"
-                    +"<ChinesName>测试</ChinesName>"
-                  +"</GuestEntity>"
-                  +"<GuestEntity>"
-                    +"<FirstName>Robert</FirstName>"
-                    +"<LastName>Jiang</LastName>"
-                    +"<ChinesName>测试</ChinesName>"
-                  +"</GuestEntity>"
-                +"</Guests>"
-                +"<MobilePhone>10106666</MobilePhone>"
-                +"<Currency>RMB</Currency>"
-                +"<Amount>788</Amount>"
-                +"<CNYAmount>788</CNYAmount>"
-                +"<GuaranteeType>OVER</GuaranteeType>"
-                +"<BalanceType>PP</BalanceType>"
-                +"<Room>24658621</Room>"
-                +"<RoomPerson>2</RoomPerson>"
-                +"<RoomName>榻榻米大床房</RoomName>"
-                +"<Quantity>1</Quantity>"
-                +"<CostAmount>11684</CostAmount>"
-                +"<CNYCostAmount>11684</CNYCostAmount>"
-                +"<RoomPrices>"
-                  +"<RoomPrice>"
-                    +"<EffectDate>2016-05-05T00:00:00</EffectDate>"
-                    +"<Price>1389</Price>"
-                    +"<CNYPrice>0</CNYPrice>"
-                    +"<Cost>1342</Cost>"
-                    +"<CNYCost>0</CNYCost>"
-                    +"<BreakFast>0</BreakFast>"
-                  +"</RoomPrice>"
-                  +"<RoomPrice>"
-                    +"<EffectDate>2016-05-06T00:00:00</EffectDate>"
-                    +"<Price>1389</Price>"
-                    +"<CNYPrice>0</CNYPrice>"
-                    +"<Cost>1342</Cost>"
-                    +"<CNYCost>0</CNYCost>"
-                    +"<BreakFast>0</BreakFast>"
-                  +"</RoomPrice>"
-                +"</RoomPrices>"
-                +"<RemarkInfo>{HoldTime:2014-07-03T23:59:00,NeedGua:true,LateCxlTime:20 14-07-03T18:00:00,CxlPenaltyAmount:389,Currency:RMB}</RemarkInfo>"
-              +"</DomesticSubmitNewHotelOrderRequest>"
-            +"</Request>";
+        String xml = "<Request><HeaderInfo UserID=\"204\" RequestorId=\"Ctrip.com\" AsyncRequest=\"false\" TimeStamp=\"2016-05-04 10:14:23\">" +
+                "<Authentication UserName=\"zhilianjishuzhuanshu\" Password=\"zhilianzhuanshu11!!\" /><" +
+                "RequestType Name=\"DomesticSubmitNewHotelOrder\" Version=\"1.0\" /></HeaderInfo><DomesticSubmitNewHotelOrderRequest>" +
+                "<OrderID>2323421510</OrderID><InterFaceSendID>45174357</InterFaceSendID><Hotel>4687002</Hotel><HotelName>花莲>花逸宿光民宿（Flower 85 B&B）</HotelName>" +
+                "<Arrival>2016-06-17T00:00:00</Arrival><Departure>2016-06-20T00:00:00</Departure><EarlyArrivalTime>2016-06-17T14:00:00</EarlyArrivalTime><LastArrivalTime>2016-06-17T23:59:00</LastArrivalTime><Person>1</Person><Notice> </Notice><IsHoldRoom>F</IsHoldRoom><Guests><GuestEntity><FirstName>JUE</FirstName><LastName>WANG</LastName><ChinesName>王珏</ChinesName></GuestEntity></Guests><MobilePhone>10106666</MobilePhone><Currency>RMB</Currency><Amount>934</Amount><CNYAmount>934</CNYAmount><GuaranteeType /><BalanceType>PP</BalanceType><Room>28861835</Room><RoomPerson>2</RoomPerson><RoomName>可爱的猫双人房</RoomName><Quantity>1</Quantity><CostAmount>841</CostAmount><CNYCostAmount>841</CNYCostAmount><RoomPrices><RoomPrice><EffectDate>2016-06-17T00:00:00</EffectDate><Price>332</Price><CNYPrice>0</CNYPrice><Cost>299</Cost><CNYCost>0</CNYCost><BreakFast>0</BreakFast></RoomPrice><RoomPrice><EffectDate>2016-06-18T00:00:00</EffectDate><Price>332</Price><CNYPrice>0</CNYPrice><Cost>299</Cost><CNYCost>0</CNYCost><BreakFast>0</BreakFast></RoomPrice><RoomPrice><EffectDate>2016-06-19T00:00:00</EffectDate><Price>270</Price><CNYPrice>0</CNYPrice><Cost>243</Cost><CNYCost>0</CNYCost><BreakFast>0</BreakFast></RoomPrice></RoomPrices><AddOptionals /><RemarkInfo>{HoldTime:2016-06-17 23:59:00,LateCxlTime:2016-06-04 00:00:00,CxlPenaltyAmount:934.00,Currency:RMB}</RemarkInfo></DomesticSubmitNewHotelOrderRequest></Request>";
         System.err.println(ctipCtripService.service(xml));
     }
     
@@ -238,7 +182,7 @@ public class CtripServiceTest extends BaseTest {
     
     @Test(description = "getHotelInfo")
     public void getHotelInfo() throws ZZKServiceException, DocumentException {
-        System.err.println(ctipCtripService.getHotelInfo(2));
+        System.err.println(ctipCtripService.getHotelInfo(2,1));
     }
     
     @Test(description = "getMappingInfo")

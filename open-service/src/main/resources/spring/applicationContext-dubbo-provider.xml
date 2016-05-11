@@ -19,5 +19,8 @@
 	
    <dubbo:service interface="com.zizaike.is.open.CtripService" version="1.0.0" ref="ctripService"  group="${dubbo.group}" />  
 	<bean id="ctripService" class="com.zizaike.open.service.impl.CtripServiceImpl" />
+
+   <dubbo:service interface="com.zizaike.is.open.QunarService" version="1.0.0" ref="qunarService"  group="${dubbo.group}" />
+   <bean id="qunarService" class="com.zizaike.open.service.impl.QunarServiceImpl" />
 	
 </beans>
