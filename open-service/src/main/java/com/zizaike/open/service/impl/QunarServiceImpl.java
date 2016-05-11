@@ -331,7 +331,7 @@ public class QunarServiceImpl implements QunarService {
                 for (int i = 0; i < jsonArray.size()-1; i++) {
 
                     //取人民币
-                    int priceCN =(int)(jsonArray.getJSONObject(i).getIntValue("price_cn")*zzkRate);
+                    int priceCN =(int)(Math.ceil(jsonArray.getJSONObject(i).getIntValue("price_cn")*zzkRate));
                     priceCNList.add(priceCN);
                     //房间数
 
