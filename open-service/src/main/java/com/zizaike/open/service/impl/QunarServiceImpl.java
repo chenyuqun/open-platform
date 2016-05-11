@@ -8,10 +8,7 @@ import com.zizaike.core.common.util.encrypt.MD5Encrypt;
 import com.zizaike.core.common.util.http.HttpProxyUtil;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.core.framework.exception.open.ErrorCodeFields;
-import com.zizaike.entity.open.HomestayDocking;
-import com.zizaike.entity.open.OpenChannelType;
-import com.zizaike.entity.open.QunarRequest;
-import com.zizaike.entity.open.QunarRoomInfoDto;
+import com.zizaike.entity.open.*;
 import com.zizaike.entity.open.qunar.HotelExt;
 import com.zizaike.entity.open.qunar.OtaOptVO;
 import com.zizaike.entity.open.qunar.request.*;
@@ -314,6 +311,17 @@ public class QunarServiceImpl implements QunarService {
              * 房态房价
              */
             JSONObject result = baseInfoService.getZizaikePrice(roomId, checkIn, checkOut);
+            //现在加入打折逻辑
+            OpenDiscount openDiscount=new OpenDiscount();
+            openDiscount.setChannel("CTRIP");
+            openDiscount.setRoomTypeId(Integer.parseInt(roomId));
+            Float zzkRate = 1f;
+            OpenDiscount discountInfo = baseInfoService.getOpenDiscount(openDiscount);
+            if (discountInfo == null) {
+                zzkRate = 1f;
+            } else {
+                zzkRate = discountInfo.getRate();
+            }
             if (result.getString("status").equals("ok")) {
                 int roomStyle = result.getJSONObject("response").getIntValue("room_style");
                 JSONArray jsonArray = result.getJSONObject("response").getJSONArray("list");
@@ -321,8 +329,9 @@ public class QunarServiceImpl implements QunarService {
                 List<Integer> numList = new ArrayList<Integer>();
                 List<String> statusList = new ArrayList<String>();
                 for (int i = 0; i < jsonArray.size()-1; i++) {
+
                     //取人民币
-                    int priceCN = jsonArray.getJSONObject(i).getIntValue("price_cn");
+                    int priceCN =(int)(jsonArray.getJSONObject(i).getIntValue("price_cn")*zzkRate);
                     priceCNList.add(priceCN);
                     //房间数
 
