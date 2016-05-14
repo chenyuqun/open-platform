@@ -245,7 +245,7 @@ public class CtripServiceImpl implements CtripService {
          */
         DomesticSubmitNewHotelOrderResp domesticSubmitNewHotelOrderResp = new DomesticSubmitNewHotelOrderResp();
         DomesticSubmitNewHotelOrderResponse domesticSubmitNewHotelOrderResponse = new DomesticSubmitNewHotelOrderResponse();
-        if(result.getString("resultCode").equals("200")||result.getString("resultCode").equals("201")){           
+        if(result.getString("resultCode").equals("200")){           
             domesticSubmitNewHotelOrderResponse.setHotelConfirmNo(result.getJSONObject("info").getString("orderId"));
             domesticSubmitNewHotelOrderResponse.setOrderStatus(OrderStatus.HOTEL_CONFIRM_SUCCESS);
             domesticSubmitNewHotelOrderResponse.setInterFaceConfirmNO(result.getJSONObject("info").getString("orderId"));
