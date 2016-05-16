@@ -289,7 +289,12 @@ public class CtripServiceImpl implements CtripService {
              */
             case "207":
                 domesticSubmitNewHotelOrderResp.setMessage("其他错误");
-                domesticSubmitNewHotelOrderResp.setResultCode("9999");  
+                domesticSubmitNewHotelOrderResp.setResultCode("9999");
+                break;
+            default :
+                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setResultCode("9999");
+                break;
         }
         }
         domesticSubmitNewHotelOrderResp.setDomesticSubmitNewHotelOrderResponse(domesticSubmitNewHotelOrderResponse);
