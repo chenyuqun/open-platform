@@ -489,10 +489,10 @@ public class QunarServiceImpl implements QunarService {
                     Boolean firstRefund = true;
                     for (int i = 1; i <= refundList.size(); i++) {
                         if (firstRefund) {
-                            refundRules.add(new RefundRule(refundList.getJSONObject(String.valueOf(i)).getIntValue("day"), RefundType.DEDUCT_BY_PERCENT, "0"));
+                            refundRules.add(new RefundRule(refundList.getJSONObject(String.valueOf(i)).getIntValue("day")*24, RefundType.DEDUCT_BY_PERCENT, "0"));
                             firstRefund = false;
                         } else {
-                            refundRules.add(new RefundRule(refundList.getJSONObject(String.valueOf(i)).getIntValue("day"), RefundType.DEDUCT_BY_PERCENT, refundList.getJSONObject(String.valueOf(i)).getString("per")));
+                            refundRules.add(new RefundRule(refundList.getJSONObject(String.valueOf(i)).getIntValue("day")*24, RefundType.DEDUCT_BY_PERCENT, refundList.getJSONObject(String.valueOf(i)).getString("per")));
                         }
                     }
                     refundRules.add(new RefundRule(0, RefundType.DEDUCT_BY_PERCENT, "100"));
