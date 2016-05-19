@@ -45,6 +45,16 @@ public class httpUtilTest extends BaseTest {
 
     }
     @Test(description = "httpUrl")
+    public void xmlSenderMutilThread() throws ZZKServiceException, IOException {
+        for (int i = 0; i < 100; i++) {
+            Map map = new HashMap();
+            map.put("roomTypeId", "398");
+            map.put("checkIn", "2016-03-14");
+            map.put("checkOut", "2016-03-15");
+            System.err.println(httpProxy.httpGet("http://api.test.zizaike.com/open/alitrip/validateRQ", map)+"count:"+i);
+        }
+    }
+    @Test(description = "httpUrl")
     public void httpPostXml() throws ZZKServiceException, IOException {
         String xml = "<soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>"
   +"<soap:Body>"

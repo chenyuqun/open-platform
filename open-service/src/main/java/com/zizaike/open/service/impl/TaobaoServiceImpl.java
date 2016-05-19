@@ -270,7 +270,7 @@ public class TaobaoServiceImpl implements TaobaoService {
         /**
          * 200是success 201是网站端口下单成功[非速订]
          */
-        if (result.getString("resultCode").equals("200") || result.getString("resultCode").equals("201")) {
+        if (result.getString("resultCode").equals("200")) {
             bookRQResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
             bookRQResponse.setPmsResID(result.getJSONObject("info").getString("pmsResId"));
             return bookRQResponse;

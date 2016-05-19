@@ -203,7 +203,7 @@ public class QunarServiceImpl implements QunarService {
                 /**
                  * 200是success 201是网站端口下单成功[非速订]
                  */
-                if(result.getString("resultCode").equals("200")||result.getString("resultCode").equals("201")){
+                if(result.getString("resultCode").equals("200")){
                     bookingResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
                     bookingResponse.setResult(QunarResultCode.SUCCESS);
                     bookingResponse.setQunarOrderNum(qunarOrderInfo.getOrderNum());
