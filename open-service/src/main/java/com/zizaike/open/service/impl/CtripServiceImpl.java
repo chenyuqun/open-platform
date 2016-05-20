@@ -253,43 +253,59 @@ public class CtripServiceImpl implements CtripService {
         }else{
             switch (result.getString("resultCode")) {
             case "400":
-                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setMessage("请求参数错误");
                 domesticSubmitNewHotelOrderResp.setResultCode("9999");
                 break;
             case "401":
-                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setMessage("invalid room");
                 domesticSubmitNewHotelOrderResp.setResultCode("9999");
                 break;
             case "402":
-                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setMessage("invalid homestay");
                 domesticSubmitNewHotelOrderResp.setResultCode("9999");
                 break;
             case "403":
-                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setMessage("姓名不能为空");
                 domesticSubmitNewHotelOrderResp.setResultCode("9999");
                 break;
             case "404":
-                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setMessage("联系方式好像不对哦");
                 domesticSubmitNewHotelOrderResp.setResultCode("9999");
                 break;
             case "406":
-                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setMessage("入住时间不正确");
                 domesticSubmitNewHotelOrderResp.setResultCode("9999");
                 break;                    
             case "407":
-                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
+                domesticSubmitNewHotelOrderResp.setMessage("退房时间不正确");
                 domesticSubmitNewHotelOrderResp.setResultCode("9999");
                 break;
             case "408":
                 domesticSubmitNewHotelOrderResp.setMessage("酒店满房/房量不足");
                 domesticSubmitNewHotelOrderResp.setResultCode("101");
                 break;
+            case "409":
+                domesticSubmitNewHotelOrderResp.setMessage("房间连住条件不满足");
+                domesticSubmitNewHotelOrderResp.setResultCode("9999");
+                break;
+            case "2":
+                domesticSubmitNewHotelOrderResp.setMessage("民宿休假或者房间下架或者民宿终止合作");
+                domesticSubmitNewHotelOrderResp.setResultCode("9999");
+                break;
+            case "201":
+                domesticSubmitNewHotelOrderResp.setMessage("网站端下单成功[非速订]");
+                domesticSubmitNewHotelOrderResp.setResultCode("9999");
+                break;
+            case "206":
+                domesticSubmitNewHotelOrderResp.setMessage("价格政策原因不允许下单");
+                domesticSubmitNewHotelOrderResp.setResultCode("9999");
+                break;
             /**
              * 价格校验失败
              */
             case "207":
-                domesticSubmitNewHotelOrderResp.setMessage("其他错误");
-                domesticSubmitNewHotelOrderResp.setResultCode("9999");
+                domesticSubmitNewHotelOrderResp.setMessage("价格错误");
+                domesticSubmitNewHotelOrderResp.setResultCode("103");
                 break;
             default :
                 domesticSubmitNewHotelOrderResp.setMessage("其他错误");
