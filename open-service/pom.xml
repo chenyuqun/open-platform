@@ -333,5 +333,10 @@
 				<artifactId>mybatis-generator-core</artifactId>
 			</dependency>
 			<!-- mybatis end -->
+			 <!-- logstash -->
+        <dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+		</dependency>
 	</dependencies>
 </project>
