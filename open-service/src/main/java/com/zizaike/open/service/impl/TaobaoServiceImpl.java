@@ -143,6 +143,7 @@ public class TaobaoServiceImpl implements TaobaoService {
              * 解析返回价格参数
              */
             List<InventoryPrice> inventoryPriceList = JSON.parseArray(result.getJSONObject("info").getString("inventoryPrice"), InventoryPrice.class);
+           
             for (int i = 0; i < inventoryPriceList.size(); i++) {
                 InventoryPrice inventory = inventoryPriceList.get(i);
                 if (inventory.getQuota() < validateRQRequest.getRoomNum()) {
@@ -270,7 +271,7 @@ public class TaobaoServiceImpl implements TaobaoService {
         /**
          * 200是success 201是网站端口下单成功[非速订]
          */
-        if (result.getString("resultCode").equals("200") || result.getString("resultCode").equals("201")) {
+        if (result.getString("resultCode").equals("200")) {
             bookRQResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
             bookRQResponse.setPmsResID(result.getJSONObject("info").getString("pmsResId"));
             return bookRQResponse;

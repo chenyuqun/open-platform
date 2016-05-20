@@ -203,7 +203,7 @@ public class QunarServiceImpl implements QunarService {
                 /**
                  * 200是success 201是网站端口下单成功[非速订]
                  */
-                if(result.getString("resultCode").equals("200")||result.getString("resultCode").equals("201")){
+                if(result.getString("resultCode").equals("200")){
                     bookingResponse.setOrderId(result.getJSONObject("info").getString("orderId"));
                     bookingResponse.setResult(QunarResultCode.SUCCESS);
                     bookingResponse.setQunarOrderNum(qunarOrderInfo.getOrderNum());
@@ -485,14 +485,14 @@ public class QunarServiceImpl implements QunarService {
                 JSONObject refundRule = JSON.parseObject(qunarRoomInfo.getRefundRule());
                 //现在没有type为0这种说法
                 //if (refundRule.get("type").equals(1)) {
-                    JSONArray refundList = refundRule.getJSONArray("refund_list");
+                    JSONObject refundList = refundRule.getJSONObject("refund_list");
                     Boolean firstRefund = true;
                     for (int i = 1; i <= refundList.size(); i++) {
                         if (firstRefund) {
-                            refundRules.add(new RefundRule(refundList.getJSONObject(i).getIntValue("day"), RefundType.DEDUCT_BY_PERCENT, "0"));
+                            refundRules.add(new RefundRule(refundList.getJSONObject(String.valueOf(i)).getIntValue("day")*24, RefundType.DEDUCT_BY_PERCENT, "0"));
                             firstRefund = false;
                         } else {
-                            refundRules.add(new RefundRule(refundList.getJSONObject(i).getIntValue("day"), RefundType.DEDUCT_BY_PERCENT, refundList.getJSONObject(i).getString("per")));
+                            refundRules.add(new RefundRule(refundList.getJSONObject(String.valueOf(i)).getIntValue("day")*24, RefundType.DEDUCT_BY_PERCENT, refundList.getJSONObject(String.valueOf(i)).getString("per")));
                         }
                     }
                     refundRules.add(new RefundRule(0, RefundType.DEDUCT_BY_PERCENT, "100"));

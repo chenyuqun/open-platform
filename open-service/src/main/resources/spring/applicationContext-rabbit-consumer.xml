@@ -10,8 +10,8 @@
     http://www.springframework.org/schema/task/spring-task-4.1.xsd">
 	<!-- 连接服务配置 -->
 	<rabbit:connection-factory id="openConnectionFactory"
-		host="${open.rabbitmq.host}" username="${open.rabbitmq.username}"
-		password="${open.rabbitmq.password}" port="${open.rabbitmq.port}"
+		addresses="${rabbitmq.addresses}"
+		 username="${open.rabbitmq.username}" password="${open.rabbitmq.password}"
 		virtual-host="${open.rabbitmq.vhost}" channel-cache-size="${open.rabbitmq.channelCacheSize}" />
 
 	<rabbit:admin connection-factory="openConnectionFactory" />
