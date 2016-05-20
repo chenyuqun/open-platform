@@ -143,6 +143,7 @@ public class TaobaoServiceImpl implements TaobaoService {
              * 解析返回价格参数
              */
             List<InventoryPrice> inventoryPriceList = JSON.parseArray(result.getJSONObject("info").getString("inventoryPrice"), InventoryPrice.class);
+           
             for (int i = 0; i < inventoryPriceList.size(); i++) {
                 InventoryPrice inventory = inventoryPriceList.get(i);
                 if (inventory.getQuota() < validateRQRequest.getRoomNum()) {
