@@ -140,21 +140,8 @@ public class CtripServiceImpl implements CtripService {
                 }
                 RoomPrice roomPrice = new RoomPrice();
                 roomPrice.setBreakFast(inventory.getBreakFast() ? inventory.getMaxPerson() : 0);
-                /**
-                 * 试单返回价格打折
-                 */
-                OpenDiscount openDiscount=new OpenDiscount();
-                openDiscount.setChannel("CTRIP");
-                openDiscount.setRoomTypeId(Integer.parseInt(roomTypeMapping.getRoomTypeId()));
-                Float zzkRate = 1f;
-                OpenDiscount discountInfo = baseInfoService.getOpenDiscount(openDiscount);
-                if (discountInfo == null) {
-                    zzkRate = 1f;
-                } else {
-                    zzkRate = discountInfo.getRate();
-                }
-                roomPrice.setCost((int)(Math.ceil(zzkRate*inventory.getPrice() / 100)));
-                countPrice += (float)(Math.ceil(zzkRate*inventory.getPrice()/100));
+                roomPrice.setCost(inventory.getPrice() / 100);
+                countPrice += Float.valueOf(inventory.getPrice() + "") / 100;
                 roomPrice.setEffectDate(new Date(inventory.getDate().getTime()));
                 roomPriceList.add(roomPrice);
                 

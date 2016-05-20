@@ -143,26 +143,16 @@ public class TaobaoServiceImpl implements TaobaoService {
              * 解析返回价格参数
              */
             List<InventoryPrice> inventoryPriceList = JSON.parseArray(result.getJSONObject("info").getString("inventoryPrice"), InventoryPrice.class);
-            OpenDiscount openDiscount = new OpenDiscount();
-            openDiscount.setChannel("ALITRIP");
-            openDiscount.setRoomTypeId(Integer.valueOf(validateRQRequest.getRoomTypeId()));
-            Float zzkRate = 1f;
-            OpenDiscount discountInfo = baseInfoService.getOpenDiscount(openDiscount);
-            if (discountInfo == null) {
-                zzkRate = 1f;
-            } else {
-                zzkRate = discountInfo.getRate();
-            }
+           
             for (int i = 0; i < inventoryPriceList.size(); i++) {
                 InventoryPrice inventory = inventoryPriceList.get(i);
-                inventory.setPrice((int)Math.ceil(zzkRate*inventory.getPrice()));
                 if (inventory.getQuota() < validateRQRequest.getRoomNum()) {
                     errorCodeFields = ErrorCodeFields.ROOM_FULL_NOT_BOOK_ERROR;
                     throw new ZZKServiceException(errorCodeFields);
                 }
                 ;
             }
-            validateRQResponse.setInventoryPrice(JSON.toJSONString(inventoryPriceList));
+            validateRQResponse.setInventoryPrice(result.getJSONObject("info").getString("inventoryPrice"));
             return validateRQResponse;
         } else {
 
@@ -893,7 +883,7 @@ public class TaobaoServiceImpl implements TaobaoService {
                 }
                 Data data = object.getRateInventoryPriceMap().get(i).getData();
                 for (com.zizaike.entity.open.alibaba.InventoryPrice inventoryPrice : data.getInventoryPrice()) {
-                    inventoryPrice.setPrice((int) Math.ceil(zzkRate * inventoryPrice.getPrice()));
+                    inventoryPrice.setPrice((int) (zzkRate * inventoryPrice.getPrice()));
                 }
             }
         } catch (ZZKServiceException e) {
