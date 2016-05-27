@@ -18,6 +18,7 @@
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="checkin_at" property="checkinAt" jdbcType="VARCHAR"/>
         <result column="checkout_at" property="checkoutAt" jdbcType="VARCHAR"/>
+        <result column="checkout_stop" property="checkoutStop" jdbcType="VARCHAR"/>
         <result column="wifi" property="wifi" jdbcType="INTEGER"/>
     </resultMap>
     <resultMap id="OpenDiscountResultMap" type="com.zizaike.entity.open.OpenDiscount">
@@ -39,7 +40,7 @@
 	ON d.uid=f.uid
     </select>
     <select id="getQunarRoomInfoDto" resultMap="QunarResultMap" parameterType="java.lang.Integer">
-     select d.refund_rule as refund_rule,e.name as name,c.title,f.value as value,c.uid as uid,e.field__chuangxing_tid,e.field__chuangshu_tid,i.checkin_at,i.checkout_at,c.wifi from one_db.drupal_node c
+     select d.refund_rule as refund_rule,e.name as name,c.title,f.value as value,c.uid as uid,e.field__chuangxing_tid,e.field__chuangshu_tid,i.checkin_at,i.checkout_at,i.checkin_stop,c.wifi from one_db.drupal_node c
 	LEFT JOIN one_db.drupal_users d
 	ON c.uid=d.uid
 	LEFT JOIN one_db.drupal_checkin_time i

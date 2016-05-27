@@ -434,9 +434,9 @@ public class QunarServiceImpl implements QunarService {
                 beds.setCode(BedTypeCode.OTHERS);
                 beds.setDesc(BedTypeCode.getByCode("OTHERS"));
             } else if (qunarRoomInfo.getFieldChuangxingTid() == 316) {
-                beds.setCount(2);
-                beds.setCode(BedTypeCode.SINGLE);
-                beds.setDesc(BedTypeCode.getByCode("SINGLE"));
+                //beds.setCount(2);
+                beds.setCode(BedTypeCode.DOUBLE);
+                beds.setDesc(BedTypeCode.getByCode("DOUBLE"));
             } else if (qunarRoomInfo.getFieldChuangxingTid() == 324) {
                 beds.setCode(BedTypeCode.DORM_BED);
                 beds.setDesc(BedTypeCode.getByCode("DORM_BED"));
@@ -509,7 +509,11 @@ public class QunarServiceImpl implements QunarService {
             /**
              * 可选节点
              */
-//            room.setRemarks(remarkList);
+            List<Remark> remarkList=new ArrayList<>();
+            if(!StringUtils.isEmpty(qunarRoomInfo.getCheckinStop())){
+                remarkList.add(new Remark(1,"最晚入住时间为当天的:"+qunarRoomInfo.getCheckinStop()));
+            }
+           room.setRemarks(remarkList);
 //            room.setOptionRules(optionRuleList);
 //            room.setPromotionRules(promotionRuleList);
 //            room.setExtras(extraList);

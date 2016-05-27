@@ -22,5 +22,8 @@
 
    <dubbo:service interface="com.zizaike.is.open.QunarService" version="1.0.0" ref="qunarService"  group="${dubbo.group}" />
    <bean id="qunarService" class="com.zizaike.open.service.impl.QunarServiceImpl" />
+
+   <dubbo:service interface="com.zizaike.is.open.BaseInfoService" version="1.0.0" ref="baseInfoService"  group="${dubbo.group}" />
+   <bean id="baseInfoService" class="com.zizaike.open.service.impl.BaseInfoServiceImpl" />
 	
 </beans>
