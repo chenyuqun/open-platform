@@ -509,7 +509,11 @@ public class QunarServiceImpl implements QunarService {
             /**
              * 可选节点
              */
-//            room.setRemarks(remarkList);
+            List<Remark> remarkList=new ArrayList<>();
+            if(!StringUtils.isEmpty(qunarRoomInfo.getCheckinStop())){
+                remarkList.add(new Remark(1,"最晚入住为当天的:"+qunarRoomInfo.getCheckinStop()));
+            }
+           room.setRemarks(remarkList);
 //            room.setOptionRules(optionRuleList);
 //            room.setPromotionRules(promotionRuleList);
 //            room.setExtras(extraList);
