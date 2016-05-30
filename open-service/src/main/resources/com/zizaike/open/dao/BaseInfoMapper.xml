@@ -18,7 +18,7 @@
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="checkin_at" property="checkinAt" jdbcType="VARCHAR"/>
         <result column="checkout_at" property="checkoutAt" jdbcType="VARCHAR"/>
-        <result column="checkout_stop" property="checkoutStop" jdbcType="VARCHAR"/>
+        <result column="checkin_stop" property="checkinStop" jdbcType="VARCHAR"/>
         <result column="wifi" property="wifi" jdbcType="INTEGER"/>
     </resultMap>
     <resultMap id="OpenDiscountResultMap" type="com.zizaike.entity.open.OpenDiscount">
