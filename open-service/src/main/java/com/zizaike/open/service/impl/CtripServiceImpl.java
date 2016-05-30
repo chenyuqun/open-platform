@@ -140,8 +140,8 @@ public class CtripServiceImpl implements CtripService {
                 }
                 RoomPrice roomPrice = new RoomPrice();
                 roomPrice.setBreakFast(inventory.getBreakFast() ? inventory.getMaxPerson() : 0);
-                roomPrice.setCost(inventory.getPrice() / 100);
-                countPrice += Float.valueOf(inventory.getPrice() + "") / 100;
+                roomPrice.setCost((int)Math.ceil(inventory.getPrice() / 100));
+                countPrice += (int)Math.ceil(inventory.getPrice() / 100);
                 roomPrice.setEffectDate(new Date(inventory.getDate().getTime()));
                 roomPriceList.add(roomPrice);
                 
