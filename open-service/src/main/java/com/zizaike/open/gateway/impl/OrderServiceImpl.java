@@ -28,13 +28,12 @@ import com.zizaike.core.common.util.http.HttpProxyUtil;
 import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.core.framework.exception.open.ErrorCodeFields;
-import com.zizaike.entity.open.alibaba.request.BookRQRequest;
 import com.zizaike.entity.order.request.BookOrderRequest;
 import com.zizaike.entity.order.request.CancelOrderRequest;
 import com.zizaike.entity.order.request.OrderGuest;
+import com.zizaike.entity.order.request.QueryStatusOrderRequest;
 import com.zizaike.entity.order.request.ValidateOrderRequest;
 import com.zizaike.open.gateway.OrderService;
-import com.zizaike.entity.order.request.QueryStatusOrderRequest;
 /**
  * ClassName:OrderServiceImpl <br/>
  * Function: 订单服务. <br/>
@@ -179,10 +178,10 @@ public class OrderServiceImpl implements OrderService {
         JSONObject result = null;
         try {
             result = httpProxy.httpGet(alitripHost + "bookRQ", map);
-            LOG.info("bookRQ return{}",result);
+            LOG.info("bookRQ openOrderId{} return{}",map.get("openOrderId"),result);
         } catch (IOException e) {
             e.printStackTrace();
-            LOG.error("bookRQ IOException {}", e.toString());
+            LOG.error("bookRQ openOrderId{} IOException {}", map.get("openOrderId"),e.toString());
             throw new ZZKServiceException(ErrorCodeFields.NETWORK_ERROR);
         }
         return result;
@@ -220,10 +219,10 @@ public class OrderServiceImpl implements OrderService {
         JSONObject result = null;
         try {
             result = httpProxy.httpGet(alitripHost + "cancelRQ", map);
-            LOG.info("cancelRQ return{}",result);
+            LOG.info("cancelRQ openOrderId{} ,return{}",map.get("                                                                                                                                           "),result);
         } catch (IOException e) {
             e.printStackTrace();
-            LOG.error("bookRQ IOException {}", e.toString());
+            LOG.error("bookRQ openOrderId{} , IOException {}",map.get("openOrderId"), e.toString());
             throw new ZZKServiceException(ErrorCodeFields.NETWORK_ERROR);
         }
         return result;
@@ -250,10 +249,10 @@ public class OrderServiceImpl implements OrderService {
         JSONObject result = null;
         try {
             result=httpProxy.httpGet(alitripHost+"queryStatusRQ", map);
-            LOG.info("aueryStatusOrder return{}",result);
+            LOG.info("aueryStatusOrder openOrderId{} , return{}",map.get("openOrderId"),result);
         } catch (IOException e) {
             e.printStackTrace();
-            LOG.error("QueryStatusOrder IOException {}", e.toString());
+            LOG.error("QueryStatusOrder openOrderId{} , IOException {}",map.get("openOrderId"), e.toString());
             throw new ZZKServiceException(ErrorCodeFields.NETWORK_ERROR);
             
         }

@@ -62,7 +62,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
         JSONObject result = null;
         try {
             result = httpProxy.httpGet(calendarHost, map);
-            LOG.info("getZizaikePrice return{}",result);
+            //LOG.info("getZizaikePrice return{}",result);
         } catch (IOException e) {
             LOG.error("getZizaikePrice IOException {}", e.toString());
         }
