@@ -75,10 +75,11 @@ public class QunarController extends BaseXMLController {
      */
     @RequestMapping(value = "/queryQunar", method = RequestMethod.GET)
     @ResponseBody
-    public OrderInfoResponse queryQunar(@RequestParam("orderNums") String orderNums) throws ZZKServiceException{
+    public ResponseResult queryQunar(@RequestParam("orderNums") String orderNums) throws ZZKServiceException{
         LOG.info("qunarService queryQunar xml:{}",orderNums);
-        return   qunarService.qunarOrderQuery(orderNums);
-
+        ResponseResult resultResult = new ResponseResult();
+        resultResult.setInfo(qunarService.qunarOrderQuery(orderNums));
+        return resultResult;
     }
 
     /**
