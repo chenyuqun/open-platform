@@ -178,10 +178,10 @@ public class OrderServiceImpl implements OrderService {
         JSONObject result = null;
         try {
             result = httpProxy.httpGet(alitripHost + "bookRQ", map);
-            LOG.info("bookRQ openOrderId{} return{}",map.get("openOrderId"),result);
+            LOG.info("bookRQ openOrderId {} return{}",map.get("openOrderId"),result);
         } catch (IOException e) {
             e.printStackTrace();
-            LOG.error("bookRQ openOrderId{} IOException {}", map.get("openOrderId"),e.toString());
+            LOG.error("bookRQ openOrderId {} IOException {}", map.get("openOrderId"),e.toString());
             throw new ZZKServiceException(ErrorCodeFields.NETWORK_ERROR);
         }
         return result;
@@ -219,10 +219,10 @@ public class OrderServiceImpl implements OrderService {
         JSONObject result = null;
         try {
             result = httpProxy.httpGet(alitripHost + "cancelRQ", map);
-            LOG.info("cancelRQ openOrderId{} ,return{}",map.get("                                                                                                                                           "),result);
+            LOG.info("cancelRQ openOrderId {} ,return{}",map.get("openOrderId"),result);
         } catch (IOException e) {
             e.printStackTrace();
-            LOG.error("bookRQ openOrderId{} , IOException {}",map.get("openOrderId"), e.toString());
+            LOG.error("cancelRQ openOrderId {} , IOException {}",map.get("openOrderId"), e.toString());
             throw new ZZKServiceException(ErrorCodeFields.NETWORK_ERROR);
         }
         return result;
@@ -249,10 +249,10 @@ public class OrderServiceImpl implements OrderService {
         JSONObject result = null;
         try {
             result=httpProxy.httpGet(alitripHost+"queryStatusRQ", map);
-            LOG.info("aueryStatusOrder openOrderId{} , return{}",map.get("openOrderId"),result);
+            LOG.info("aueryStatusOrder openOrderId {} , return{}",map.get("openOrderId"),result);
         } catch (IOException e) {
             e.printStackTrace();
-            LOG.error("QueryStatusOrder openOrderId{} , IOException {}",map.get("openOrderId"), e.toString());
+            LOG.error("aueryStatusOrder openOrderId {} , IOException {}",map.get("openOrderId"), e.toString());
             throw new ZZKServiceException(ErrorCodeFields.NETWORK_ERROR);
             
         }
