@@ -7,6 +7,7 @@ import com.zizaike.entity.open.ctrip.vo.MappingInfoVo;
 import com.zizaike.entity.open.qunar.OrderQueryVO;
 import com.zizaike.entity.open.qunar.OtaOptVO;
 import com.zizaike.entity.open.qunar.response.OptCode;
+import com.zizaike.entity.open.qunar.response.OrderInfoResponse;
 import com.zizaike.entity.solr.SearchType;
 import com.zizaike.is.open.QunarService;
 import com.zizaike.open.BaseXMLController;
@@ -72,12 +73,13 @@ public class QunarController extends BaseXMLController {
      * @return
      * @throws ZZKServiceException
      */
-    @RequestMapping(value = "/queryQunar", method = RequestMethod.GET,produces={"text/xml"})
+    @RequestMapping(value = "/queryQunar", method = RequestMethod.GET)
     @ResponseBody
-    public String queryQunar(@RequestParam("orderNums") String orderNums) throws ZZKServiceException{
+    public ResponseResult queryQunar(@RequestParam("orderNums") String orderNums) throws ZZKServiceException{
         LOG.info("qunarService queryQunar xml:{}",orderNums);
-        return   qunarService.qunarOrderQuery(orderNums);
-
+        ResponseResult resultResult = new ResponseResult();
+        resultResult.setInfo(qunarService.qunarOrderQuery(orderNums));
+        return resultResult;
     }
 
     /**

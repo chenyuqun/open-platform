@@ -9,6 +9,7 @@ import com.zizaike.core.common.util.http.HttpProxyUtil;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.core.framework.exception.open.ErrorCodeFields;
 import com.zizaike.entity.open.*;
+import com.zizaike.entity.open.alibaba.request.ValidateRQRequest;
 import com.zizaike.entity.open.qunar.HotelExt;
 import com.zizaike.entity.open.qunar.OtaOptVO;
 import com.zizaike.entity.open.qunar.request.*;
@@ -564,19 +565,22 @@ public class QunarServiceImpl implements QunarService {
 
 
     @Override
-    public String qunarOrderQuery(String orderNums) {
+    public OrderInfoResponse qunarOrderQuery(String orderNums) throws ZZKServiceException{
         String result=null;
+        OrderInfoResponse orderInfoResponse=new OrderInfoResponse();
         try {
             Map<String,String> map=new HashMap<String,String>();
             map.put("orderNums",orderNums);
             String hmac=MD5Encrypt.encrypt(signKey+orderNums);
             map.put("hmac",hmac);
             result = httpProxy.httpGetXMl(qunarUrl + "qunarOrderQuery", map);
+            QunarOrderQueryResponse qunarOrderQueryResponse = (QunarOrderQueryResponse) XstreamUtil.getXml2Bean(result, QunarOrderQueryResponse.class);
+            orderInfoResponse=qunarOrderQueryResponse.getOrderInfoResponse();
             LOG.info("qunarOrderQuery return{}",result);
         } catch (IOException e) {
             LOG.error("qunarOrderQuery IOException {}", e.toString());
         }
-        return result;
+        return orderInfoResponse;
     }
 
     @Override
