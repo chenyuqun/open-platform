@@ -18,8 +18,8 @@
     <project.build.finalname>open-api</project.build.finalname>
   	<cxf.version>3.0.0</cxf.version>
  	<zizaike.core.version>1.0.8-RELEASE</zizaike.core.version>
-	<zizaike.entity.version>1.0.19-SNAPSHOT</zizaike.entity.version>
-	<zizaike.is.version>1.0.19-SNAPSHOT</zizaike.is.version>
+	<zizaike.entity.version>1.0.19-RELEASE</zizaike.entity.version>
+	<zizaike.is.version>1.0.19-RELEASE</zizaike.is.version>
   </properties>
   <build>
     <finalName>${project.build.finalname}</finalName>
