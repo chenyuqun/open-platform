@@ -222,7 +222,7 @@ public class OrderServiceImpl implements OrderService {
             LOG.info("cancelRQ openOrderId {} ,return{}",map.get("openOrderId"),result);
         } catch (IOException e) {
             e.printStackTrace();
-            LOG.error("bookRQ openOrderId {} , IOException {}",map.get("openOrderId"), e.toString());
+            LOG.error("cancelRQ openOrderId {} , IOException {}",map.get("openOrderId"), e.toString());
             throw new ZZKServiceException(ErrorCodeFields.NETWORK_ERROR);
         }
         return result;
@@ -252,7 +252,7 @@ public class OrderServiceImpl implements OrderService {
             LOG.info("aueryStatusOrder openOrderId {} , return{}",map.get("openOrderId"),result);
         } catch (IOException e) {
             e.printStackTrace();
-            LOG.error("QueryStatusOrder openOrderId {} , IOException {}",map.get("openOrderId"), e.toString());
+            LOG.error("aueryStatusOrder openOrderId {} , IOException {}",map.get("openOrderId"), e.toString());
             throw new ZZKServiceException(ErrorCodeFields.NETWORK_ERROR);
             
         }
