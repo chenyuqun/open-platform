@@ -72,7 +72,8 @@ public class QunarServiceImpl implements QunarService {
         List<HotelExt> hotelExtList = homestayDockingDao.queryAllQunarHotel();
 
         for (int i = 0; i < hotelExtList.size(); i++) {
-            hotelExtList.get(i).setTel(QunarUtil.StandardPhoneUtil(hotelExtList.get(i).getTel(), hotelExtList.get(i).getDest_id()));
+            //hotelExtList.get(i).setTel(QunarUtil.StandardPhoneUtil(hotelExtList.get(i).getTel(), hotelExtList.get(i).getDest_id()));
+            hotelExtList.get(i).setTel("4008-886-232");
         }
         List<Hotel> list = new ArrayList<Hotel>();
         HotelList hoteList = new HotelList();
@@ -107,7 +108,8 @@ public class QunarServiceImpl implements QunarService {
             priceResponse.setHotelName(hotelExt.getName());
             priceResponse.setHotelAddress(hotelExt.getAddress());
             priceResponse.setHotelCity(hotelExt.getCity());
-            priceResponse.setHotelPhone(qunarPhoneUtil.StandardPhoneUtil(hotelExt.getTel()));
+            //priceResponse.setHotelPhone(qunarPhoneUtil.StandardPhoneUtil(hotelExt.getTel()));
+            priceResponse.setHotelPhone("4008-886-232");
             priceResponse.setCheckin(checkIn);
             priceResponse.setCheckout(checkOut);
             priceResponse.setCurrencyCode("CNY");
