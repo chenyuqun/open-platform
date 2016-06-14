@@ -1,31 +1,14 @@
 
 package com.zizaike.open.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.zizaike.core.common.util.encrypt.MD5Encrypt;
-import com.zizaike.core.common.util.http.HttpProxyUtil;
-import com.zizaike.core.framework.exception.ZZKServiceException;
-import com.zizaike.core.framework.exception.open.ErrorCodeFields;
-import com.zizaike.entity.open.*;
-import com.zizaike.entity.open.alibaba.request.ValidateRQRequest;
-import com.zizaike.entity.open.qunar.HotelExt;
-import com.zizaike.entity.open.qunar.OtaOptVO;
-import com.zizaike.entity.open.qunar.request.*;
-import com.zizaike.entity.open.qunar.response.*;
-import com.zizaike.entity.order.request.BookOrderRequest;
-import com.zizaike.entity.order.request.CancelOrderRequest;
-import com.zizaike.entity.order.request.OrderGuest;
-import com.zizaike.entity.order.request.QueryStatusOrderRequest;
-import com.zizaike.is.open.BaseInfoService;
-import com.zizaike.is.open.QunarService;
-import com.zizaike.open.common.util.QunarPhoneUtil;
-import com.zizaike.open.common.util.QunarUtil;
-import com.zizaike.open.common.util.XstreamUtil;
-import com.zizaike.open.dao.HomestayDockingDao;
-import com.zizaike.open.dao.QunarRequestDao;
-import com.zizaike.open.gateway.OrderService;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -34,13 +17,64 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.zizaike.core.common.util.encrypt.MD5Encrypt;
+import com.zizaike.core.common.util.http.HttpProxyUtil;
+import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.core.framework.exception.open.ErrorCodeFields;
+import com.zizaike.entity.open.HomestayDocking;
+import com.zizaike.entity.open.OpenChannelType;
+import com.zizaike.entity.open.OpenDiscount;
+import com.zizaike.entity.open.QunarRequest;
+import com.zizaike.entity.open.QunarRoomInfoDto;
+import com.zizaike.entity.open.qunar.HotelExt;
+import com.zizaike.entity.open.qunar.OtaOptVO;
+import com.zizaike.entity.open.qunar.request.BookingRequest;
+import com.zizaike.entity.open.qunar.request.CancelRequest;
+import com.zizaike.entity.open.qunar.request.OrderQueryRequest;
+import com.zizaike.entity.open.qunar.request.PriceRequest;
+import com.zizaike.entity.open.qunar.request.QunarOrderInfo;
+import com.zizaike.entity.open.qunar.response.BedType;
+import com.zizaike.entity.open.qunar.response.BedTypeCode;
+import com.zizaike.entity.open.qunar.response.Beds;
+import com.zizaike.entity.open.qunar.response.BookingResponse;
+import com.zizaike.entity.open.qunar.response.Breakfast;
+import com.zizaike.entity.open.qunar.response.CancelResponse;
+import com.zizaike.entity.open.qunar.response.Dinner;
+import com.zizaike.entity.open.qunar.response.FeeMode;
+import com.zizaike.entity.open.qunar.response.Hotel;
+import com.zizaike.entity.open.qunar.response.HotelList;
+import com.zizaike.entity.open.qunar.response.Lunch;
+import com.zizaike.entity.open.qunar.response.Meal;
+import com.zizaike.entity.open.qunar.response.NonRefundableRange;
+import com.zizaike.entity.open.qunar.response.OrderInfoResponse;
+import com.zizaike.entity.open.qunar.response.OrderQueryResponse;
+import com.zizaike.entity.open.qunar.response.PayType;
+import com.zizaike.entity.open.qunar.response.PriceResponse;
+import com.zizaike.entity.open.qunar.response.QunarOrderInfoResponse;
+import com.zizaike.entity.open.qunar.response.QunarOrderQueryResponse;
+import com.zizaike.entity.open.qunar.response.QunarResultCode;
+import com.zizaike.entity.open.qunar.response.Refund;
+import com.zizaike.entity.open.qunar.response.RefundRule;
+import com.zizaike.entity.open.qunar.response.RefundType;
+import com.zizaike.entity.open.qunar.response.Remark;
+import com.zizaike.entity.open.qunar.response.Room;
+import com.zizaike.entity.open.qunar.response.Status;
+import com.zizaike.entity.order.request.BookOrderRequest;
+import com.zizaike.entity.order.request.CancelOrderRequest;
+import com.zizaike.entity.order.request.OrderGuest;
+import com.zizaike.entity.order.request.QueryStatusOrderRequest;
+import com.zizaike.is.common.HanLPService;
+import com.zizaike.is.open.BaseInfoService;
+import com.zizaike.is.open.QunarService;
+import com.zizaike.open.common.util.QunarPhoneUtil;
+import com.zizaike.open.common.util.QunarUtil;
+import com.zizaike.open.common.util.XstreamUtil;
+import com.zizaike.open.dao.HomestayDockingDao;
+import com.zizaike.open.dao.QunarRequestDao;
+import com.zizaike.open.gateway.OrderService;
 
 /**
  * Project Name: code <br/>
@@ -67,6 +101,8 @@ public class QunarServiceImpl implements QunarService {
     private HttpProxyUtil httpProxy;
     @Autowired
     private QunarRequestDao qunarRequestDao;
+    @Autowired
+    HanLPService hanLPService;
 
     @Override
     public String getHotelList() {
@@ -81,6 +117,8 @@ public class QunarServiceImpl implements QunarService {
         for(int i = 0;i<hotelExtList.size();i++){
             Hotel hotel = new Hotel();
             BeanUtils.copyProperties(hotelExtList.get(i), hotel);
+            hotel.setName(hanLPService.convertToSimplifiedChinese(hotelExtList.get(i).getName()));
+            hotel.setAddress(hanLPService.convertToSimplifiedChinese(hotelExtList.get(i).getAddress()));
             list.add(hotel);
         }
         hoteList.setHotel(list);
@@ -514,7 +552,7 @@ public class QunarServiceImpl implements QunarService {
              */
             List<Remark> remarkList=new ArrayList<>();
             if(!StringUtils.isEmpty(qunarRoomInfo.getCheckinStop())){
-                remarkList.add(new Remark(1,"最晚入住时间为当天的:"+qunarRoomInfo.getCheckinStop()));
+                remarkList.add(new Remark(1,"最晚入住时间为当天的"+qunarRoomInfo.getCheckinStop()));
             }
            room.setRemarks(remarkList);
 //            room.setOptionRules(optionRuleList);
